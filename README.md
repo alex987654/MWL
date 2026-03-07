@@ -7,6 +7,13 @@ For readers under a night sky: humans, other space‑faring species, and camera�
 > 
 > **Purpose:** Tell **adventure fiction** using **shared celestial referents**.  
 
+
+MWL Samples: 
+* [Star Wars 4 crawl in MWL](https://alex987654.github.io/MWL/Star-Wars-4-Crawl-in-MWL.html)
+* [“The Twin Exodus” sample story](https://alex987654.github.io/MWL/The-Twin-Exodus-MWL-Sample.html)
+
+
+
 ## What This Experimental Language Is
 
 - **Audience:** Readers who can view the night sky, space-faring beings, including AIs with cameras, who are familiar with the night sky on planetary surfaces or in space. Pages are meant to be legible by eye or camera without requiring spoken language. 
@@ -663,5 +670,10 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | 7                     | numeral      |                                  |
 | 8                     | numeral      |                                  |
 ---
+
+
+Symbol defs demo page: 
+* [Symbol defs](https://alex987654.github.io/MWL/MWL-symbol-defs/demo.html)
+
 
 *End of introduction.*
