@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linecap="round" stroke-linejoin="round" fill="none" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linecap="butt" fill="#000" width="512" height="512" stroke-miterlimit="2" />
+    <path stroke-width="10" stroke="#dcdcdc" stroke-linejoin="miter" d="M295.633 139.662v12" fill-rule="nonzero" />
+    <circle stroke-width="12" stroke="#d4d4d4" stroke-opacity="0.3" cx="172" cy="284" r="74" />
+    <circle fill="#d1d1d1" cx="148" cy="268" r="10" />
+    <circle fill="#d1d1d1" cx="180" cy="300" r="10" />
+    <circle fill="#d1d1d1" cx="128" cy="312" r="10" />
+    <path stroke-width="12" stroke="#d1d1d1" stroke-opacity="0.4" d="M199.427 282.02c35.561-9.769 48.353-36.904 61.146-64.04" fill-rule="nonzero" />
+    <g stroke-width="4" stroke="#dcdcdc" stroke-linejoin="miter" fill-rule="nonzero">
+        <path stroke-width="10" d="M229.65 103.662v48" />
+        <path stroke-width="11" d="M262.66 127.662v24" />
+        <path d="M328.621 167.659v12" />
+        <path d="M295.633 167.659v12" />
+        <path stroke-opacity="0.3" d="M223.731 159.668h138.021" />
+    </g>
+</g></svg>

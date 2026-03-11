@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" fill="#d1d1d1" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#939598" fill="#000" width="512" height="512" />
+    <circle stroke-width="12" stroke="#d4d4d4" stroke-opacity="0.3" stroke-linecap="round" fill="none" cx="172" cy="284" r="74" stroke-miterlimit="4" />
+    <circle cx="180.712" cy="246" r="10" />
+    <circle cx="130.712" cy="285.101" r="10" />
+    <circle cx="190.712" cy="328.935" r="10" />
+    <circle cx="160.712" cy="276" r="10" />
+    <circle cx="128" cy="312" r="10" />
+    <circle cx="160.712" cy="318.935" r="10" />
+    <path stroke-width="12" stroke="#d1d1d1" stroke-opacity="0.4" stroke-linecap="round" fill="none" d="M199.427 282.02c35.561-9.769 48.353-36.904 61.146-64.04" fill-rule="nonzero" stroke-miterlimit="4" />
+    <g stroke-width="4" stroke="#dcdcdc" stroke-linecap="round" stroke-linejoin="miter" fill="none" fill-rule="nonzero" stroke-miterlimit="4">
+        <path stroke-width="10" d="M229.65 103.662v48" />
+        <path stroke-width="10" d="M295.633 139.662v12" />
+        <path stroke-width="11" d="M262.66 127.662v24" />
+        <path d="M322.621 173.659h12" />
+        <path d="M295.633 179.659v-12" />
+        <path d="M262.66 179.659v-12" />
+        <path stroke-opacity="0.3" d="M223.731 159.668h138.021" />
+    </g>
+</g></svg>
