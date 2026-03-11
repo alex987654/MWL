@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" fill="#d9d9d9" width="512" height="512" clip-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <defs fill="#000" fill-rule="evenodd">
+        <radialGradient id="accelerate__Radial1" gradientTransform="matrix(28, 0, 0, 28, 120, 256)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="1" />
+            <stop offset="1" stop-color="#cbcbcb" stop-opacity="1" />
+        </radialGradient>
+    </defs>
+<g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#939598" fill="#000" width="512" height="512" fill-rule="evenodd" />
+    <circle stroke-width="3" stroke="#cbcbcb" stroke-opacity="0.9" stroke-linejoin="miter" fill="url(#accelerate__Radial1)" cx="120" cy="256" fill-rule="evenodd" r="28" stroke-miterlimit="4" />
+    <path stroke-width="6" stroke="#d9d9d9" stroke-opacity="0.6" stroke-linecap="round" stroke-linejoin="miter" fill="none" d="M158 216h80" stroke-miterlimit="4" />
+    <path fill-opacity="0.7" d="M258 216l-16-10v20z" />
+    <path stroke-width="8" stroke="#d9d9d9" stroke-opacity="0.75" stroke-linecap="round" stroke-linejoin="miter" fill="none" d="M158 256h120" stroke-miterlimit="4" />
+    <path fill-opacity="0.9" d="M298 256l-16-10v20z" />
+    <path stroke-width="10" stroke="#d9d9d9" stroke-opacity="0.9" stroke-linecap="round" stroke-linejoin="miter" fill="none" d="M158 296h160" stroke-miterlimit="4" />
+    <path d="M338 296l-16-10v20z" />
+    </g></svg>

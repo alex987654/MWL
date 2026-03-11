@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" fill="#dde7ff" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect fill="#000" stroke-width="3" stroke="#939598" width="512" height="512" />
+    <circle fill="#fff" cx="146.96" cy="174.22" r="9.308" />
+    <circle fill="#fff" cx="226.745" cy="134.327" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M146.96 174.22l79.785-39.893" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill="#fff" cx="306.531" cy="200.815" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M226.745 134.327l79.786 66.488" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill="#fff" cx="359.721" cy="280.6" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M306.531 200.815l53.19 79.785" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill="#fff" cx="279.936" cy="333.791" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M359.721 280.6l-79.785 53.191" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill="#fff" cx="200.15" cy="280.6" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M279.936 333.791 200.15 280.6" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill="#fff" cx="120.365" cy="254.005" r="9.308" />
+    <path stroke-width="3.99" stroke="#7aa6ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" d="M200.15 280.6l-79.785-26.595" fill-rule="nonzero" stroke-miterlimit="4" />
+    <circle fill-opacity="0.9" cx="408.922" cy="50.553" r="3.324" />
+    <circle fill-opacity="0.9" cx="160.258" cy="140.976" r="3.324" />
+    <circle fill-opacity="0.9" cx="125.684" cy="69.169" r="3.324" />
+    <circle fill-opacity="0.9" cx="475.41" cy="43.904" r="3.324" />
+    <circle fill-opacity="0.9" cx="416.465" cy="437.7" r="3.324" />
+    <circle fill-opacity="0.9" cx="345.094" cy="33.266" r="3.324" />
+    <circle fill-opacity="0.9" cx="375.678" cy="261.984" r="3.324" />
+    <circle fill-opacity="0.9" cx="36.59" cy="122.359" r="3.324" />
+</g></svg>

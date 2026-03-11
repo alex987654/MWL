@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" width="512" height="512" clip-rule="evenodd" version="1.1">
+    <defs stroke-linejoin="round" fill="#000" fill-rule="evenodd" stroke-miterlimit="2">
+        <radialGradient id="diverging_paths__Radial1" gradientTransform="matrix(32, 0, 0, 32, 80, 200)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#d8d8d8" stop-opacity="1" />
+            <stop offset="1" stop-color="#a2a2a2" stop-opacity="1" />
+        </radialGradient>
+        <radialGradient id="diverging_paths__Radial2" gradientTransform="matrix(32, 0, 0, 32, 80, 260)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#c5c5c5" stop-opacity="1" />
+            <stop offset="1" stop-color="#959595" stop-opacity="1" />
+        </radialGradient>
+    </defs>
+<g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <path stroke-width="12" stroke="#a2a2a2" stroke-opacity="0.75" stroke-linecap="round" d="M80 200c93.333-13.333 210.667-48 352-104" stroke-dasharray="22 18" />
+    <path stroke-width="12" stroke="#a3a3a3" stroke-opacity="0.75" stroke-linecap="round" d="M80 260c93.333 13.333 210.667 65.333 352 156" stroke-dasharray="22 18" />
+    <circle stroke-width="4" stroke="#a2a2a2" stroke-opacity="0.9" fill="url(#diverging_paths__Radial1)" cx="80" cy="200" fill-rule="evenodd" r="32" />
+    <circle stroke-width="4" stroke="#a3a3a3" stroke-opacity="0.9" fill="url(#diverging_paths__Radial2)" cx="80" cy="260" fill-rule="evenodd" r="32" />
+    <path fill="#a2a2a2" fill-opacity="0.9" d="M431.244 97.291l-18.623 21.756-9.977-21.874z" />
+    <path fill="#a3a3a3" fill-opacity="0.9" d="M432 416l-28.574-1.245 11.009-21.373z" />
+    </g></svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="#9be8ff" stroke-linecap="round" stroke-linejoin="round" fill="none" width="512" height="512" clip-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#939598" stroke-linecap="butt" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <path stroke-width="14" stroke-opacity="0.95" d="M211 96c60 80 60 240 0 320" />
+    <path stroke-width="10" stroke-opacity="0.85" d="M171 120c50 72 50 200 0 272" />
+</g></svg>

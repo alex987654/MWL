@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linecap="round" stroke-linejoin="round" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
+    <g transform="matrix(0.94208000 0 0 0.94208000 20.48000000 20.48000000)"><rect fill="#000" width="500" height="500" />
+    <g stroke-width="18" stroke="#fff" fill="none" fill-rule="nonzero">
+        <path stroke-opacity="0.6" d="M170 170v160" />
+        <path stroke-opacity="0.6" d="M240 170v160" />
+        <path d="M330 130v240" />
+        <path d="M295 370h70" />
+    </g>
+</g></svg>

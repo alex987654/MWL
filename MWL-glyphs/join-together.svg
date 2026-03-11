@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" fill="#fff" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#939598" fill="#000" width="512" height="512" />
+    <circle cx="186" cy="256" r="26" />
+    <circle cx="326" cy="256" r="26" />
+    <path stroke-width="10" stroke="#d4d4d4" stroke-linejoin="miter" fill="none" d="M216 256h80" fill-rule="nonzero" stroke-miterlimit="4" />
+</g></svg>

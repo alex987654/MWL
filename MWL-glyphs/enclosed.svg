@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect fill="#000" stroke-width="3" stroke="#949698" width="512" height="512" />
+    <ellipse fill="#fff" cx="234.728" cy="263.993" rx="21.272" ry="20.649" />
+    <rect stroke-width="10" stroke="#b5d9ff" stroke-opacity="0.5" stroke-linejoin="miter" fill="none" width="240" height="240" stroke-miterlimit="4" x="136" y="136" />
+</g></svg>

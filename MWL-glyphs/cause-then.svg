@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-width="2" stroke="#fff" fill="none" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949699" stroke-linejoin="round" fill="#000" width="512" height="512" stroke-miterlimit="2" />
+    <circle cx="256" cy="316" r="30" />
+    <circle cx="256" cy="301" r="60" />
+    <circle cx="256" cy="286" r="90" />
+    <circle cx="256" cy="271" r="120" />
+    <circle cx="256" cy="256" r="150" />
+    <circle stroke-width="1" stroke="#676261" stroke-linejoin="round" fill="#97c3d5" cx="256" cy="331" r="6" stroke-miterlimit="2" />
+    <path stroke="none" fill="#595a5c" fill-opacity="0.8" d="M267.928 431.781h-23.856L256 464.46z" fill-rule="nonzero" />
+</g></svg>

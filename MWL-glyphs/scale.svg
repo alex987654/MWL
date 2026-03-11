@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-width="12" stroke="#fff" fill="none" width="512" height="512" clip-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <path stroke-width="18" stroke-opacity="0.9" d="M132.367 326V26" />
+    <path d="M152.367 326h-40" />
+    <path d="M157.367 251h-50" />
+    <path d="M162.367 176h-60" />
+    <path d="M167.367 101h-70" />
+    <path d="M172.367 26h-80" />
+    <path stroke-width="10" stroke="#e5e5e5" stroke-opacity="0.69" d="M506.006 256c0 38.634-31.366 70-70 70s-70-31.366-70-70 31.366-70 70-70 70 31.366 70 70z" fill-rule="evenodd" stroke-dasharray="28 22" />
+    <path stroke-width="10" stroke-opacity="0.4" d="M476.006 256c0 77.268-62.732 140-140 140s-140-62.732-140-140 62.732-140 140-140 140 62.732 140 140z" fill-rule="evenodd" stroke-dasharray="28 22" />
+    <path stroke-width="10" stroke="#e5e5e5" stroke-opacity="0.15" d="M425.044 235.925C413.964 120.554 311.302 35.882 195.931 46.962S-4.112 160.704 6.968 276.075 120.71 476.118 236.081 465.038 436.124 351.296 425.044 235.925z" fill-rule="evenodd" stroke-dasharray="28 22" />
+</g></svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-width="14" stroke="#9be8ff" fill="none" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" stroke-miterlimit="2" />
+    <circle stroke-width="6" fill="#fff" cx="256" cy="256" r="26" />
+    <circle stroke-opacity="0.9" cx="256" cy="256" r="70" />
+    <circle stroke-opacity="0.7" cx="256" cy="256" r="120" />
+    <circle stroke-opacity="0.55" cx="256" cy="256" r="170" />
+    <path stroke-width="12" stroke-opacity="0.8" stroke-linecap="round" d="M66 356l11.9 7.8 11.9 7.5 11.8 6.9 11.9 6.1 11.9 5 11.8 3.7 11.9 2.2 11.9 0.8 11.9-0.8 11.9-2.2 11.8-3.7 11.9-5 11.9-6.1 11.8-6.9 11.9-7.5 23.8-15.6 11.9-7.5 11.8-6.9 11.9-6.1 11.9-5 11.8-3.7 11.9-2.2 11.9-0.8 11.9 0.8 11.9 2.2 11.8 3.7 11.9 5 11.9 6.1 11.8 6.9 11.9 7.5 11.9 7.8" fill-rule="nonzero" />
+</g></svg>

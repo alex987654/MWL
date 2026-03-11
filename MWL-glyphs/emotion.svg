@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linejoin="round" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect fill="#000" stroke-width="3" stroke="#949699" width="512" height="512" />
+    <path stroke-width="8" stroke="#e23c96" stroke-linejoin="miter" fill="#fce98c" d="M156.459 218l-40 80-40-80z" fill-rule="nonzero" stroke-miterlimit="4" />
+    <path stroke="#fff" fill="#fff" d="M122.459 222h-12v-8h12z" />
+</g></svg>
