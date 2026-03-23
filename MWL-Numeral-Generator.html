@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///Users/alex/Downloads/numeral-generator.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWL Numeral Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./MWL Numeral Generator_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep: #060608;
+    --bg-surface: #0e0e12;
+    --bg-card: #14141a;
+    --border: #1e1e28;
+    --border-focus: #3a3a50;
+    --text-primary: #d1d1d1;
+    --text-secondary: #8a8a9a;
+    --text-dim: #555566;
+    --accent: #6e7bff;
+    --accent-glow: rgba(110, 123, 255, 0.15);
+    --glyph-stroke: #dcdcdc;
+    --rail-dim: rgba(220, 220, 220, 0.3);
+    --ring-stroke: rgba(212, 212, 212, 0.3);
+    --dot-fill: #d1d1d1;
+    --connector-stroke: rgba(209, 209, 209, 0.4);
+    --frame-stroke: #949698;
+    --glyph-bg: #000000;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1.5rem 4rem;
+    line-height: 1.6;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    max-width: 540px;
+  }
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+  }
+  .header p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .header .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 0.2rem 0.65rem;
+    border-radius: 3px;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ─── Input area ─── */
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .input-wrap label {
+    position: absolute;
+    top: -0.45rem;
+    left: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--bg-surface);
+    padding: 0 0.3rem;
+  }
+  #numInput {
+    width: 160px;
+    padding: 0.75rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  #numInput::-webkit-outer-spin-button,
+  #numInput::-webkit-inner-spin-button { -webkit-appearance: none; }
+  #numInput:focus { border-color: var(--border-focus); }
+  #numInput::placeholder { color: var(--text-dim); font-weight: 300; }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0.75rem 1.4rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-generate {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-generate:hover { filter: brightness(1.15); }
+  .btn-generate:active { transform: scale(0.97); }
+
+  .info-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    min-height: 1.2em;
+    margin-bottom: 2rem;
+  }
+  .info-line span { color: var(--text-secondary); }
+
+  /* ─── Preview card ─── */
+  .preview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .preview-card.empty {
+    min-height: 340px;
+    justify-content: center;
+  }
+  .preview-empty-text {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  #svgPreview {
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+  #svgPreview svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .download-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .btn-download {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .btn-download:hover {
+    border-color: var(--border-focus);
+    background: var(--bg-surface);
+  }
+  .download-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--text-primary); }
+
+  @media (max-width: 520px) {
+    .input-row { flex-direction: column; }
+    #numInput { width: 100%; }
+    #svgPreview { width: 240px; height: 240px; }
+    .preview-card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="tag">Milky Way Language</div>
+  <h1>Numeral Generator</h1>
+  <p>Generate MWL binary-rail numeral glyphs. Numbers 2–8 include the dot-ring determinative; 9 and above use the rail only.</p>
+</div>
+
+<div class="input-row">
+  <div class="input-wrap">
+    <label>Decimal number</label>
+    <input type="number" id="numInput" min="2" step="1" placeholder="12" autofocus="">
+  </div>
+  <button class="btn btn-generate" onclick="generate()">Generate</button>
+</div>
+
+<div class="info-line" id="infoLine"></div>
+
+<div class="preview-card empty" id="previewCard">
+  <div class="preview-empty-text" id="emptyText">Enter a number ≥ 2 and click Generate</div>
+  <div id="svgPreview" style="display:none;"></div>
+  <div class="download-row" id="downloadRow" style="display:none;">
+    <button class="btn btn-download" onclick="downloadSVG()">↓ Download SVG</button>
+    <span class="download-filename" id="dlFilename"></span>
+  </div>
+</div>
+
+<div class="footer">
+  Part of <a href="https://github.com/alex987654/MWL" target="_blank" rel="noopener">MWL — Milky Way Language</a>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// MWL Numeral SVG Generator
+// ══════════════════════════════════════════════════════════════
+//
+// Glyph anatomy (from the canonical 2.svg–8.svg):
+//   • 512×512 viewBox, inner group scaled via matrix(0.91464…)
+//   • Black rect background, gray (#949698) frame stroke
+//   • Dot-ring (2–8 only): circle cx=172 cy=284 r=74, filled dots inside
+//   • Connector curve from ring to rail (2–8 only)
+//   • Binary rail: horizontal baseline with
+//       – Weight ticks above (height doubles per bit, cueing 2,4,8…)
+//       – Bit indicators below (vertical bar = 1, horizontal dash = 0)
+//       – LSB on the right
+//
+// For numbers ≥ 9 the dot-ring and connector are omitted; the rail
+// is drawn centered horizontally in the glyph.
+// ══════════════════════════════════════════════════════════════
+
+/* ─── Dot positions inside the ring for 2–8 (hand-traced from originals) ─── */
+const DOT_POSITIONS = {
+  2: [[130.712, 285.101], [160.712, 318.935]],
+  3: [[148, 268], [180, 300], [128, 312]],
+  4: [[130.712, 285.101], [190.712, 328.935], [160.712, 276], [160.712, 318.935]],
+  5: [[130.712, 285.101], [190.712, 328.935], [160.712, 276], [128, 312], [160.712, 318.935]],
+  6: [[180.712, 246], [130.712, 285.101], [190.712, 328.935], [160.712, 276], [128, 312], [160.712, 318.935]],
+  7: [[180.712, 246], [131.595, 256], [130.712, 285.101], [190.712, 328.935], [160.712, 276], [128, 312], [160.712, 318.935]],
+  8: [[180.712, 246], [131.595, 256], [180, 300], [130.712, 285.101], [190.712, 328.935], [160.712, 276], [128, 312], [160.712, 318.935]]
+};
+
+/* ─── Rail geometry constants (from originals) ─── */
+const RAIL = {
+  // Positions derived from the canonical SVGs
+  bit0_onX:   328.621,   // x-center of bit-0 ON indicator
+  bitSpacing:  32.988,   // horizontal spacing between adjacent bits
+  onOffDx:      6,       // ON x - OFF x (OFF is 6 units to the left)
+  railY:      159.668,   // y of the horizontal rail baseline
+  tickBottom: 151.662,   // y where all weight ticks end (8 units above rail)
+  baseTickH:   12,       // height of the smallest weight tick (bit 1)
+  bitOnY1:    167.659,   // bit indicator ON: top y
+  bitOnY2:    179.659,   // bit indicator ON: bottom y
+  bitOffY:    173.659,   // bit indicator OFF: y of horizontal dash
+  bitLen:      12,       // length of ON bar / OFF dash
+  railStartX: 223.731,  // original rail left x
+  railLen:    138.021    // original rail length
+};
+
+/* ─── Weight tick height for a given bit index (1-based, bit 0 has no tick) ─── */
+function weightTickHeight(bitIndex) {
+  // Exact doubling for bits 1–3 (12, 24, 48) matching originals.
+  // For bit 4+: cap at 96 then linear +16 per additional bit.
+  // This keeps the glyph compact for large numbers while cueing magnitude.
+  if (bitIndex <= 3) return RAIL.baseTickH * Math.pow(2, bitIndex - 1);
+  return 96 + 16 * (bitIndex - 4);
+}
+
+/* ─── Build the rail SVG fragment ─── */
+function buildRailSVG(binaryStr, shiftX, shiftY, scaleF) {
+  const n = binaryStr.length; // number of bits
+  const bits = binaryStr.split('').reverse(); // bits[0] = LSB
+
+  // The originals always show at least 3 weight ticks (cueing 2, 4, 8)
+  // even for 2-bit numbers. For ≥9 we extend beyond 3 as needed.
+  const numWeightTicks = Math.max(3, n - 1);
+
+  // Compute rail extents: must span from bit 0 to the leftmost weight tick
+  const rightX = RAIL.bit0_onX + 18;
+  const leftmostTickX = RAIL.bit0_onX - numWeightTicks * RAIL.bitSpacing;
+  const leftX  = leftmostTickX - 12;
+  const railLen = rightX - leftX;
+
+  let paths = '';
+
+  // ── Rail baseline (dim horizontal line) ──
+  paths += `<path stroke-opacity="0.3" d="M${leftX} ${RAIL.railY}h${railLen.toFixed(3)}"/>`;
+
+  // ── Weight ticks above the rail (from bit 1 up to numWeightTicks) ──
+  for (let i = 1; i <= numWeightTicks; i++) {
+    const x = RAIL.bit0_onX - i * RAIL.bitSpacing;
+    const h = weightTickHeight(i);
+    const topY = RAIL.tickBottom - h;
+    const sw = (i === 2) ? 11 : 10; // bit-2 tick is stroke-width 11 in originals
+    paths += `<path stroke-width="${sw}" d="M${x.toFixed(3)} ${topY.toFixed(3)}v${h}"/>`;
+  }
+
+  // ── Bit indicators below the rail ──
+  for (let i = 0; i < n; i++) {
+    const xOn = RAIL.bit0_onX - i * RAIL.bitSpacing;
+    if (bits[i] === '1') {
+      // ON: vertical bar
+      paths += `<path d="M${xOn.toFixed(3)} ${RAIL.bitOnY1}v${RAIL.bitLen}"/>`;
+    } else {
+      // OFF: horizontal dash
+      const xOff = xOn - RAIL.onOffDx;
+      paths += `<path d="M${xOff.toFixed(3)} ${RAIL.bitOffY}h${RAIL.bitLen}"/>`;
+    }
+  }
+
+  // Wrap in group with stroke styling + optional transform
+  let transform = '';
+  if (shiftX !== 0 || shiftY !== 0 || scaleF !== 1) {
+    transform = ` transform="translate(${shiftX.toFixed(3)},${shiftY.toFixed(3)}) scale(${scaleF.toFixed(6)})"`;
+  }
+
+  return `<g stroke-width="4" stroke="#dcdcdc" stroke-linecap="round" stroke-linejoin="miter" fill="none" fill-rule="nonzero" stroke-miterlimit="4"${transform}>${paths}</g>`;
+}
+
+/* ─── Build dot-ring + connector SVG fragment (2–8 only) ─── */
+function buildRingSVG(n) {
+  const dots = DOT_POSITIONS[n];
+  if (!dots) return '';
+
+  let svg = '';
+  // Circle outline (ring)
+  svg += `<circle stroke-width="12" stroke="#d4d4d4" stroke-opacity="0.3" stroke-linecap="round" fill="none" cx="172" cy="284" r="74" stroke-miterlimit="4"/>`;
+  // Filled dots
+  for (const [cx, cy] of dots) {
+    svg += `<circle fill="#d1d1d1" cx="${cx}" cy="${cy}" r="10"/>`;
+  }
+  // Connector curve from ring to rail
+  svg += `<path stroke-width="12" stroke="#d1d1d1" stroke-opacity="0.4" stroke-linecap="round" fill="none" d="M199.427 282.02c35.561-9.769 48.353-36.904 61.146-64.04" fill-rule="nonzero" stroke-miterlimit="4"/>`;
+
+  return svg;
+}
+
+/* ─── Main: generate the complete SVG string ─── */
+function generateSVG(num) {
+  const binaryStr = num.toString(2);
+  const hasRing = num >= 2 && num <= 8;
+
+  // ── Inner content (inside the 0.91464 scaling group) ──
+  let inner = '';
+
+  // Black background with gray frame
+  inner += `<rect stroke-width="3" stroke="#949698" fill="#000" width="512" height="512"/>`;
+
+  if (hasRing) {
+    // Ring + dots + connector (exact original coordinates)
+    inner += buildRingSVG(num);
+    // Rail at original position (no extra transform needed)
+    inner += buildRailSVG(binaryStr, 0, 0, 1);
+  } else {
+    // ≥ 9: Rail only, repositioned to fill available space.
+    // Calculate natural rail bounding box, then scale + center.
+    const n = binaryStr.length;
+    const numWeightTicks = Math.max(3, n - 1);
+
+    // Natural rail extents — must include all weight tick positions
+    const natRightX = RAIL.bit0_onX + 18;
+    const leftmostTickX = RAIL.bit0_onX - numWeightTicks * RAIL.bitSpacing;
+    const natLeftX  = leftmostTickX - 12;
+    const natWidth  = natRightX - natLeftX;
+
+    // Height: from tallest weight tick top to bottom of bit indicators
+    const tallestH = weightTickHeight(numWeightTicks);
+    const natTopY   = RAIL.tickBottom - tallestH;
+    const natBotY   = RAIL.bitOnY2;
+    const natHeight = natBotY - natTopY;
+
+    // Target: rail should comfortably fill the glyph canvas.
+    // Max scale of 2.5 prevents strokes from becoming overly thick.
+    const margin = 50;
+    const availW = 512 - 2 * margin;
+    const availH = 512 - 2 * margin;
+
+    const scaleF = Math.min(2.5, availW / natWidth, availH / natHeight);
+
+    // Center the scaled rail in the canvas, slightly above vertical center
+    const targetCenterX = 256;
+    const targetCenterY = 246;
+    const natCenterX = (natLeftX + natRightX) / 2;
+    const natCenterY = (natTopY + natBotY) / 2;
+
+    const shiftX = targetCenterX - natCenterX * scaleF;
+    const shiftY = targetCenterY - natCenterY * scaleF;
+
+    inner += buildRailSVG(binaryStr, shiftX, shiftY, scaleF);
+  }
+
+  // Assemble full SVG
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-linecap="round" stroke-linejoin="round" fill="none" width="512" height="512" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
+  <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)">${inner}
+  </g>
+</svg>`;
+
+  return svg;
+}
+
+// ══════════════════════════════════════════════════════════════
+// UI Logic
+// ══════════════════════════════════════════════════════════════
+
+let currentNum = null;
+let currentSVG = '';
+
+function generate() {
+  const input = document.getElementById('numInput');
+  const raw = input.value.trim();
+  const num = parseInt(raw, 10);
+
+  if (!raw || isNaN(num) || num < 2 || !Number.isInteger(num)) {
+    showError('Enter an integer ≥ 2');
+    return;
+  }
+  if (num > 1048575) {
+    showError('Maximum supported: 1,048,575 (20 bits)');
+    return;
+  }
+
+  currentNum = num;
+  const binary = num.toString(2);
+  currentSVG = generateSVG(num);
+
+  // Info line
+  const info = document.getElementById('infoLine');
+  info.innerHTML = `<span>${num}</span> → binary <span>${binary}</span> (${binary.length} bits)${num <= 8 ? '  ·  dot-ring + rail' : '  ·  rail only'}`;
+
+  // Show preview
+  const card = document.getElementById('previewCard');
+  card.classList.remove('empty');
+  document.getElementById('emptyText').style.display = 'none';
+
+  const preview = document.getElementById('svgPreview');
+  preview.style.display = 'flex';
+  preview.innerHTML = currentSVG;
+
+  const dlRow = document.getElementById('downloadRow');
+  dlRow.style.display = 'flex';
+  document.getElementById('dlFilename').textContent = `${num}.svg`;
+}
+
+function showError(msg) {
+  const info = document.getElementById('infoLine');
+  info.innerHTML = `<span style="color:#ff6b6b;">${msg}</span>`;
+}
+
+function downloadSVG() {
+  if (!currentSVG || currentNum === null) return;
+  const blob = new Blob([currentSVG], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${currentNum}.svg`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Allow Enter key to trigger generate
+document.getElementById('numInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') generate();
+});
+</script>
+
+
+
+</body></html>
