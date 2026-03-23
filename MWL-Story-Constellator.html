@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MWL Story Constellator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-deep: #0a0b0f;
+    --bg-surface: #12141a;
+    --bg-raised: #1a1d26;
+    --bg-hover: #22262f;
+    --border-subtle: #2a2e3a;
+    --border-active: #4a7cff;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8b90a0;
+    --text-dim: #555a6a;
+    --accent-blue: #4a7cff;
+    --accent-glow: #4a7cff33;
+    --accent-warm: #ffc84c;
+    --accent-warm-dim: #ffc84c22;
+    --tab-objects: #4a9eff;
+    --tab-events: #ff6b4a;
+    --tab-verbs: #ffc84c;
+    --tab-props: #4aeaaa;
+    --tab-meta: #a78bfa;
+    --tab-emotions: #ff6bcd;
+    --tab-special: #8b90a0;
+    --glyph-edit-size: 64px;
+    --compose-glyph-size: 64px;
+    --kbd-cols: 8;
+    --topbar-h: 52px;
+    --keyboard-h: 320px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* ── TOP BAR ── */
+  #topbar {
+    height: var(--topbar-h);
+    min-height: var(--topbar-h);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    z-index: 10;
+  }
+  #topbar .logo {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--accent-warm);
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  #topbar .logo span {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 13px;
+    margin-left: 6px;
+  }
+  .toolbar-sep {
+    width: 1px;
+    height: 28px;
+    background: var(--border-subtle);
+    margin: 0 4px;
+  }
+  .tb-btn {
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .tb-btn:hover { background: var(--bg-hover); border-color: var(--text-dim); }
+  .tb-btn:active { transform: scale(0.97); }
+  .tb-btn.primary {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+  }
+  .tb-btn.primary:hover { background: #5d8aff; }
+  .tb-btn.danger { color: #ff6b6b; }
+  .tb-btn svg { width: 14px; height: 14px; fill: currentColor; }
+  .tb-spacer { flex: 1; }
+
+  /* Size selector */
+  #sizeSelect {
+    height: 34px;
+    padding: 0 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* ── COMPOSE AREA ── */
+  #compose-wrap {
+    flex: 1;
+    overflow-y: auto;
+    background: #111;
+    position: relative;
+  }
+  #compose-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, #111, transparent);
+    pointer-events: none;
+    z-index: 2;
+  }
+  #compose {
+    padding: 48px 24px 24px;
+    min-height: 100%;
+    font-size: 0; /* eliminate inline whitespace gaps */
+    cursor: text;
+    position: relative;
+  }
+  #compose:empty::before {
+    content: 'Tap glyphs below to begin writing…';
+    font-size: 14px;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    position: absolute;
+    top: 48px; left: 24px;
+    pointer-events: none;
+  }
+  #compose .glyph,
+  #compose .glyph-img {
+    display: inline-block;
+    width: var(--compose-glyph-size);
+    height: var(--compose-glyph-size);
+    vertical-align: middle;
+    object-fit: contain;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: outline 0.1s;
+  }
+  #compose .glyph:hover,
+  #compose .glyph-img:hover {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+  }
+  #compose .glyph.selected,
+  #compose .glyph-img.selected {
+    outline: 2px solid var(--accent-warm);
+    outline-offset: 2px;
+  }
+  #compose .glyph-break {
+    display: block;
+    height: calc(var(--compose-glyph-size) * 0.15713);
+  }
+  /* Cursor indicator */
+  #cursor-indicator {
+    display: inline-block;
+    width: 2px;
+    height: var(--compose-glyph-size);
+    background: var(--accent-warm);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+    margin: 0 1px;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ── KEYBOARD ── */
+  #keyboard-panel {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  /* Category tabs */
+  #cat-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 8px;
+    background: var(--bg-deep);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  #cat-tabs::-webkit-scrollbar { display: none; }
+  .cat-tab {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .cat-tab:hover { color: var(--text-secondary); }
+  .cat-tab.active { color: var(--text-primary); }
+  .cat-tab[data-cat="objects"].active { border-color: var(--tab-objects); color: var(--tab-objects); }
+  .cat-tab[data-cat="events"].active { border-color: var(--tab-events); color: var(--tab-events); }
+  .cat-tab[data-cat="verbs"].active { border-color: var(--tab-verbs); color: var(--tab-verbs); }
+  .cat-tab[data-cat="properties"].active { border-color: var(--tab-props); color: var(--tab-props); }
+  .cat-tab[data-cat="meta"].active { border-color: var(--tab-meta); color: var(--tab-meta); }
+  .cat-tab[data-cat="emotions"].active { border-color: var(--tab-emotions); color: var(--tab-emotions); }
+  .cat-tab[data-cat="special"].active { border-color: var(--tab-special); color: var(--tab-special); }
+
+  /* Glyph grid */
+  #glyph-grid-wrap {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-subtle) transparent;
+  }
+  #glyph-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 4px;
+  }
+  .glyph-key {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 2px 4px;
+    border-radius: 6px;
+    background: var(--bg-raised);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .glyph-key:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-subtle);
+    transform: translateY(-1px);
+  }
+  .glyph-key:active {
+    transform: translateY(0) scale(0.96);
+    background: var(--accent-glow);
+    border-color: var(--accent-blue);
+  }
+  .glyph-key img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .glyph-key .key-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 2px;
+    line-height: 1.2;
+    max-width: 68px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Special keys (new line, backspace, etc.) */
+  .special-key {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    border-radius: 6px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+    min-height: 64px;
+  }
+  .special-key:hover {
+    border-color: var(--text-dim);
+    transform: translateY(-1px);
+  }
+  .special-key:active {
+    transform: translateY(0) scale(0.96);
+  }
+  .special-key .key-icon {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .special-key .key-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    min-width: 340px;
+    max-width: 480px;
+    width: 90vw;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    transform: translateY(10px);
+    transition: transform 0.2s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+  .modal label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .modal input[type="text"],
+  .modal input[type="number"] {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+    margin-bottom: 14px;
+  }
+  .modal input:focus { border-color: var(--accent-blue); }
+  .modal .hint {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: -10px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .modal .modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  .modal .modal-actions .tb-btn { height: 36px; padding: 0 16px; font-size: 13px; }
+
+  /* ── STATUS BAR ── */
+  #statusbar {
+    height: 24px;
+    min-height: 24px;
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 11px;
+    color: var(--text-dim);
+    gap: 16px;
+  }
+  #statusbar .status-item { white-space: nowrap; }
+
+  /* ── RESIZE HANDLE ── */
+  #resize-handle {
+    height: 6px;
+    background: var(--bg-deep);
+    cursor: ns-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--border-subtle);
+    user-select: none;
+  }
+  #resize-handle::after {
+    content: '';
+    width: 40px;
+    height: 3px;
+    background: var(--border-subtle);
+    border-radius: 2px;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    #topbar { padding: 0 8px; gap: 4px; }
+    #topbar .logo span { display: none; }
+    .tb-btn { padding: 0 8px; font-size: 11px; }
+    .toolbar-sep { margin: 0 2px; }
+    .hide-mobile { display: none; }
+    #glyph-grid { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+    .glyph-key img { width: 36px; height: 36px; }
+    #compose { padding: 36px 12px 12px; }
+  }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <div class="logo">MWL<span>Story Constellator</span></div>
+    <div class="toolbar-sep"></div>
+    <button class="tb-btn" onclick="actionUndo()" title="Undo (Ctrl+Z)">
+      <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"></path></svg>
+      <span class="hide-mobile">Undo</span>
+    </button>
+    <button class="tb-btn" onclick="actionRedo()" title="Redo (Ctrl+Shift+Z)">
+      <svg viewBox="0 0 24 24"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"></path></svg>
+      <span class="hide-mobile">Redo</span>
+    </button>
+    <div class="toolbar-sep"></div>
+    <button class="tb-btn" onclick="insertLineBreak()" title="New Line (Enter)">↵ New Line</button>
+    <button class="tb-btn" onclick="deleteAtCursor()" title="Delete (Backspace)">⌫ Delete</button>
+    <div class="toolbar-sep hide-mobile"></div>
+    <button class="tb-btn hide-mobile" onclick="openProperNameModal()">◈ Proper Name</button>
+    <button class="tb-btn hide-mobile" onclick="openNumeralModal()">⑤ Numeral</button>
+    <div class="tb-spacer"></div>
+    <select id="sizeSelect" onchange="changeGlyphSize(this.value)" title="Glyph display size (matches PNC generator sizes)">
+      <option value="64" selected="">64 px</option>
+      <option value="96">96 px</option>
+      <option value="128">128 px</option>
+      <option value="512">512 px</option>
+    </select>
+    <div class="toolbar-sep"></div>
+    <button class="tb-btn" onclick="actionClear()" title="Clear all">✕ Clear</button>
+    <button class="tb-btn primary" onclick="exportStory()" title="Export to HTML file">⬇ Export HTML</button>
+  </div>
+
+  <!-- COMPOSE AREA -->
+  <div id="compose-wrap">
+    <div id="compose" onclick="handleComposeClick(event)"><span id="cursor-indicator"></span>
+    </div>
+  </div>
+
+  <!-- RESIZE HANDLE -->
+  <div id="resize-handle"></div>
+
+  <!-- KEYBOARD PANEL -->
+  <div id="keyboard-panel" style="height: 320px;">
+    <div id="cat-tabs">
+      <div class="cat-tab active" data-cat="objects" onclick="switchCategory(&#39;objects&#39;)">Objects</div>
+      <div class="cat-tab" data-cat="events" onclick="switchCategory(&#39;events&#39;)">Events</div>
+      <div class="cat-tab" data-cat="verbs" onclick="switchCategory(&#39;verbs&#39;)">Verbs</div>
+      <div class="cat-tab" data-cat="properties" onclick="switchCategory(&#39;properties&#39;)">Properties</div>
+      <div class="cat-tab" data-cat="meta" onclick="switchCategory(&#39;meta&#39;)">Meta</div>
+      <div class="cat-tab" data-cat="emotions" onclick="switchCategory(&#39;emotions&#39;)">Emotions</div>
+      <div class="cat-tab" data-cat="special" onclick="switchCategory(&#39;special&#39;)">✦ Insert</div>
+    </div>
+    <div id="glyph-grid-wrap">
+      <div id="glyph-grid"><div class="glyph-key" title="Single Star (single-star)">
+      <img src="./MWL-glyphs/single-star.svg" alt="Single Star" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;single-star&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Single Star</div>
+    </div><div class="glyph-key" title="Constellation (constellation)">
+      <img src="./MWL-glyphs/constellation.svg" alt="Constellation" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;constellation&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Constellation</div>
+    </div><div class="glyph-key" title="Black Hole (black-hole)">
+      <img src="./MWL-glyphs/black-hole.svg" alt="Black Hole" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;black-hole&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Black Hole</div>
+    </div><div class="glyph-key" title="Small Moon (small-moon)">
+      <img src="./MWL-glyphs/small-moon.svg" alt="Small Moon" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;small-moon&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Small Moon</div>
+    </div><div class="glyph-key" title="Partial Moon (partial-moon)">
+      <img src="./MWL-glyphs/partial-moon.svg" alt="Partial Moon" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;partial-moon&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Partial Moon</div>
+    </div><div class="glyph-key" title="Twin Moons (twin-moons)">
+      <img src="./MWL-glyphs/twin-moons.svg" alt="Twin Moons" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;twin-moons&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Twin Moons</div>
+    </div><div class="glyph-key" title="Surface (planetary-surface)">
+      <img src="./MWL-glyphs/planetary-surface.svg" alt="Surface" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;planetary-surface&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Surface</div>
+    </div><div class="glyph-key" title="Bright Comet (bright-comet)">
+      <img src="./MWL-glyphs/bright-comet.svg" alt="Bright Comet" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;bright-comet&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Bright Comet</div>
+    </div><div class="glyph-key" title="Dark Comet (dark-comet)">
+      <img src="./MWL-glyphs/dark-comet.svg" alt="Dark Comet" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;dark-comet&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Dark Comet</div>
+    </div><div class="glyph-key" title="Pulsar (pulsar)">
+      <img src="./MWL-glyphs/pulsar.svg" alt="Pulsar" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;pulsar&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Pulsar</div>
+    </div><div class="glyph-key" title="Quasar (quasar)">
+      <img src="./MWL-glyphs/quasar.svg" alt="Quasar" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;quasar&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Quasar</div>
+    </div><div class="glyph-key" title="Dark Rift (dark-rift)">
+      <img src="./MWL-glyphs/dark-rift.svg" alt="Dark Rift" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;dark-rift&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Dark Rift</div>
+    </div><div class="glyph-key" title="Star-Ship (star-ship)">
+      <img src="./MWL-glyphs/star-ship.svg" alt="Star-Ship" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;star-ship&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Star-Ship</div>
+    </div><div class="glyph-key" title="Local Galaxy (local-galaxy)">
+      <img src="./MWL-glyphs/local-galaxy.svg" alt="Local Galaxy" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;local-galaxy&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Local Galaxy</div>
+    </div><div class="glyph-key" title="Other Galaxy (other-galaxy)">
+      <img src="./MWL-glyphs/other-galaxy.svg" alt="Other Galaxy" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;other-galaxy&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Other Galaxy</div>
+    </div><div class="glyph-key" title="Gas Giant (gas-giant)">
+      <img src="./MWL-glyphs/gas-giant.svg" alt="Gas Giant" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;gas-giant&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Gas Giant</div>
+    </div><div class="glyph-key" title="Binary Star (binary-star)">
+      <img src="./MWL-glyphs/binary-star.svg" alt="Binary Star" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;binary-star&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Binary Star</div>
+    </div><div class="glyph-key" title="Rocky Planet (rocky-planet)">
+      <img src="./MWL-glyphs/rocky-planet.svg" alt="Rocky Planet" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;rocky-planet&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Rocky Planet</div>
+    </div><div class="glyph-key" title="Earth-like (earthlike-planet)">
+      <img src="./MWL-glyphs/earthlike-planet.svg" alt="Earth-like" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;earthlike-planet&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Earth-like</div>
+    </div><div class="glyph-key" title="Asteroid Belt (asteroid-belt)">
+      <img src="./MWL-glyphs/asteroid-belt.svg" alt="Asteroid Belt" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;asteroid-belt&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Asteroid Belt</div>
+    </div><div class="glyph-key" title="Nebula (nebula)">
+      <img src="./MWL-glyphs/nebula.svg" alt="Nebula" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;nebula&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Nebula</div>
+    </div><div class="glyph-key" title="Star System (star-system)">
+      <img src="./MWL-glyphs/star-system.svg" alt="Star System" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;star-system&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Star System</div>
+    </div><div class="glyph-key" title="Star Field (star-field)">
+      <img src="./MWL-glyphs/star-field.svg" alt="Star Field" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;star-field&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Star Field</div>
+    </div><div class="glyph-key" title="Megastructure (megastructure)">
+      <img src="./MWL-glyphs/megastructure.svg" alt="Megastructure" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;megastructure&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Megastructure</div>
+    </div><div class="glyph-key" title="Filament (filament)">
+      <img src="./MWL-glyphs/filament.svg" alt="Filament" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;filament&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Filament</div>
+    </div><div class="glyph-key" title="Galaxy Cluster (galaxy-cluster)">
+      <img src="./MWL-glyphs/galaxy-cluster.svg" alt="Galaxy Cluster" loading="lazy" onerror="this.onerror=null; var fb=GLYPH_THUMBS[&#39;galaxy-cluster&#39;]; if(fb){this.src=fb;}else{this.style.opacity=&#39;0.2&#39;;}">
+      <div class="key-label">Galaxy Cluster</div>
+    </div></div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div id="statusbar">
+    <span class="status-item" id="stat-glyphs">Glyphs: 0</span>
+    <span class="status-item" id="stat-lines">Lines: 0</span>
+    <span class="status-item" id="stat-mode">Glyph size: 64px</span>
+  </div>
+</div>
+
+<!-- PROPER NAME MODAL -->
+<div class="modal-overlay" id="pncModal">
+  <div class="modal">
+    <h3>◈ Insert Proper Name Cartouche</h3>
+    <label for="pncName">Image filename (without extension)</label>
+    <input type="text" id="pncName" placeholder="e.g. Empire, Rebel-Alliance, Princess">
+    <div class="hint">
+      PNG files in <code>./proper-names/</code> folder. The name is case-sensitive.
+      Set the glyph size in Constellator to match your PNC generator output (64, 96, 128, or 512 px).
+    </div>
+    <label for="pncAlt">Alt text (optional)</label>
+    <input type="text" id="pncAlt" placeholder="e.g. The Empire">
+    <div class="modal-actions">
+      <button class="tb-btn" onclick="closePncModal()">Cancel</button>
+      <button class="tb-btn primary" onclick="insertProperName()">Insert</button>
+    </div>
+  </div>
+</div>
+
+<!-- NUMERAL MODAL -->
+<div class="modal-overlay" id="numModal">
+  <div class="modal">
+    <h3>⑤ Insert Numeral Glyph</h3>
+    <label for="numValue">Numeral value (2–8)</label>
+    <input type="number" id="numValue" min="2" max="8" placeholder="e.g. 5">
+    <div class="hint">
+      MWL numerals 2–8 have dedicated glyphs in <code>./MWL-glyphs/</code>.
+      For values ≥9, use the binary rail numeral generator tool to create the SVG, place it
+      in the glyphs folder, and reference it here by filename.
+    </div>
+    <label for="numCustomFile">Or enter a custom numeral SVG filename</label>
+    <input type="text" id="numCustomFile" placeholder="e.g. 12 (for MWL-glyphs/12.svg)">
+    <div class="modal-actions">
+      <button class="tb-btn" onclick="closeNumModal()">Cancel</button>
+      <button class="tb-btn primary" onclick="insertNumeral()">Insert</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// MWL GLYPH DATABASE
+// ══════════════════════════════════════════════════
+
+const GLYPH_DB = {
+  objects: [
+    { file: 'single-star', label: 'Single Star' },
+    { file: 'constellation', label: 'Constellation' },
+    { file: 'black-hole', label: 'Black Hole' },
+    { file: 'small-moon', label: 'Small Moon' },
+    { file: 'partial-moon', label: 'Partial Moon' },
+    { file: 'twin-moons', label: 'Twin Moons' },
+    { file: 'planetary-surface', label: 'Surface' },
+    { file: 'bright-comet', label: 'Bright Comet' },
+    { file: 'dark-comet', label: 'Dark Comet' },
+    { file: 'pulsar', label: 'Pulsar' },
+    { file: 'quasar', label: 'Quasar' },
+    { file: 'dark-rift', label: 'Dark Rift' },
+    { file: 'star-ship', label: 'Star-Ship' },
+    { file: 'local-galaxy', label: 'Local Galaxy' },
+    { file: 'other-galaxy', label: 'Other Galaxy' },
+    { file: 'gas-giant', label: 'Gas Giant' },
+    { file: 'binary-star', label: 'Binary Star' },
+    { file: 'rocky-planet', label: 'Rocky Planet' },
+    { file: 'earthlike-planet', label: 'Earth-like' },
+    { file: 'asteroid-belt', label: 'Asteroid Belt' },
+    { file: 'nebula', label: 'Nebula' },
+    { file: 'star-system', label: 'Star System' },
+    { file: 'star-field', label: 'Star Field' },
+    { file: 'megastructure', label: 'Megastructure' },
+    { file: 'filament', label: 'Filament' },
+    { file: 'galaxy-cluster', label: 'Galaxy Cluster' },
+  ],
+  events: [
+    { file: 'supernova', label: 'Supernova' },
+    { file: 'star-birth', label: 'Star Birth' },
+    { file: 'planetary-transit', label: 'Transit' },
+    { file: 'total-solar-eclipse', label: 'Total Eclipse' },
+    { file: 'partial-eclipse', label: 'Partial Eclipse' },
+    { file: 'asteroid-impact', label: 'Impact' },
+    { file: 'comet-strike', label: 'Comet Strike' },
+    { file: 'aurora', label: 'Aurora' },
+  ],
+  verbs: [
+    { file: 'rise', label: 'Rise' },
+    { file: 'set', label: 'Set' },
+    { file: 'accelerate', label: 'Accelerate' },
+    { file: 'decelerate', label: 'Decelerate' },
+    { file: 'drift', label: 'Drift' },
+    { file: 'fall', label: 'Fall' },
+    { file: 'ascend', label: 'Ascend' },
+    { file: 'spiral', label: 'Spiral' },
+    { file: 'hide', label: 'Hide' },
+    { file: 'reveal', label: 'Reveal' },
+    { file: 'join-together', label: 'Join' },
+    { file: 'split-apart', label: 'Split Apart' },
+    { file: 'approach', label: 'Approach' },
+    { file: 'wander', label: 'Wander' },
+    { file: 'capture', label: 'Capture' },
+    { file: 'crossing-paths', label: 'Crossing' },
+    { file: 'diverging-paths', label: 'Diverging' },
+    { file: 'converging-paths', label: 'Converging' },
+  ],
+  properties: [
+    { file: 'dimming', label: 'Dimming' },
+    { file: 'bright', label: 'Bright' },
+    { file: 'above', label: 'Above' },
+    { file: 'below', label: 'Below' },
+    { file: 'near', label: 'Near' },
+    { file: 'far', label: 'Far' },
+    { file: 'centered', label: 'Centered' },
+    { file: 'off-center', label: 'Off-Center' },
+    { file: 'enclosed', label: 'Enclosed' },
+    { file: 'outside', label: 'Outside' },
+    { file: 'expanding', label: 'Expanding' },
+    { file: 'shrinking', label: 'Shrinking' },
+    { file: 'constructed', label: 'Constructed' },
+    { file: 'destroyed', label: 'Destroyed' },
+    { file: 'ocean-world', label: 'Ocean World' },
+    { file: 'magnetosphere', label: 'Magnetospheric' },
+    { file: 'interstellar', label: 'Interstellar' },
+  ],
+  meta: [
+    { file: 'mod', label: 'MOD' },
+    { file: 'agent', label: 'Agent (AG)' },
+    { file: 'is-type', label: 'Is-Type' },
+    { file: 'is-related-to', label: 'Is-Related' },
+    { file: 'direction', label: 'Direction' },
+    { file: 'scale', label: 'Scale' },
+    { file: 'level', label: 'Level' },
+    { file: 'cause-then', label: 'Cause-Then' },
+    { file: 'signal', label: 'Signal' },
+    { file: 'dialog', label: 'Dialog' },
+    { file: 'emotion', label: 'Emotion' },
+    { file: 'orbit', label: 'Orbit' },
+    { file: 'gate', label: 'Gate' },
+    { file: 'life', label: 'Life' },
+    { file: 'document', label: 'Document' },
+    { file: 'true', label: 'True' },
+    { file: 'false', label: 'False' },
+    { file: 'uncertain', label: 'Uncertain' },
+    { file: 'first', label: 'First' },
+    { file: 'next', label: 'Next' },
+    { file: 'last', label: 'Last' },
+    { file: 'increase', label: 'Increase' },
+    { file: 'decrease', label: 'Decrease' },
+    { file: 'H-hyperfine-transition', label: 'Dist-Time(H)' },
+    { file: 'multiply-by-10', label: '×10' },
+    { file: 'divide-by-10', label: '÷10' },
+    { file: 'tempo', label: 'Tempo' },
+    { file: 'stellar-epoch', label: 'Stellar Epoch' },
+    { file: 'cosmic-epoch', label: 'Cosmic Epoch' },
+  ],
+  emotions: [
+    { file: 'fear', label: 'Fear' },
+    { file: 'anger', label: 'Anger' },
+    { file: 'joy', label: 'Joy' },
+    { file: 'sadness', label: 'Sadness' },
+    { file: 'surprise', label: 'Surprise' },
+    { file: 'disgust', label: 'Disgust' },
+    { file: 'hope', label: 'Hope' },
+    { file: 'courage', label: 'Courage' },
+    { file: 'love', label: 'Love' },
+    { file: 'betrayal', label: 'Betrayal' },
+  ],
+};
+
+// ══════════════════════════════════════════════════
+// EMBEDDED GLYPH THUMBNAILS (fallback for keyboard)
+// ══════════════════════════════════════════════════
+
+const GLYPH_THUMBS = {
+  'filament': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmVyc2lvbj0iMS4xIj4KICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTE0NjQwNzggMCAwIDAuOTE0NjQwNzggMjEuODUxOTYxMTcgMjEuODUxOTYxMTcpIj48cmVjdCBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZT0iIzk0OTY5OCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0iIzAwMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiIC8+CiAgICA8IS0tIE5vZGUgQSAodXBwZXItbGVmdCBjbHVzdGVyKSAtLT4KICAgIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEyMCIgcj0iMzgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuMTMiIC8+CiAgICA8Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjI0IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjIyIiAvPgogICAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iMTIwIiByPSIxMyIgZmlsbD0iI2U4ZWVmZiIgb3BhY2l0eT0iMC44NSIgLz4KICAgIDxjaXJjbGUgY3g9IjExMiIgY3k9IjExNCIgcj0iNC41IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjk1IiAvPgogICAgPGNpcmNsZSBjeD0iMTMwIiBjeT0iMTI1IiByPSIzLjgiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuOSIgLz4KICAgIDxjaXJjbGUgY3g9IjExOCIgY3k9IjEzMCIgcj0iMyIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC44IiAvPgogICAgPGNpcmNsZSBjeD0iMTA4IiBjeT0iMTI2IiByPSIyLjUiIGZpbGw9IiNmZmY4ZWEiIG9wYWNpdHk9IjAuNyIgLz4KICAgIDxjaXJjbGUgY3g9IjEyOCIgY3k9IjExMiIgcj0iMi44IiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjg1IiAvPgogICAgPCEtLSBOb2RlIEIgKGxvd2VyLXJpZ2h0IGNsdXN0ZXIpIC0tPgogICAgPGNpcmNsZSBjeD0iMzkyIiBjeT0iMzkyIiByPSI0MiIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4xMyIgLz4KICAgIDxjaXJjbGUgY3g9IjM5MiIgY3k9IjM5MiIgcj0iMjYiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuMjIiIC8+CiAgICA8Y2lyY2xlIGN4PSIzOTIiIGN5PSIzOTIiIHI9IjE0IiBmaWxsPSIjZThlZWZmIiBvcGFjaXR5PSIwLjg1IiAvPgogICAgPGNpcmNsZSBjeD0iMzg0IiBjeT0iMzg2IiByPSI0LjgiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuOTUiIC8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSIzOTgiIHI9IjQiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuOSIgLz4KICAgIDxjaXJjbGUgY3g9IjM5MCIgY3k9IjQwMiIgcj0iMy4yIiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIzODAiIGN5PSIzOTYiIHI9IjIuNiIgZmlsbD0iI2ZmZjhlYSIgb3BhY2l0eT0iMC43IiAvPgogICAgPGNpcmNsZSBjeD0iNDAyIiBjeT0iMzg0IiByPSIzIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjg1IiAvPgogICAgPGNpcmNsZSBjeD0iMzk2IiBjeT0iMzgwIiByPSIyLjIiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNiIgLz4KICAgIDwhLS0gRmlsYW1lbnQgc3RyYW5kOiBzdHJlYW0gb2YgcGFydGljbGVzIGZsb3dpbmcgYmV0d2VlbiBub2RlcyAtLT4KICAgIDwhLS0gQ29yZSBmbG93IC0tPgogICAgPGNpcmNsZSBjeD0iMTUyIiBjeT0iMTQ4IiByPSIzLjUiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNyIgLz4KICAgIDxjaXJjbGUgY3g9IjE3MiIgY3k9IjE2OCIgcj0iMy4wIiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjYiIC8+CiAgICA8Y2lyY2xlIGN4PSIxOTAiIGN5PSIxODYiIHI9IjIuOCIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC41NSIgLz4KICAgIDxjaXJjbGUgY3g9IjIxMCIgY3k9IjIwNSIgcj0iMi41IiBmaWxsPSIjYjhjOGU4IiBvcGFjaXR5PSIwLjUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyMjgiIGN5PSIyMjQiIHI9IjIuMyIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC40NSIgLz4KICAgIDxjaXJjbGUgY3g9IjI0OCIgY3k9IjI0NCIgcj0iMi4wIiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjQiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNjUiIGN5PSIyNjEiIHI9IjIuMiIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC40MiIgLz4KICAgIDxjaXJjbGUgY3g9IjI4NCIgY3k9IjI4MCIgcj0iMi41IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjQ4IiAvPgogICAgPGNpcmNsZSBjeD0iMzAyIiBjeT0iMjk4IiByPSIyLjciIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNTIiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMjAiIGN5PSIzMTYiIHI9IjIuOCIgZmlsbD0iI2I4YzhlOCIgb3BhY2l0eT0iMC41NSIgLz4KICAgIDxjaXJjbGUgY3g9IjMzOCIgY3k9IjMzNCIgcj0iMy4wIiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjYiIC8+CiAgICA8Y2lyY2xlIGN4PSIzNTYiIGN5PSIzNTIiIHI9IjMuMiIgZmlsbD0iI2M4ZDhmOCIgb3BhY2l0eT0iMC42NSIgLz4KICAgIDxjaXJjbGUgY3g9IjM3MiIgY3k9IjM3MCIgcj0iMy41IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjciIC8+CiAgICA8IS0tIFdpc3B5IGVkZ2VzIG9mIGZpbGFtZW50IC0gb2Zmc2V0IHBhcnRpY2xlcyAtLT4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjE1NiIgcj0iMS44IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjM1IiAvPgogICAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iMTU1IiByPSIxLjUiIGZpbGw9IiNiOGM4ZTgiIG9wYWNpdHk9IjAuMjUiIC8+CiAgICA8Y2lyY2xlIGN4PSIxNzgiIGN5PSIxNzQiIHI9IjEuNiIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPGNpcmNsZSBjeD0iMTk4IiBjeT0iMTk4IiByPSIxLjQiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIxODUiIGN5PSIxOTQiIHI9IjEuOCIgZmlsbD0iI2I4YzhlOCIgb3BhY2l0eT0iMC4yMiIgLz4KICAgIDxjaXJjbGUgY3g9IjIyMCIgY3k9IjIxMiIgcj0iMS4zIiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjI1IiAvPgogICAgPGNpcmNsZSBjeD0iMjE1IiBjeT0iMjIwIiByPSIxLjYiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI0MCIgY3k9IjIzNyIgcj0iMS41IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjIyIiAvPgogICAgPGNpcmNsZSBjeD0iMjU0IiBjeT0iMjQ4IiByPSIxLjMiIGZpbGw9IiNiOGM4ZTgiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI3MCIgY3k9IjI3MCIgcj0iMS42IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjI0IiAvPgogICAgPGNpcmNsZSBjeD0iMjc1IiBjeT0iMjY1IiByPSIxLjQiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI5NSIgY3k9IjI5MCIgcj0iMS41IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjI2IiAvPgogICAgPGNpcmNsZSBjeD0iMjkwIiBjeT0iMjk2IiByPSIxLjciIGZpbGw9IiNiOGM4ZTgiIG9wYWNpdHk9IjAuMjIiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMTIiIGN5PSIzMDgiIHI9IjEuNCIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4yOCIgLz4KICAgIDxjaXJjbGUgY3g9IjMyNSIgY3k9IjMyNCIgcj0iMS42IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjMiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMzAiIGN5PSIzMTgiIHI9IjEuMyIgZmlsbD0iI2I4YzhlOCIgb3BhY2l0eT0iMC4yNSIgLz4KICAgIDxjaXJjbGUgY3g9IjM0OCIgY3k9IjM0MiIgcj0iMS43IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjMyIiAvPgogICAgPGNpcmNsZSBjeD0iMzQ1IiBjeT0iMzQ4IiByPSIxLjUiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIzNjMiIGN5PSIzNjAiIHI9IjEuNiIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zNSIgLz4KICAgIDxjaXJjbGUgY3g9IjM2OCIgY3k9IjM2NSIgcj0iMS40IiBmaWxsPSIjYjhjOGU4IiBvcGFjaXR5PSIwLjMiIC8+CiAgICA8IS0tIFNwYXJzZSBiYWNrZ3JvdW5kIGZpZWxkIHBhcnRpY2xlcyAtLT4KICAgIDxjaXJjbGUgY3g9IjYwIiBjeT0iMzAwIiByPSIxLjIiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMTUiIC8+CiAgICA8Y2lyY2xlIGN4PSI0MjAiIGN5PSI4MCIgcj0iMS4wIiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjEyIiAvPgogICAgPGNpcmNsZSBjeD0iNDUwIiBjeT0iMjAwIiByPSIxLjEiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMSIgLz4KICAgIDxjaXJjbGUgY3g9IjgwIiBjeT0iNDQwIiByPSIxLjMiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMTIiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMDAiIGN5PSI2MCIgcj0iMS4wIiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjEiIC8+CiAgICA8Y2lyY2xlIGN4PSI0NzAiIGN5PSI0NjAiIHI9IjEuMSIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wOCIgLz4KICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wOCIgLz4KICAgIDwvZz4KPC9zdmc+Cg==',
+  'galaxy-cluster': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmVyc2lvbj0iMS4xIj4KICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTE0NjQwNzggMCAwIDAuOTE0NjQwNzggMjEuODUxOTYxMTcgMjEuODUxOTYxMTcpIj48cmVjdCBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZT0iIzk0OTY5OCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0iIzAwMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiIC8+CiAgICA8IS0tIERpZmZ1c2UgSUNNIGhhbG8gKGludHJhY2x1c3RlciBtZWRpdW0pIC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxODAiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuMDQiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjE0MCIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4wNiIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTAwIiBmaWxsPSIjZThlZWZmIiBvcGFjaXR5PSIwLjA4IiAvPgogICAgPCEtLSBDZW50cmFsIGRvbWluYW50IGVsbGlwdGljYWwgZ2FsYXh5IChjRCBnYWxheHkpIC0tPgogICAgPGVsbGlwc2UgY3g9IjI1NiIgY3k9IjI1NiIgcng9IjI4IiByeT0iMjAiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuODUiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMjU2IiBjeT0iMjU2IiByeD0iMTgiIHJ5PSIxMyIgZmlsbD0iI2ZmZjJkNyIgb3BhY2l0eT0iMC45IiAvPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSI2IiBmaWxsPSIjZmZmOGVhIiBvcGFjaXR5PSIwLjk1IiAvPgogICAgPCEtLSBNYWpvciBtZW1iZXIgZ2FsYXhpZXMgLSBlbGxpcHRpY2FscyAod2FybSB0b25lcykgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMjEwIiBjeT0iMjEwIiByeD0iMTQiIHJ5PSIxMCIgZmlsbD0iI2ZmZTJhNiIgb3BhY2l0eT0iMC43IiAvPgogICAgPGVsbGlwc2UgY3g9IjIxMCIgY3k9IjIxMCIgcng9IjciIHJ5PSI1IiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjgiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMzEwIiBjeT0iMjIwIiByeD0iMTIiIHJ5PSIxNiIgZmlsbD0iI2ZmY2M0MCIgb3BhY2l0eT0iMC42IiAvPgogICAgPGVsbGlwc2UgY3g9IjMxMCIgY3k9IjIyMCIgcng9IjYiIHJ5PSI5IiBmaWxsPSIjZmZmN2JmIiBvcGFjaXR5PSIwLjc1IiAvPgogICAgPGVsbGlwc2UgY3g9IjIzMCIgY3k9IjMxMCIgcng9IjE1IiByeT0iOSIgZmlsbD0iI2ZmZTJhNiIgb3BhY2l0eT0iMC42NSIgLz4KICAgIDxlbGxpcHNlIGN4PSIyMzAiIGN5PSIzMTAiIHJ4PSI4IiByeT0iNSIgZmlsbD0iI2ZmZjhlYSIgb3BhY2l0eT0iMC43NSIgLz4KICAgIDwhLS0gU3BpcmFsIG1lbWJlciBnYWxheGllcyAoYmx1ZS13aGl0ZSB0b25lcykgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMjkwIiByeD0iMTMiIHJ5PSI3IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzAgMzAwIDI5MCkiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNjUiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMjkwIiByeD0iNyIgcnk9IjQiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAzMDAgMjkwKSIgZmlsbD0iI2U4ZWVmZiIgb3BhY2l0eT0iMC44IiAvPgogICAgPGVsbGlwc2UgY3g9IjE5MCIgY3k9IjI3NSIgcng9IjExIiByeT0iNiIgdHJhbnNmb3JtPSJyb3RhdGUoMjAgMTkwIDI3NSkiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNiIgLz4KICAgIDxlbGxpcHNlIGN4PSIxOTAiIGN5PSIyNzUiIHJ4PSI2IiByeT0iMy41IiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAxOTAgMjc1KSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC43IiAvPgogICAgPGVsbGlwc2UgY3g9IjI4MCIgY3k9IjE4NSIgcng9IjEwIiByeT0iNiIgdHJhbnNmb3JtPSJyb3RhdGUoLTUwIDI4MCAxODUpIiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjU1IiAvPgogICAgPGVsbGlwc2UgY3g9IjI4MCIgY3k9IjE4NSIgcng9IjUiIHJ5PSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgtNTAgMjgwIDE4NSkiIGZpbGw9IiNlOGVlZmYiIG9wYWNpdHk9IjAuNyIgLz4KICAgIDwhLS0gU21hbGxlci9mYWludGVyIG1lbWJlciBnYWxheGllcyBzY2F0dGVyZWQgdGhyb3VnaCBjbHVzdGVyIC0tPgogICAgPGVsbGlwc2UgY3g9IjM0MCIgY3k9IjI2MCIgcng9IjciIHJ5PSI1IiBmaWxsPSIjZmZlMmE2IiBvcGFjaXR5PSIwLjQ1IiAvPgogICAgPGVsbGlwc2UgY3g9IjE3NSIgY3k9IjI0MCIgcng9IjYiIHJ5PSI4IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjQiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMjYwIiBjeT0iMzQwIiByeD0iOCIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE1IDI2MCAzNDApIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjQ1IiAvPgogICAgPGVsbGlwc2UgY3g9IjI1MCIgY3k9IjE4MCIgcng9IjYiIHJ5PSI0IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjQiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMzIwIiBjeT0iMzIwIiByeD0iNSIgcnk9IjciIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuMzUiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMjAwIiBjeT0iMzMwIiByeD0iNyIgcnk9IjQiIHRyYW5zZm9ybT0icm90YXRlKC0yNSAyMDAgMzMwKSIgZmlsbD0iI2M4ZDhmOCIgb3BhY2l0eT0iMC4zNSIgLz4KICAgIDxlbGxpcHNlIGN4PSIzMzAiIGN5PSIxOTAiIHJ4PSI1IiByeT0iNCIgZmlsbD0iI2ZmZjJkNyIgb3BhY2l0eT0iMC4zNSIgLz4KICAgIDxlbGxpcHNlIGN4PSIxODUiIGN5PSIxOTUiIHJ4PSI1IiByeT0iMy41IiB0cmFuc2Zvcm09InJvdGF0ZSg0MCAxODUgMTk1KSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPCEtLSBGYWludCBvdXRlcm1vc3QgZ2FsYXhpZXMgYXQgY2x1c3RlciBlZGdlcyAtLT4KICAgIDxlbGxpcHNlIGN4PSIxNTAiIGN5PSIxNjAiIHJ4PSI0IiByeT0iMyIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4yIiAvPgogICAgPGVsbGlwc2UgY3g9IjM3MCIgY3k9IjM0MCIgcng9IjQuNSIgcnk9IjMiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxlbGxpcHNlIGN4PSIzNjAiIGN5PSIxNTAiIHJ4PSIzLjUiIHJ5PSI1IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjE4IiAvPgogICAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjM1MCIgcng9IjQiIHJ5PSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgtMTUgMTQwIDM1MCkiIGZpbGw9IiNmZmYyZDciIG9wYWNpdHk9IjAuMTgiIC8+CiAgICA8ZWxsaXBzZSBjeD0iMzgwIiBjeT0iMjYwIiByeD0iMy41IiByeT0iMi41IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjE1IiAvPgogICAgPGVsbGlwc2UgY3g9IjEzMCIgY3k9IjI4MCIgcng9IjMiIHJ5PSI0IiBmaWxsPSIjZmZlMmE2IiBvcGFjaXR5PSIwLjE1IiAvPgogICAgPGVsbGlwc2UgY3g9IjI3MCIgY3k9IjE0MCIgcng9IjMuNSIgcnk9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4xNSIgLz4KICAgIDxlbGxpcHNlIGN4PSIyOTAiIGN5PSIzNzAiIHJ4PSI0IiByeT0iMi41IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjE1IiAvPgogICAgPCEtLSBTcGFyc2UgYmFja2dyb3VuZCBmaWVsZCAtLT4KICAgIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjEuMiIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4xIiAvPgogICAgPGNpcmNsZSBjeD0iNDUwIiBjeT0iNjAiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wOCIgLz4KICAgIDxjaXJjbGUgY3g9IjYwIiBjeT0iNDUwIiByPSIxLjEiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMDgiIC8+CiAgICA8Y2lyY2xlIGN4PSI0NjAiIGN5PSI0NDAiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wOCIgLz4KICAgIDxjaXJjbGUgY3g9IjQ4MCIgY3k9IjE1MCIgcj0iMC45IiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjA3IiAvPgogICAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MDAiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wNyIgLz4KICAgIDwvZz4KPC9zdmc+Cg==',
+  'tempo': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2U9IiNmZmYiIGZpbGw9Im5vbmUiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHZlcnNpb249IjEuMSI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjkxNDY0MDc4IDAgMCAwLjkxNDY0MDc4IDIxLjg1MTk2MTE3IDIxLjg1MTk2MTE3KSI+PHJlY3Qgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2U9IiM5NDk2OTgiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9IiMwMDAiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1taXRlcmxpbWl0PSIyIiAvPgogICAgPCEtLSBWZXJ0aWNhbCB0aW1lIGF4aXMgKGZ1dHVyZSBkb3duLCBtYXRjaGluZyBNV0wgY29udmVudGlvbikgLS0+CiAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjE4IiBzdHJva2Utb3BhY2l0eT0iMC45IiBkPSJNMjU2IDQ2VjQ2NiIgLz4KICAgIDwhLS0gRG93bndhcmQgYXJyb3cgaGVhZCAoZnV0dXJlIGlzIGRvd24pIC0tPgogICAgPHBhdGggc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLW9wYWNpdHk9IjAuOSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTIyNiA0MzZMMjU2IDQ3NkwyODYgNDM2IiAvPgogICAgPCEtLSBQdWxzZSBkb3RzIGFsb25nIHRpbWUgYXhpcyAodGVtcG9yYWwgdGlja3MgLSBldmVubHkgc3BhY2VkLCBsaWtlIGEgbWV0cm9ub21lKSAtLT4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjEwNiIgcj0iOCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjkiIHN0cm9rZT0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjE4NiIgcj0iOCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjkiIHN0cm9rZT0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI2NiIgcj0iOCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjkiIHN0cm9rZT0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjM0NiIgcj0iOCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjkiIHN0cm9rZT0ibm9uZSIgLz4KICAgIDwhLS0gV2F2ZS1mcm9udCBhcmNzIGVtYW5hdGluZyBmcm9tIGNlbnRyYWwgcHVsc2UgKHRlbXBvcmFsIHJpcHBsZXMpIC0tPgogICAgPCEtLSBJbm5lciBhcmNzIC0tPgogICAgPHBhdGggc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjUiIGQ9Ik0gMjA2IDI2NiBBIDUwIDUwIDAgMCAxIDI1NiAyMTYiIC8+CiAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2Utb3BhY2l0eT0iMC42NSIgZD0iTSAzMDYgMjY2IEEgNTAgNTAgMCAwIDAgMjU2IDMxNiIgLz4KICAgIDwhLS0gTWlkZGxlIGFyY3MgLS0+CiAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2Utb3BhY2l0eT0iMC40IiBkPSJNIDE1NiAyNjYgQSAxMDAgMTAwIDAgMCAxIDI1NiAxNjYiIC8+CiAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2Utb3BhY2l0eT0iMC40IiBkPSJNIDM1NiAyNjYgQSAxMDAgMTAwIDAgMCAwIDI1NiAzNjYiIC8+CiAgICA8IS0tIE91dGVyIGFyY3MgLS0+CiAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2Utb3BhY2l0eT0iMC4yMiIgZD0iTSAxMDYgMjY2IEEgMTUwIDE1MCAwIDAgMSAyNTYgMTE2IiAvPgogICAgPHBhdGggc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMjIiIGQ9Ik0gNDA2IDI2NiBBIDE1MCAxNTAgMCAwIDAgMjU2IDQxNiIgLz4KICAgIDwvZz4KPC9zdmc+Cg==',
+  'stellar-epoch': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmVyc2lvbj0iMS4xIj4KICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTE0NjQwNzggMCAwIDAuOTE0NjQwNzggMjEuODUxOTYxMTcgMjEuODUxOTYxMTcpIj48cmVjdCBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZT0iIzk0OTY5OCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0iIzAwMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiIC8+CiAgICA8IS0tIFN0ZWxsYXIgaGFsbyAvIGJpcnRoIG5lYnVsYSByZW1uYW50IC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTYwIiByPSI2NSIgZmlsbD0iI2ZmZjdiZiIgb3BhY2l0eT0iMC4wNCIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjE2MCIgcj0iNDIiIGZpbGw9IiNmZmM2M2QiIG9wYWNpdHk9IjAuMDciIC8+CiAgICA8IS0tIE1haW4gc3RhciAoYnJpZ2h0LCBtYWluLXNlcXVlbmNlIC0gbWF0Y2hpbmcgc2luZ2xlLXN0YXIgcGFsZXR0ZSkgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIxNjAiIHI9IjMwIiBmaWxsPSIjZmZjNjNkIiBvcGFjaXR5PSIwLjkiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIxNjAiIHI9IjE4IiBmaWxsPSIjZmZmN2JmIiBvcGFjaXR5PSIwLjk1IiAvPgogICAgPCEtLSBWZXJ0aWNhbCB0cmFpbCBvZiBzdGVsbGFyIGV2b2x1dGlvbiAodGltZSBkZXNjZW5kaW5nID0gZnV0dXJlIGRvd24pIC0tPgogICAgPCEtLSBFYXJseSBtYWluIHNlcXVlbmNlIC0gYnJpZ2h0IC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSIxMCIgZmlsbD0iI2ZmYzYzZCIgb3BhY2l0eT0iMC43IiAvPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI2IiBmaWxsPSIjZmZmN2JmIiBvcGFjaXR5PSIwLjgiIC8+CiAgICA8IS0tIE1pZCBsaWZlIC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjY4IiByPSI4IiBmaWxsPSIjZmZjNjNkIiBvcGFjaXR5PSIwLjU1IiAvPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjY4IiByPSI1IiBmaWxsPSIjZmZmN2JmIiBvcGFjaXR5PSIwLjYiIC8+CiAgICA8IS0tIExhdGUgbWFpbiBzZXF1ZW5jZSAtIGNvb2xpbmcgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIzMTIiIHI9IjciIGZpbGw9IiNmZmNjNDAiIG9wYWNpdHk9IjAuNCIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjMxMiIgcj0iNCIgZmlsbD0iI2ZmZTJhNiIgb3BhY2l0eT0iMC41IiAvPgogICAgPCEtLSBSZWQgZ2lhbnQgcGhhc2UgLSByZWRkZW5pbmcgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIzNTIiIHI9IjYiIGZpbGw9IiNmZjlkNWIiIG9wYWNpdHk9IjAuMzUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIzNTIiIHI9IjMuNSIgZmlsbD0iI2ZmZTJhNiIgb3BhY2l0eT0iMC40IiAvPgogICAgPCEtLSBFbmQgc3RhdGUgLSBmYWludCByZW1uYW50IC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMzg4IiByPSI0LjUiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMjUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIzODgiIHI9IjIuNSIgZmlsbD0iI2U1ZTVlNSIgb3BhY2l0eT0iMC4zIiAvPgogICAgPCEtLSBGaW5hbCBkaW0gcG9pbnQgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MTgiIHI9IjMiIGZpbGw9IiM2YzZjNmMiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQxOCIgcj0iMS41IiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjI1IiAvPgogICAgPCEtLSBTdWJ0bGUgY29ubmVjdGluZyB0aHJlYWQgKHRpbWUgYXhpcyB0aHJvdWdoIHRoZSBsaWZlY3ljbGUpIC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTk4IiByPSIxLjUiIGZpbGw9IiNmZmY3YmYiIG9wYWNpdHk9IjAuMyIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI0NCIgcj0iMS4zIiBmaWxsPSIjZmZjNjNkIiBvcGFjaXR5PSIwLjI1IiAvPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjkwIiByPSIxLjIiIGZpbGw9IiNmZmNjNDAiIG9wYWNpdHk9IjAuMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjMzMiIgcj0iMS4xIiBmaWxsPSIjZmZlMmE2IiBvcGFjaXR5PSIwLjE4IiAvPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMzcwIiByPSIxLjAiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMTUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MDQiIHI9IjAuOSIgZmlsbD0iIzZjNmM2YyIgb3BhY2l0eT0iMC4xMiIgLz4KICAgIDwhLS0gU3BhcnNlIGJhY2tncm91bmQgLS0+CiAgICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSIxLjIiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMSIgLz4KICAgIDxjaXJjbGUgY3g9IjQzMCIgY3k9IjEwMCIgcj0iMS4wIiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjA4IiAvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iNDIwIiByPSIxLjEiIGZpbGw9IiNjZGNkY2QiIG9wYWNpdHk9IjAuMDgiIC8+CiAgICA8Y2lyY2xlIGN4PSI0NDAiIGN5PSI0MDAiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wNyIgLz4KICAgIDxjaXJjbGUgY3g9IjQyMCIgY3k9IjI1NiIgcj0iMC45IiBmaWxsPSIjY2RjZGNkIiBvcGFjaXR5PSIwLjA3IiAvPgogICAgPGNpcmNsZSBjeD0iOTAiIGN5PSIyNTYiIHI9IjEuMCIgZmlsbD0iI2NkY2RjZCIgb3BhY2l0eT0iMC4wNyIgLz4KICAgIDwvZz4KPC9zdmc+Cg==',
+  'cosmic-epoch': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmVyc2lvbj0iMS4xIj4KICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTE0NjQwNzggMCAwIDAuOTE0NjQwNzggMjEuODUxOTYxMTcgMjEuODUxOTYxMTcpIj48cmVjdCBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZT0iIzk0OTY5OCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0iIzAwMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiIC8+CiAgICA8IS0tIENlbnRyYWwgb3JpZ2luIHBvaW50IChlYXJseSB1bml2ZXJzZSAtIGhvdCwgYnJpZ2h0KSAtLT4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTgiIGZpbGw9IiNmZmY4ZWEiIG9wYWNpdHk9IjAuMTUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjEwIiBmaWxsPSIjZmZlMmE2IiBvcGFjaXR5PSIwLjYiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuOTUiIC8+CiAgICA8IS0tIFJpbmcgMTogaW5uZXIgZXBvY2ggKHdhcm0gLSBlYXJseSB1bml2ZXJzZSwgdGlnaHQgc3BhY2luZykgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyMDYiIHI9IjMuMiIgZmlsbD0iI2ZmY2M0MCIgb3BhY2l0eT0iMC44IiAvPgogICAgPGNpcmNsZSBjeD0iMjkxIiBjeT0iMjE2IiByPSIzLjAiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuNzUiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMDYiIGN5PSIyNDYiIHI9IjMuMiIgZmlsbD0iI2ZmY2M0MCIgb3BhY2l0eT0iMC44IiAvPgogICAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjgxIiByPSIzLjAiIGZpbGw9IiNmZmUyYTYiIG9wYWNpdHk9IjAuNzUiIC8+CiAgICA8Y2lyY2xlIGN4PSIyNjYiIGN5PSIzMDQiIHI9IjMuMiIgZmlsbD0iI2ZmY2M0MCIgb3BhY2l0eT0iMC43OCIgLz4KICAgIDxjaXJjbGUgY3g9IjIzNiIgY3k9IjMwMiIgcj0iMy4wIiBmaWxsPSIjZmZlMmE2IiBvcGFjaXR5PSIwLjc1IiAvPgogICAgPGNpcmNsZSBjeD0iMjEyIiBjeT0iMjgwIiByPSIzLjIiIGZpbGw9IiNmZmNjNDAiIG9wYWNpdHk9IjAuNzgiIC8+CiAgICA8Y2lyY2xlIGN4PSIyMDgiIGN5PSIyNDgiIHI9IjMuMCIgZmlsbD0iI2ZmZTJhNiIgb3BhY2l0eT0iMC43NSIgLz4KICAgIDxjaXJjbGUgY3g9IjIyMiIgY3k9IjIxOCIgcj0iMy4yIiBmaWxsPSIjZmZjYzQwIiBvcGFjaXR5PSIwLjc4IiAvPgogICAgPCEtLSBSaW5nIDI6IG1pZGRsZSBlcG9jaCAodHJhbnNpdGlvbmFsIC0gd2FybSB0byBjb29sKSAtLT4KICAgIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjE0NiIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjU1IiAvPgogICAgPGNpcmNsZSBjeD0iMzEyIiBjeT0iMTYwIiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDxjaXJjbGUgY3g9IjM1MCIgY3k9IjIwOCIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjUyIiAvPgogICAgPGNpcmNsZSBjeD0iMzYyIiBjeT0iMjYyIiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDxjaXJjbGUgY3g9IjM0MCIgY3k9IjMxNiIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjUyIiAvPgogICAgPGNpcmNsZSBjeD0iMzAwIiBjeT0iMzUyIiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDxjaXJjbGUgY3g9IjI0OCIgY3k9IjM2MCIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjUyIiAvPgogICAgPGNpcmNsZSBjeD0iMTk2IiBjeT0iMzQwIiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjMwMCIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjUyIiAvPgogICAgPGNpcmNsZSBjeD0iMTQ4IiBjeT0iMjQ4IiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDxjaXJjbGUgY3g9IjE2NiIgY3k9IjE5NiIgcj0iMy4wIiBmaWxsPSIjZmZmMmQ3IiBvcGFjaXR5PSIwLjUyIiAvPgogICAgPGNpcmNsZSBjeD0iMjA0IiBjeT0iMTU2IiByPSIyLjgiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuNSIgLz4KICAgIDwhLS0gUmluZyAzOiBvdXRlciBlcG9jaCAoY29vbCAtIGxhdGUgdW5pdmVyc2UsIHdpZGVyIHNwYWNpbmcpIC0tPgogICAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iODAiIHI9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zMiIgLz4KICAgIDxjaXJjbGUgY3g9IjMzMiIgY3k9Ijk2IiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIzOTYiIGN5PSIxNDgiIHI9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPGNpcmNsZSBjeD0iNDI0IiBjeT0iMjI0IiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSI0MjAiIGN5PSIzMDYiIHI9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPGNpcmNsZSBjeD0iMzgyIiBjeT0iMzcyIiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIzMjAiIGN5PSI0MTQiIHI9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPGNpcmNsZSBjeD0iMjQ2IiBjeT0iNDI4IiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIxNzgiIGN5PSI0MDQiIHI9IjIuNSIgZmlsbD0iI2RmZTdmZiIgb3BhY2l0eT0iMC4zIiAvPgogICAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iMzU2IiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8Y2lyY2xlIGN4PSI5NCIgY3k9IjI4NiIgcj0iMi41IiBmaWxsPSIjZGZlN2ZmIiBvcGFjaXR5PSIwLjMiIC8+CiAgICA8Y2lyY2xlIGN4PSI5NiIgY3k9IjIxMCIgcj0iMi4zIiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjI4IiAvPgogICAgPGNpcmNsZSBjeD0iMTMwIiBjeT0iMTQyIiByPSIyLjUiIGZpbGw9IiNkZmU3ZmYiIG9wYWNpdHk9IjAuMyIgLz4KICAgIDxjaXJjbGUgY3g9IjE5MCIgY3k9IjkyIiByPSIyLjMiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMjgiIC8+CiAgICA8IS0tIE91dGVybW9zdCBzY2F0dGVyZWQgcGFydGljbGVzIChmdXJ0aGVzdCBlcG9jaCwgdmVyeSBmYWludCkgLS0+CiAgICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIzOCIgcj0iMS44IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjE1IiAvPgogICAgPGNpcmNsZSBjeD0iMzc1IiBjeT0iNTYiIHI9IjEuNiIgZmlsbD0iI2I4YzhlOCIgb3BhY2l0eT0iMC4xMiIgLz4KICAgIDxjaXJjbGUgY3g9IjQ2MCIgY3k9IjE1MCIgcj0iMS44IiBmaWxsPSIjYzhkOGY4IiBvcGFjaXR5PSIwLjEzIiAvPgogICAgPGNpcmNsZSBjeD0iNDc4IiBjeT0iMjgwIiByPSIxLjYiIGZpbGw9IiNiOGM4ZTgiIG9wYWNpdHk9IjAuMTIiIC8+CiAgICA8Y2lyY2xlIGN4PSI0NDAiIGN5PSI0MDAiIHI9IjEuOCIgZmlsbD0iI2M4ZDhmOCIgb3BhY2l0eT0iMC4xMyIgLz4KICAgIDxjaXJjbGUgY3g9IjM1MCIgY3k9IjQ2NSIgcj0iMS42IiBmaWxsPSIjYjhjOGU4IiBvcGFjaXR5PSIwLjEyIiAvPgogICAgPGNpcmNsZSBjeD0iMjIwIiBjeT0iNDcyIiByPSIxLjgiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMTMiIC8+CiAgICA8Y2lyY2xlIGN4PSIxMTAiIGN5PSI0MzAiIHI9IjEuNiIgZmlsbD0iI2I4YzhlOCIgb3BhY2l0eT0iMC4xMiIgLz4KICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iMzQwIiByPSIxLjgiIGZpbGw9IiNjOGQ4ZjgiIG9wYWNpdHk9IjAuMTMiIC8+CiAgICA8Y2lyY2xlIGN4PSI0NCIgY3k9IjIxMCIgcj0iMS42IiBmaWxsPSIjYjhjOGU4IiBvcGFjaXR5PSIwLjEyIiAvPgogICAgPGNpcmNsZSBjeD0iODAiIGN5PSIxMDAiIHI9IjEuOCIgZmlsbD0iI2M4ZDhmOCIgb3BhY2l0eT0iMC4xMyIgLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjQ4IiByPSIxLjYiIGZpbGw9IiNiOGM4ZTgiIG9wYWNpdHk9IjAuMTIiIC8+CiAgICA8L2c+Cjwvc3ZnPgo=',
+  'true': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC44NjkgMCAwIDAuODY5IDMzLjUgMzMuNSkiPjxyZWN0IGZpbGw9IiNmZmYiIHN0cm9rZS13aWR0aD0iMzAiIHN0cm9rZT0iIzk0OTY5OCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiLz48L2c+PC9zdmc+',
+  'false': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC44NjkgMCAwIDAuODY5IDMzLjUgMzMuNSkiPjxyZWN0IGZpbGw9IiMwMDAiIHN0cm9rZS13aWR0aD0iMzAiIHN0cm9rZT0iIzkzOTU5OCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiLz48L2c+PC9zdmc+',
+  'uncertain': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC44NjkgMCAwIDAuODY5IDMzLjUgMzMuNSkiPjxyZWN0IGZpbGw9IiM2NjYiIHN0cm9rZS13aWR0aD0iMzAiIHN0cm9rZT0iIzk0OTY5OCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiLz48L2c+PC9zdmc+',
+  '2': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+MjwvdGV4dD48L2c+PC9zdmc+',
+  '3': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+MzwvdGV4dD48L2c+PC9zdmc+',
+  '4': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+NDwvdGV4dD48L2c+PC9zdmc+',
+  '5': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+NTwvdGV4dD48L2c+PC9zdmc+',
+  '6': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+NjwvdGV4dD48L2c+PC9zdmc+',
+  '7': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+NzwvdGV4dD48L2c+PC9zdmc+',
+  '8': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PGcgdHJhbnNmb3JtPSdtYXRyaXgoMC45MTQgMCAwIDAuOTE0IDIxLjg1IDIxLjg1KSc+PHJlY3Qgc3Ryb2tlLXdpZHRoPSczJyBzdHJva2U9JyM5NDk2OTgnIGZpbGw9JyMwMDAnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMzAwJyByPSc3NCcgc3Ryb2tlPScjZDRkNGQ0JyBzdHJva2Utd2lkdGg9JzEwJyBzdHJva2Utb3BhY2l0eT0nMC4yNScgZmlsbD0nbm9uZScvPjx0ZXh0IHg9JzI1NicgeT0nMTgwJyBmaWxsPScjZGNkY2RjJyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIG9wYWNpdHk9JzAuOCc+ODwvdGV4dD48L2c+PC9zdmc+',
+};
+
+// Helper: get thumbnail src for a glyph (file path primary, embedded fallback)
+function glyphThumbSrc(file) {
+  return GLYPH_THUMBS[file] || ('./MWL-glyphs/' + file + '.svg');
+}
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+
+let currentCategory = 'objects';
+let glyphSize = 64;
+let undoStack = [];
+let redoStack = [];
+const MAX_UNDO = 80;
+
+const compose   = document.getElementById('compose');
+const cursor    = document.getElementById('cursor-indicator');
+const grid      = document.getElementById('glyph-grid');
+const toast     = document.getElementById('toast');
+
+// ══════════════════════════════════════════════════
+// KEYBOARD RENDERING
+// ══════════════════════════════════════════════════
+
+function switchCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+  renderGrid();
+}
+
+function renderGrid() {
+  grid.innerHTML = '';
+
+  if (currentCategory === 'special') {
+    renderSpecialPanel();
+    return;
+  }
+
+  const glyphs = GLYPH_DB[currentCategory] || [];
+  glyphs.forEach(g => {
+    const key = document.createElement('div');
+    key.className = 'glyph-key';
+    key.title = g.label + ' (' + g.file + ')';
+    const thumbSrc = GLYPH_THUMBS[g.file] || `./MWL-glyphs/${g.file}.svg`;
+    key.innerHTML = `
+      <img src="./MWL-glyphs/${g.file}.svg" alt="${g.label}" loading="lazy"
+           onerror="this.onerror=null; var fb=GLYPH_THUMBS['${g.file}']; if(fb){this.src=fb;}else{this.style.opacity='0.2';}">
+      <div class="key-label">${g.label}</div>
+    `;
+    key.addEventListener('click', () => insertGlyph(g.file, g.label));
+    grid.appendChild(key);
+  });
+}
+
+function renderSpecialPanel() {
+  grid.innerHTML = '';
+
+  // New Line
+  const nlKey = makeSpecialKey('↵', 'New Line', () => insertLineBreak());
+  grid.appendChild(nlKey);
+
+  // Backspace
+  const bsKey = makeSpecialKey('⌫', 'Delete', () => deleteAtCursor());
+  grid.appendChild(bsKey);
+
+  // Proper Name
+  const pncKey = makeSpecialKey('◈', 'Proper Name', () => openProperNameModal());
+  grid.appendChild(pncKey);
+
+  // Numerals 2-8
+  for (let n = 2; n <= 8; n++) {
+    const nKey = document.createElement('div');
+    nKey.className = 'glyph-key';
+    nKey.title = `Numeral ${n}`;
+    nKey.innerHTML = `
+      <img src="./MWL-glyphs/${n}.svg" alt="${n}" loading="lazy"
+           onerror="this.onerror=null; var fb=GLYPH_THUMBS['${n}']; if(fb){this.src=fb;}else{this.style.opacity='0.2';}">
+      <div class="key-label">${n}</div>
+    `;
+    nKey.addEventListener('click', () => insertNumeralGlyph(String(n)));
+    grid.appendChild(nKey);
+  }
+
+  // Custom numeral
+  const cusKey = makeSpecialKey('⑨₊', 'Numeral ≥9', () => openNumeralModal());
+  grid.appendChild(cusKey);
+}
+
+function makeSpecialKey(icon, label, handler) {
+  const el = document.createElement('div');
+  el.className = 'special-key';
+  el.innerHTML = `<div class="key-icon">${icon}</div><div class="key-label">${label}</div>`;
+  el.addEventListener('click', handler);
+  return el;
+}
+
+// ══════════════════════════════════════════════════
+// COMPOSITION OPERATIONS
+// ══════════════════════════════════════════════════
+
+function saveUndoState() {
+  undoStack.push(compose.innerHTML);
+  if (undoStack.length > MAX_UNDO) undoStack.shift();
+  redoStack = [];
+}
+
+function insertGlyph(file, label) {
+  saveUndoState();
+  const img = document.createElement('img');
+  img.className = 'glyph';
+  img.src = `./MWL-glyphs/${file}.svg`;
+  img.alt = label || file;
+  img.dataset.glyphFile = file;
+  img.setAttribute('draggable', 'false');
+  compose.insertBefore(img, cursor);
+  scrollComposeToCursor();
+  updateStatus();
+}
+
+function insertNumeralGlyph(fileNum) {
+  saveUndoState();
+  const img = document.createElement('img');
+  img.className = 'glyph';
+  img.src = `./MWL-glyphs/${fileNum}.svg`;
+  img.alt = `numeral ${fileNum}`;
+  img.dataset.glyphFile = fileNum;
+  img.dataset.numeral = 'true';
+  img.setAttribute('draggable', 'false');
+  compose.insertBefore(img, cursor);
+  scrollComposeToCursor();
+  updateStatus();
+}
+
+function insertProperNameElement(filename, altText) {
+  saveUndoState();
+  const img = document.createElement('img');
+  img.className = 'glyph-img';
+  img.src = `./proper-names/${filename}.png`;
+  img.alt = altText || filename;
+  img.dataset.pncFile = filename;
+  img.setAttribute('draggable', 'false');
+  compose.insertBefore(img, cursor);
+  scrollComposeToCursor();
+  updateStatus();
+}
+
+function insertLineBreak() {
+  saveUndoState();
+  const br = document.createElement('div');
+  br.className = 'glyph-break';
+  compose.insertBefore(br, cursor);
+  scrollComposeToCursor();
+  updateStatus();
+}
+
+function deleteAtCursor() {
+  const prev = cursor.previousElementSibling || cursor.previousSibling;
+  if (prev && prev !== compose) {
+    saveUndoState();
+    prev.remove();
+    updateStatus();
+  }
+}
+
+function actionClear() {
+  if (compose.children.length <= 1) return; // only cursor
+  if (!confirm('Clear the entire composition?')) return;
+  saveUndoState();
+  compose.innerHTML = '';
+  compose.appendChild(cursor);
+  updateStatus();
+}
+
+function actionUndo() {
+  if (!undoStack.length) return;
+  redoStack.push(compose.innerHTML);
+  compose.innerHTML = undoStack.pop();
+  // Ensure cursor exists
+  if (!document.getElementById('cursor-indicator')) {
+    const c = document.createElement('span');
+    c.id = 'cursor-indicator';
+    compose.appendChild(c);
+  }
+  updateStatus();
+}
+
+function actionRedo() {
+  if (!redoStack.length) return;
+  undoStack.push(compose.innerHTML);
+  compose.innerHTML = redoStack.pop();
+  if (!document.getElementById('cursor-indicator')) {
+    const c = document.createElement('span');
+    c.id = 'cursor-indicator';
+    compose.appendChild(c);
+  }
+  updateStatus();
+}
+
+function handleComposeClick(e) {
+  const target = e.target;
+  if (target.classList.contains('glyph') || target.classList.contains('glyph-img')) {
+    // Move cursor after this element
+    target.after(cursor);
+  } else if (target.classList.contains('glyph-break')) {
+    target.after(cursor);
+  }
+}
+
+function scrollComposeToCursor() {
+  const wrap = document.getElementById('compose-wrap');
+  const cr = cursor.getBoundingClientRect();
+  const wr = wrap.getBoundingClientRect();
+  if (cr.bottom > wr.bottom - 20) {
+    wrap.scrollTop += cr.bottom - wr.bottom + 40;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════════════
+
+function openProperNameModal() {
+  document.getElementById('pncModal').classList.add('open');
+  setTimeout(() => document.getElementById('pncName').focus(), 200);
+}
+function closePncModal() { document.getElementById('pncModal').classList.remove('open'); }
+
+function insertProperName() {
+  const name = document.getElementById('pncName').value.trim();
+  if (!name) { showToast('Please enter a filename.'); return; }
+  const alt = document.getElementById('pncAlt').value.trim() || name;
+  insertProperNameElement(name, alt);
+  document.getElementById('pncName').value = '';
+  document.getElementById('pncAlt').value = '';
+  closePncModal();
+}
+
+function openNumeralModal() {
+  document.getElementById('numModal').classList.add('open');
+  setTimeout(() => document.getElementById('numValue').focus(), 200);
+}
+function closeNumModal() { document.getElementById('numModal').classList.remove('open'); }
+
+function insertNumeral() {
+  const val = document.getElementById('numValue').value.trim();
+  const custom = document.getElementById('numCustomFile').value.trim();
+  if (custom) {
+    insertNumeralGlyph(custom);
+  } else if (val && parseInt(val) >= 2 && parseInt(val) <= 8) {
+    insertNumeralGlyph(val);
+  } else {
+    showToast('Enter a value 2–8, or a custom filename.');
+    return;
+  }
+  document.getElementById('numValue').value = '';
+  document.getElementById('numCustomFile').value = '';
+  closeNumModal();
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => {
+    if (e.target === ov) ov.classList.remove('open');
+  });
+});
+
+// ══════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════
+
+function changeGlyphSize(size) {
+  glyphSize = parseInt(size);
+  document.documentElement.style.setProperty('--compose-glyph-size', glyphSize + 'px');
+  updateStatus();
+}
+
+// ══════════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════════
+
+function exportStory() {
+  // Collect content elements (everything except cursor)
+  const elements = Array.from(compose.children).filter(el => el.id !== 'cursor-indicator');
+  if (elements.length === 0) {
+    showToast('Nothing to export yet.');
+    return;
+  }
+
+  let contentHTML = '';
+  elements.forEach(el => {
+    if (el.classList.contains('glyph-break')) {
+      contentHTML += '\n<div class="glyph-break"></div>\n\n';
+    } else if (el.classList.contains('glyph') && el.dataset.glyphFile) {
+      contentHTML += `<img class="glyph" src="./MWL-glyphs/${el.dataset.glyphFile}.svg" alt="${el.alt || el.dataset.glyphFile}">\n`;
+    } else if (el.classList.contains('glyph-img') && el.dataset.pncFile) {
+      contentHTML += `<img class="glyph-img" src="./proper-names/${el.dataset.pncFile}.png" alt="${el.alt || el.dataset.pncFile}">\n`;
+    }
+  });
+
+  const exportHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWL Story</title>
+<style>
+:root {
+  --glyph-size: ${glyphSize}px;
+}
+body {
+  background: #111;
+  padding: 2rem;
+  font-size: 0; /* eliminate inline whitespace gaps between glyphs */
+}
+/* Glyph SVG elements */
+.glyph {
+  display: inline-block;
+  width: var(--glyph-size);
+  height: var(--glyph-size);
+  vertical-align: middle;
+  object-fit: contain;
+}
+/* Raster images (proper name cartouches) */
+.glyph-img {
+  display: inline-block;
+  width: var(--glyph-size);
+  height: var(--glyph-size);
+  vertical-align: middle;
+  object-fit: contain;
+}
+/* Line break */
+.glyph-break {
+  display: block;
+  height: calc(var(--glyph-size) * 0.15713);
+}
+</style>
+</head>
+<body>
+
+${contentHTML.trim()}
+
+</body>
+</html>`;
+
+  // Download the file
+  const blob = new Blob([exportHTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'MWL-Story.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Story exported as MWL-Story.html');
+}
+
+// ══════════════════════════════════════════════════
+// STATUS & TOAST
+// ══════════════════════════════════════════════════
+
+function updateStatus() {
+  const glyphs = compose.querySelectorAll('.glyph, .glyph-img');
+  const breaks = compose.querySelectorAll('.glyph-break');
+  document.getElementById('stat-glyphs').textContent = `Glyphs: ${glyphs.length}`;
+  document.getElementById('stat-lines').textContent = `Lines: ${breaks.length + (glyphs.length > 0 ? 1 : 0)}`;
+  document.getElementById('stat-mode').textContent = `Glyph size: ${glyphSize}px`;
+}
+
+let toastTimer;
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ══════════════════════════════════════════════════
+
+document.addEventListener('keydown', e => {
+  // Close modals on Escape
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    return;
+  }
+
+  // Don't hijack if inside an input
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+    // Enter in modal inputs = submit
+    if (e.key === 'Enter') {
+      if (document.getElementById('pncModal').classList.contains('open')) insertProperName();
+      if (document.getElementById('numModal').classList.contains('open')) insertNumeral();
+    }
+    return;
+  }
+
+  if (e.key === 'Enter') { e.preventDefault(); insertLineBreak(); }
+  if (e.key === 'Backspace' || e.key === 'Delete') { e.preventDefault(); deleteAtCursor(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); actionUndo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) { e.preventDefault(); actionRedo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); actionRedo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'e') { e.preventDefault(); exportStory(); }
+});
+
+// ══════════════════════════════════════════════════
+// RESIZE HANDLE
+// ══════════════════════════════════════════════════
+
+(function() {
+  const handle = document.getElementById('resize-handle');
+  const panel = document.getElementById('keyboard-panel');
+  let startY, startH;
+
+  handle.addEventListener('mousedown', e => {
+    startY = e.clientY;
+    startH = panel.offsetHeight;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    e.preventDefault();
+  });
+
+  handle.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    startH = panel.offsetHeight;
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd);
+    e.preventDefault();
+  }, { passive: false });
+
+  function onMove(e) {
+    const delta = startY - e.clientY;
+    panel.style.height = Math.max(150, Math.min(window.innerHeight * 0.6, startH + delta)) + 'px';
+  }
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  function onTouchMove(e) {
+    const delta = startY - e.touches[0].clientY;
+    panel.style.height = Math.max(150, Math.min(window.innerHeight * 0.6, startH + delta)) + 'px';
+    e.preventDefault();
+  }
+  function onTouchEnd() {
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onTouchEnd);
+  }
+})();
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+
+renderGrid();
+updateStatus();
+</script>
+
+
+</body></html>
