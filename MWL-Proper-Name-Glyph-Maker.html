@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWL Proper Name Glyph Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #141622;
+    --bg: #1c1f33;
+    --bg-surface: #262a42;
+    --bg-raised: #2f3454;
+    --accent: #f7c19e;
+    --accent-dim: #c49474;
+    --accent-glow: rgba(247, 193, 158, 0.15);
+    --text: #e8e0d6;
+    --text-dim: #9a94a8;
+    --text-muted: #6b6780;
+    --stroke-outer: #ffffff;
+    --stroke-inner: #e6e6e6;
+    --border: #3a3f5c;
+    --error: #e86c6c;
+    --success: #7ce8a8;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'EB Garamond', Georgia, serif;
+    --font-ui: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* --- Subtle background texture --- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(247,193,158,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(120,100,200,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* --- Header --- */
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 2rem 1.2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(38,42,66,0.6) 0%, transparent 100%);
+  }
+
+  .header h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 2.2rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .header p {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* Cartouche-shaped decorative line under header */
+  .header-rule {
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin: 1rem auto 0;
+    background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+    border-radius: 2px;
+  }
+
+  /* --- Main layout --- */
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    display: grid;
+    grid-template-columns: minmax(320px, 460px) minmax(360px, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .app {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+    }
+  }
+
+  /* --- Panel styling --- */
+  .panel {
+    background: linear-gradient(180deg, rgba(47,52,84,0.55) 0%, rgba(38,42,66,0.96) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 14px 38px rgba(0,0,0,0.22);
+  }
+
+  .panel + .panel {
+    margin-top: 1rem;
+  }
+
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .preview-panel {
+    position: sticky;
+    top: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .preview-panel {
+      position: static;
+    }
+  }
+
+  .panel-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.01em;
+  }
+
+  .section-kicker {
+    font-size: 0.76rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .section-note {
+    font-size: 0.86rem;
+    color: var(--text-dim);
+    margin-top: -0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  /* --- Form elements --- */
+  .field { margin-bottom: 1rem; }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .field textarea,
+  .field input[type="text"] {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+
+  .field textarea:focus,
+  .field input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+  }
+
+  .field textarea { min-height: 80px; }
+
+  .field-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    font-style: italic;
+    font-family: var(--font-body);
+  }
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.3rem;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+    color: var(--bg-deep);
+    box-shadow: 0 2px 8px rgba(247,193,158,0.2);
+  }
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 4px 16px rgba(247,193,158,0.35);
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    background: var(--bg-raised);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--border);
+  }
+
+  .btn-full { width: 100%; }
+
+  /* --- Upload zone --- */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 2.2rem 1.1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: linear-gradient(180deg, rgba(28,31,51,0.95) 0%, rgba(35,39,63,0.95) 100%);
+    margin-bottom: 1rem;
+  }
+
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--accent-dim);
+    background: var(--accent-glow);
+  }
+
+  .upload-zone svg {
+    display: block;
+    margin: 0 auto 0.6rem;
+    opacity: 0.5;
+  }
+
+  .upload-zone p {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+  }
+  .upload-zone p strong {
+    color: var(--accent);
+  }
+
+  .upload-zone input { display: none; }
+
+  .upload-preview {
+    display: none;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    padding: 0.9rem;
+    background: rgba(20,22,34,0.45);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .upload-preview img {
+    width: min(100%, 220px);
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .upload-preview .upload-info {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
+  /* --- Size selector --- */
+  .size-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .size-opt {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text-dim);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .size-opt:hover { border-color: var(--accent-dim); color: var(--text); }
+  .size-opt.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-deep);
+    font-weight: 600;
+  }
+
+  /* --- Preview area --- */
+  .preview-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .preview-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .preview-stat {
+    padding: 0.8rem 0.9rem;
+    background: rgba(20,22,34,0.42);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .preview-stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .preview-stat-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .preview-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1;
+    background:
+      repeating-conic-gradient(var(--bg) 0% 25%, var(--bg-surface) 0% 50%) 50% / 20px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-container canvas {
+    width: 100%;
+    height: 100%;
+    image-rendering: auto;
+  }
+
+  .preview-label {
+    font-size: 0.86rem;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .settings-card {
+    padding-top: 0.15rem;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .helper-list {
+    margin-top: 0.9rem;
+    padding-left: 1rem;
+    color: var(--text-dim);
+    font-size: 0.84rem;
+  }
+
+  .helper-list li + li {
+    margin-top: 0.35rem;
+  }
+
+  /* --- Status / spinner --- */
+  .status {
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .status.visible { display: flex; }
+  .status.info { background: rgba(120,160,230,0.1); color: #7ca0e6; border: 1px solid rgba(120,160,230,0.2); }
+  .status.error { background: rgba(232,108,108,0.1); color: var(--error); border: 1px solid rgba(232,108,108,0.2); }
+  .status.success { background: rgba(124,232,168,0.1); color: var(--success); border: 1px solid rgba(124,232,168,0.2); }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: var(--font-body);
+    font-style: italic;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer a {
+    color: var(--accent-dim);
+    text-decoration: none;
+  }
+  .footer a:hover { color: var(--accent); }
+
+  /* --- Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel { animation: fadeUp 0.5s ease both; }
+  .panel:nth-child(2) { animation-delay: 0.1s; }
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>MWL Proper Name Glyphs</h1>
+  <p>Make pictographic proper names for use in MWL Story Constellator</p>
+  <span class="header-rule"></span>
+</header>
+
+<main class="app">
+  <div class="left-column">
+    <section class="panel">
+      <div class="section-kicker">Step 1</div>
+      <div class="panel-title">Upload Source Image</div>
+      <p class="section-note">Start with a square-friendly image. The preview updates instantly after upload.</p>
+
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <p><strong>Click to upload</strong> or drag &amp; drop</p>
+        <p style="font-size:0.78rem; margin-top:0.3rem;">PNG, JPG, or WebP — square recommended</p>
+        <input type="file" id="file-input" accept="image/*" onchange="handleUpload(event)">
+      </div>
+
+      <div class="upload-preview" id="upload-preview">
+        <img id="uploaded-thumb" alt="Uploaded image preview">
+        <div class="upload-info" id="upload-info"></div>
+        <div class="action-row">
+          <button class="btn btn-secondary btn-full" onclick="clearUpload()">Remove</button>
+        </div>
+      </div>
+
+      <div class="status" id="status"></div>
+    </section>
+
+    <section class="panel settings-card">
+      <div class="section-kicker">Step 2</div>
+      <div class="panel-title">Glyph Settings</div>
+      <p class="section-note">Set the file label and choose an export size before downloading.</p>
+
+      <div class="field">
+        <label for="glyph-name">Proper Name Label</label>
+        <input type="text" id="glyph-name" placeholder="e.g. magical-jade-amulet" oninput="sanitizeName()">
+        <div class="field-hint">Used in the download filename. Lowercase, hyphens allowed.</div>
+      </div>
+
+      <div class="field">
+        <label>Output Size (px)</label>
+        <div class="size-options">
+          <button class="size-opt" data-size="64" onclick="selectSize(64)">64</button>
+          <button class="size-opt" data-size="96" onclick="selectSize(96)">96</button>
+          <button class="size-opt active" data-size="128" onclick="selectSize(128)">128</button>
+          <button class="size-opt" data-size="512" onclick="selectSize(512)">512</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="btn-download" onclick="downloadGlyph()" disabled>
+        ↓ Download PNG
+      </button>
+
+      <ul class="helper-list">
+        <li>128px works well in MWL.</li>
+        <li>Live preview stays large so cartouche framing is easy to judge.</li>
+        <li>Non-square uploads are center-cropped automatically.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="panel preview-panel">
+    <div class="section-kicker">Preview</div>
+    <div class="panel-title">Live Preview</div>
+    <div class="preview-wrap">
+      <div class="preview-summary">
+        <div class="preview-stat">
+          <div class="preview-stat-label">Preview Canvas</div>
+          <div class="preview-stat-value">512 × 512</div>
+        </div>
+        <div class="preview-stat">
+          <div class="preview-stat-label">Export Size</div>
+          <div class="preview-stat-value" id="export-size-readout">128 × 128</div>
+        </div>
+      </div>
+      <div class="preview-container">
+        <canvas id="preview-canvas" width="512" height="512"></canvas>
+      </div>
+      <div class="preview-label" id="preview-label">No image loaded — upload one</div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  MWL Proper Name Glyphs · Milky Way Language
+</footer>
+
+<script>
+// ============================================================
+//  STATE
+// ============================================================
+const state = {
+  sourceImage: null,   // HTMLImageElement of the photo
+  selectedSize: 128,
+  glyphName: '',
+};
+
+// ============================================================
+//  SVG TEMPLATE GEOMETRY (local coords, before group transform)
+// ============================================================
+const SVG = {
+  viewBox: 512,
+  groupTransform: { a: 0.91464078, d: 0.91464078, e: 21.85196117, f: 21.85196117 },
+  rect: { w: 512, h: 512, stroke: '#939598', strokeWidth: 3, fill: '#000' },
+  outerCurve: {
+    d: 'M483.5 81.583v348.834c0 29.298-19.028 53.083-42.467 53.083H70.967c-23.439 0-42.467-23.785-42.467-53.083V81.583C28.5 52.285 47.528 28.5 70.967 28.5h370.066c23.439 0 42.467 23.785 42.467 53.083z',
+    stroke: '#ffffff',
+    strokeWidth: 24.03,
+  },
+  innerCurve: {
+    d: 'M468.333 89.167v333.666c0 23.02-14.951 41.709-33.366 41.709H77.033c-18.415 0-33.366-18.689-33.366-41.709V89.167c0-23.02 14.951-41.709 33.366-41.709h357.934c18.415 0 33.366 18.689 33.366 41.709z',
+    stroke: '#e6e6e6',
+    strokeWidth: 17.17,
+    // Bounding box of the path itself:
+    bounds: { xMin: 43.667, xMax: 468.333, yMin: 47.458, yMax: 464.542 },
+  },
+  notch: { x: 228.327, y: 13.554, w: 55.347, h: 14.946, fill: '#000' },
+};
+
+// Pre-create Path2D objects
+const outerPath = new Path2D(SVG.outerCurve.d);
+const innerPath = new Path2D(SVG.innerCurve.d);
+
+// ============================================================
+//  RENDERING
+// ============================================================
+function renderGlyph(canvas, size) {
+  const scale = size / SVG.viewBox;
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Clear
+  ctx.clearRect(0, 0, size, size);
+
+  // Apply base scale for target size
+  ctx.save();
+  ctx.scale(scale, scale);
+
+  // Apply the SVG group transform
+  const g = SVG.groupTransform;
+  ctx.transform(g.a, 0, 0, g.d, g.e, g.f);
+
+  // 1) Black rectangle with gray stroke
+  ctx.fillStyle = SVG.rect.fill;
+  ctx.fillRect(0, 0, SVG.rect.w, SVG.rect.h);
+  ctx.strokeStyle = SVG.rect.stroke;
+  ctx.lineWidth = SVG.rect.strokeWidth;
+  ctx.lineJoin = 'round';
+  ctx.miterLimit = 2;
+  ctx.strokeRect(0, 0, SVG.rect.w, SVG.rect.h);
+
+  // 2) Photo clipped to InnerCurve path (if we have one)
+  if (state.sourceImage) {
+    ctx.save();
+    ctx.clip(innerPath, 'evenodd');
+
+    // Compute photo placement: square covering the inner path bounds
+    const b = SVG.innerCurve.bounds;
+    const pathW = b.xMax - b.xMin;
+    const pathH = b.yMax - b.yMin;
+    const photoSize = Math.max(pathW, pathH);
+    const cx = (b.xMin + b.xMax) / 2;
+    const cy = (b.yMin + b.yMax) / 2;
+    const photoX = cx - photoSize / 2;
+    const photoY = cy - photoSize / 2;
+
+    // Center-crop source image to square (handles non-square uploads)
+    const img = state.sourceImage;
+    const sw = img.naturalWidth || img.width;
+    const sh = img.naturalHeight || img.height;
+    const sMin = Math.min(sw, sh);
+    const sx = (sw - sMin) / 2;
+    const sy = (sh - sMin) / 2;
+    ctx.drawImage(img, sx, sy, sMin, sMin, photoX, photoY, photoSize, photoSize);
+    ctx.restore();
+  }
+
+  // 3) OuterCurve stroke
+  ctx.strokeStyle = SVG.outerCurve.stroke;
+  ctx.lineWidth = SVG.outerCurve.strokeWidth;
+  ctx.lineJoin = 'miter';
+  ctx.miterLimit = 4;
+  ctx.stroke(outerPath);
+
+  // 4) InnerCurve stroke
+  ctx.strokeStyle = SVG.innerCurve.stroke;
+  ctx.lineWidth = SVG.innerCurve.strokeWidth;
+  ctx.stroke(innerPath);
+
+  // 5) Top notch rectangle
+  const n = SVG.notch;
+  ctx.fillStyle = n.fill;
+  ctx.fillRect(n.x, n.y, n.w, n.h);
+
+  ctx.restore();
+}
+
+function updatePreview() {
+  const canvas = document.getElementById('preview-canvas');
+  // Always render preview at 512 for display quality
+  renderGlyph(canvas, 512);
+
+  const label = document.getElementById('preview-label');
+  const readout = document.getElementById('export-size-readout');
+  readout.textContent = `${state.selectedSize} × ${state.selectedSize}`;
+  if (state.sourceImage) {
+    label.textContent = `Preview at 512×512 · Download will be ${state.selectedSize}×${state.selectedSize}`;
+    document.getElementById('btn-download').disabled = false;
+  } else {
+    label.textContent = 'No image loaded — upload one';
+    document.getElementById('btn-download').disabled = true;
+  }
+}
+
+// ============================================================
+//  IMAGE UPLOAD
+// ============================================================
+function handleUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    showStatus('Please select an image file (PNG, JPG, WebP).', 'error');
+    return;
+  }
+  loadImageFile(file);
+}
+
+function loadImageFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      state.sourceImage = img;
+      updatePreview();
+
+      // Show upload preview
+      document.getElementById('upload-zone').style.display = 'none';
+      const previewDiv = document.getElementById('upload-preview');
+      previewDiv.style.display = 'block';
+      document.getElementById('uploaded-thumb').src = e.target.result;
+      document.getElementById('upload-info').textContent =
+        `${file.name} · ${img.naturalWidth}×${img.naturalHeight}`;
+
+      showStatus('Image loaded!', 'success');
+    };
+    img.onerror = () => showStatus('Failed to load image.', 'error');
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearUpload() {
+  state.sourceImage = null;
+  document.getElementById('upload-zone').style.display = '';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('file-input').value = '';
+  updatePreview();
+}
+
+// Drag and drop
+const uploadZone = document.getElementById('upload-zone');
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => { uploadZone.classList.remove('dragover'); });
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files?.[0];
+  if (file && file.type.startsWith('image/')) loadImageFile(file);
+});
+
+// ============================================================
+//  SIZE SELECTOR
+// ============================================================
+function selectSize(size) {
+  state.selectedSize = size;
+  document.querySelectorAll('.size-opt').forEach(b => b.classList.toggle('active', Number(b.dataset.size) === size));
+  updatePreview();
+}
+
+// ============================================================
+//  NAME SANITIZATION
+// ============================================================
+function sanitizeName() {
+  const input = document.getElementById('glyph-name');
+  input.value = input.value
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-{2,}/g, '-');
+  state.glyphName = input.value;
+}
+
+// ============================================================
+//  DOWNLOAD
+// ============================================================
+function downloadGlyph() {
+  if (!state.sourceImage) return;
+
+  const size = state.selectedSize;
+  const offscreen = document.createElement('canvas');
+  renderGlyph(offscreen, size);
+
+  const name = state.glyphName || 'proper-name';
+  const filename = `${name}-${size}.png`;
+
+  offscreen.toBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showStatus(`Downloaded ${filename}`, 'success');
+  }, 'image/png');
+}
+
+// ============================================================
+//  STATUS MESSAGES
+// ============================================================
+function showStatus(message, type) {
+  const el = document.getElementById('status');
+  el.className = `status visible ${type}`;
+  el.innerHTML = type === 'info' ? `<span class="spinner"></span>${message}` : message;
+
+  if (type !== 'info') {
+    clearTimeout(el._timeout);
+    el._timeout = setTimeout(() => { el.classList.remove('visible'); }, 4000);
+  }
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+updatePreview();
+</script>
+</body>
+</html>
