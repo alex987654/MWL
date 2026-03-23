@@ -15,6 +15,9 @@ MWL Samples:
 Authoring Tool for MWL: 
 * [MWL Story Constellator](https://alex987654.github.io/MWL/MWL-Story-Constellator.html)
 
+Number Glyphs for MWL: 
+* [Number Generator](https://alex987654.github.io/MWL/MWL-Numeral-Generator.html)
+
 Symbol Definitions demo page: 
 * [Symbol defs](https://alex987654.github.io/MWL/MWL-symbol-defs/demo.html)
 
@@ -263,6 +266,8 @@ Use the **TRUE/FALSE/UNCERTAIN** metas for certainty or dialog cues. For negatio
 - **Negation:** don’t negate the PNC. Negate the **relation**:  
   `[⟦WANDERER⟧] [is-related-to MOD FALSE] [⟦EMPIRE⟧]`
 
+Proper Name Glyph Maker for MWL: 
+* [Proper Name Glyphs](https://alex987654.github.io/MWL/MWL-Proper-Name-Glyph-Maker.html)
 
 ---
 
@@ -367,6 +372,9 @@ MWL numerals are **pictographic** and **binary‑based** to aid machine readers 
   - **On heads:** count or cardinality - `[star-ship MOD four]`
   - **Inside a Measurement Pack:** when a numeral **follows `x10` or `/10`**, it is an **exponent** (10^(+n) or 10^(−n)) on the **DISTANCE‑TIME** base; these exponents belong to the **MP** and **do not** consume the target’s numeric slot.
 - **Budget:** numerals consume the single **numeric** slot for that target (you may still have one **descriptive**) - *except* when they are **internal to an MP** (see above).
+
+Create Number Glyphs for MWL: 
+* [Number Generator](https://alex987654.github.io/MWL/MWL-Numeral-Generator.html)
 
 ---
 
