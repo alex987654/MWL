@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke-width="12" stroke="#fff" fill="none" width="512" height="512" clip-rule="evenodd" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <!-- Vertical time axis (future down, matching MWL convention) -->
+    <path stroke-width="18" stroke-opacity="0.9" d="M256 46V466" />
+    <!-- Downward arrow head (future is down) -->
+    <path stroke-width="14" stroke-opacity="0.9" stroke-linejoin="round" d="M226 436L256 476L286 436" />
+    <!-- Pulse dots along time axis (temporal ticks - evenly spaced, like a metronome) -->
+    <circle cx="256" cy="106" r="8" fill="#fff" fill-opacity="0.9" stroke="none" />
+    <circle cx="256" cy="186" r="8" fill="#fff" fill-opacity="0.9" stroke="none" />
+    <circle cx="256" cy="266" r="8" fill="#fff" fill-opacity="0.9" stroke="none" />
+    <circle cx="256" cy="346" r="8" fill="#fff" fill-opacity="0.9" stroke="none" />
+    <!-- Wave-front arcs emanating from central pulse (temporal ripples) -->
+    <!-- Inner arcs -->
+    <path stroke-width="10" stroke-opacity="0.65" d="M 206 266 A 50 50 0 0 1 256 216" />
+    <path stroke-width="10" stroke-opacity="0.65" d="M 306 266 A 50 50 0 0 0 256 316" />
+    <!-- Middle arcs -->
+    <path stroke-width="10" stroke-opacity="0.4" d="M 156 266 A 100 100 0 0 1 256 166" />
+    <path stroke-width="10" stroke-opacity="0.4" d="M 356 266 A 100 100 0 0 0 256 366" />
+    <!-- Outer arcs -->
+    <path stroke-width="10" stroke-opacity="0.22" d="M 106 266 A 150 150 0 0 1 256 116" />
+    <path stroke-width="10" stroke-opacity="0.22" d="M 406 266 A 150 150 0 0 0 256 416" />
+    </g>
+</svg>

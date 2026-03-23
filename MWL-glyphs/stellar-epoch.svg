@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <!-- Stellar halo / birth nebula remnant -->
+    <circle cx="256" cy="160" r="65" fill="#fff7bf" opacity="0.04" />
+    <circle cx="256" cy="160" r="42" fill="#ffc63d" opacity="0.07" />
+    <!-- Main star (bright, main-sequence - matching single-star palette) -->
+    <circle cx="256" cy="160" r="30" fill="#ffc63d" opacity="0.9" />
+    <circle cx="256" cy="160" r="18" fill="#fff7bf" opacity="0.95" />
+    <!-- Vertical trail of stellar evolution (time descending = future down) -->
+    <!-- Early main sequence - bright -->
+    <circle cx="256" cy="220" r="10" fill="#ffc63d" opacity="0.7" />
+    <circle cx="256" cy="220" r="6" fill="#fff7bf" opacity="0.8" />
+    <!-- Mid life -->
+    <circle cx="256" cy="268" r="8" fill="#ffc63d" opacity="0.55" />
+    <circle cx="256" cy="268" r="5" fill="#fff7bf" opacity="0.6" />
+    <!-- Late main sequence - cooling -->
+    <circle cx="256" cy="312" r="7" fill="#ffcc40" opacity="0.4" />
+    <circle cx="256" cy="312" r="4" fill="#ffe2a6" opacity="0.5" />
+    <!-- Red giant phase - reddening -->
+    <circle cx="256" cy="352" r="6" fill="#ff9d5b" opacity="0.35" />
+    <circle cx="256" cy="352" r="3.5" fill="#ffe2a6" opacity="0.4" />
+    <!-- End state - faint remnant -->
+    <circle cx="256" cy="388" r="4.5" fill="#cdcdcd" opacity="0.25" />
+    <circle cx="256" cy="388" r="2.5" fill="#e5e5e5" opacity="0.3" />
+    <!-- Final dim point -->
+    <circle cx="256" cy="418" r="3" fill="#6c6c6c" opacity="0.2" />
+    <circle cx="256" cy="418" r="1.5" fill="#cdcdcd" opacity="0.25" />
+    <!-- Subtle connecting thread (time axis through the lifecycle) -->
+    <circle cx="256" cy="198" r="1.5" fill="#fff7bf" opacity="0.3" />
+    <circle cx="256" cy="244" r="1.3" fill="#ffc63d" opacity="0.25" />
+    <circle cx="256" cy="290" r="1.2" fill="#ffcc40" opacity="0.2" />
+    <circle cx="256" cy="332" r="1.1" fill="#ffe2a6" opacity="0.18" />
+    <circle cx="256" cy="370" r="1.0" fill="#cdcdcd" opacity="0.15" />
+    <circle cx="256" cy="404" r="0.9" fill="#6c6c6c" opacity="0.12" />
+    <!-- Sparse background -->
+    <circle cx="80" cy="80" r="1.2" fill="#cdcdcd" opacity="0.1" />
+    <circle cx="430" cy="100" r="1.0" fill="#cdcdcd" opacity="0.08" />
+    <circle cx="100" cy="420" r="1.1" fill="#cdcdcd" opacity="0.08" />
+    <circle cx="440" cy="400" r="1.0" fill="#cdcdcd" opacity="0.07" />
+    <circle cx="420" cy="256" r="0.9" fill="#cdcdcd" opacity="0.07" />
+    <circle cx="90" cy="256" r="1.0" fill="#cdcdcd" opacity="0.07" />
+    </g>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" version="1.1">
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <!-- Central origin point (early universe - hot, bright) -->
+    <circle cx="256" cy="256" r="18" fill="#fff8ea" opacity="0.15" />
+    <circle cx="256" cy="256" r="10" fill="#ffe2a6" opacity="0.6" />
+    <circle cx="256" cy="256" r="5" fill="#fff" opacity="0.95" />
+    <!-- Ring 1: inner epoch (warm - early universe, tight spacing) -->
+    <circle cx="256" cy="206" r="3.2" fill="#ffcc40" opacity="0.8" />
+    <circle cx="291" cy="216" r="3.0" fill="#ffe2a6" opacity="0.75" />
+    <circle cx="306" cy="246" r="3.2" fill="#ffcc40" opacity="0.8" />
+    <circle cx="296" cy="281" r="3.0" fill="#ffe2a6" opacity="0.75" />
+    <circle cx="266" cy="304" r="3.2" fill="#ffcc40" opacity="0.78" />
+    <circle cx="236" cy="302" r="3.0" fill="#ffe2a6" opacity="0.75" />
+    <circle cx="212" cy="280" r="3.2" fill="#ffcc40" opacity="0.78" />
+    <circle cx="208" cy="248" r="3.0" fill="#ffe2a6" opacity="0.75" />
+    <circle cx="222" cy="218" r="3.2" fill="#ffcc40" opacity="0.78" />
+    <!-- Ring 2: middle epoch (transitional - warm to cool) -->
+    <circle cx="256" cy="146" r="3.0" fill="#fff2d7" opacity="0.55" />
+    <circle cx="312" cy="160" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <circle cx="350" cy="208" r="3.0" fill="#fff2d7" opacity="0.52" />
+    <circle cx="362" cy="262" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <circle cx="340" cy="316" r="3.0" fill="#fff2d7" opacity="0.52" />
+    <circle cx="300" cy="352" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <circle cx="248" cy="360" r="3.0" fill="#fff2d7" opacity="0.52" />
+    <circle cx="196" cy="340" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <circle cx="160" cy="300" r="3.0" fill="#fff2d7" opacity="0.52" />
+    <circle cx="148" cy="248" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <circle cx="166" cy="196" r="3.0" fill="#fff2d7" opacity="0.52" />
+    <circle cx="204" cy="156" r="2.8" fill="#dfe7ff" opacity="0.5" />
+    <!-- Ring 3: outer epoch (cool - late universe, wider spacing) -->
+    <circle cx="256" cy="80" r="2.5" fill="#dfe7ff" opacity="0.32" />
+    <circle cx="332" cy="96" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="396" cy="148" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="424" cy="224" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="420" cy="306" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="382" cy="372" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="320" cy="414" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="246" cy="428" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="178" cy="404" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="120" cy="356" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="94" cy="286" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="96" cy="210" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <circle cx="130" cy="142" r="2.5" fill="#dfe7ff" opacity="0.3" />
+    <circle cx="190" cy="92" r="2.3" fill="#c8d8f8" opacity="0.28" />
+    <!-- Outermost scattered particles (furthest epoch, very faint) -->
+    <circle cx="256" cy="38" r="1.8" fill="#c8d8f8" opacity="0.15" />
+    <circle cx="375" cy="56" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    <circle cx="460" cy="150" r="1.8" fill="#c8d8f8" opacity="0.13" />
+    <circle cx="478" cy="280" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    <circle cx="440" cy="400" r="1.8" fill="#c8d8f8" opacity="0.13" />
+    <circle cx="350" cy="465" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    <circle cx="220" cy="472" r="1.8" fill="#c8d8f8" opacity="0.13" />
+    <circle cx="110" cy="430" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    <circle cx="50" cy="340" r="1.8" fill="#c8d8f8" opacity="0.13" />
+    <circle cx="44" cy="210" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    <circle cx="80" cy="100" r="1.8" fill="#c8d8f8" opacity="0.13" />
+    <circle cx="160" cy="48" r="1.6" fill="#b8c8e8" opacity="0.12" />
+    </g>
+</svg>
