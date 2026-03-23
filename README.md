@@ -12,6 +12,11 @@ MWL Samples:
 * [Star Wars 4 crawl in MWL](https://alex987654.github.io/MWL/Star-Wars-4-Crawl-in-MWL.html)
 * [“The Twin Exodus” sample story](https://alex987654.github.io/MWL/The-Twin-Exodus-MWL-Sample.html)
 
+Authoring Tool for MWL: 
+* [MWL Story Constellator](https://alex987654.github.io/MWL/MWL-Story-Constellator.html)
+
+Symbol Definitions demo page: 
+* [Symbol defs](https://alex987654.github.io/MWL/MWL-symbol-defs/demo.html)
 
 
 ## What This Experimental Language Is
@@ -670,10 +675,6 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | 7                     | numeral      |                                  |
 | 8                     | numeral      |                                  |
 ---
-
-
-Symbol defs demo page: 
-* [Symbol defs](https://alex987654.github.io/MWL/MWL-symbol-defs/demo.html)
 
 
 *End of introduction.*
