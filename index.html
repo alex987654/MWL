@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWL Introduction</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:rgb(10,11,15);
+  --bg-raised:rgb(18,20,26);
+  --bg-panel:rgb(26,29,38);
+  --border:rgb(42,46,58);
+  --text:rgb(232,234,240);
+  --text-dim:rgb(139,144,160);
+  --text-muted:rgb(85,90,106);
+  --accent:rgb(255,200,76);
+  --blue:rgb(74,124,255);
+  --code-bg:rgb(22,24,32);
+  --table-row-alt:rgba(26,29,38,.45);
+  --font:\"DM Sans\",-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:\"DM Mono\",\"Fira Code\",\"Consolas\",monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  font-size:15px;
+  line-height:1.7;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── Topbar ─────────────────────────────────────────── */
+#topbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg-raised);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  height:52px;
+  flex-shrink:0;
+}
+.logo{
+  font-size:15px;font-weight:600;
+  color:var(--accent);
+  letter-spacing:.5px;
+  white-space:nowrap;
+  cursor:default;
+}
+.logo span{
+  font-size:13px;font-weight:400;
+  color:var(--text-dim);
+  margin-left:2px;
+}
+.topbar-right{
+  margin-left:auto;
+  display:flex;align-items:center;gap:6px;
+}
+.tb-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--text);
+  font:500 12px/1 var(--font);
+  padding:0 12px;height:30px;
+  cursor:pointer;
+  text-decoration:none;
+  transition:background .15s,border-color .15s;
+}
+.tb-btn:hover{background:var(--border);border-color:var(--text-muted)}
+.tb-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tb-btn.primary:hover{filter:brightness(1.12)}
+
+/* ── Layout ─────────────────────────────────────────── */
+.wrapper{
+  display:flex;flex:1;overflow:hidden;
+  justify-content:center;
+}
+
+.content{
+  flex:1;
+  overflow-y:auto;
+  padding:36px 48px 64px;
+  max-width:860px;
+}
+
+/* ── Typography ─────────────────────────────────────── */
+h1{font-size:28px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:-.3px;line-height:1.25}
+h2{font-size:20px;font-weight:600;color:var(--text);margin-top:48px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.1px}
+h3{font-size:16px;font-weight:600;color:var(--text);margin-top:32px;margin-bottom:10px}
+h4{font-size:14px;font-weight:600;color:var(--text-dim);margin-top:24px;margin-bottom:8px}
+p{margin-bottom:14px}
+strong{font-weight:600}
+
+.subtitle{font-size:15px;color:var(--text-dim);margin-bottom:24px;line-height:1.6}
+
+/* ── Blockquote ────────────────────────────────────── */
+blockquote{
+  border-left:3px solid var(--blue);
+  background:rgba(74,124,255,.05);
+  padding:14px 18px;
+  margin:16px 0;
+  border-radius:0 6px 6px 0;
+  font-size:14px;
+  color:var(--text-dim);
+  line-height:1.7;
+}
+blockquote strong{color:var(--text)}
+blockquote p{margin-bottom:8px}
+blockquote p:last-child{margin-bottom:0}
+
+/* ── Lists ──────────────────────────────────────────── */
+ul,ol{margin:8px 0 14px 20px}
+li{margin-bottom:4px;font-size:14.5px}
+li ul,li ol{margin-top:4px;margin-bottom:4px}
+
+/* ── Code ───────────────────────────────────────────── */
+code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--code-bg);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:1px 6px;
+  color:var(--accent);
+}
+pre{
+  background:var(--code-bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:16px 18px;
+  margin:12px 0 16px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.6;
+  color:var(--text);
+}
+pre code{
+  background:none;border:none;padding:0;
+  color:inherit;font-size:inherit;
+}
+
+/* ── Tables ─────────────────────────────────────────── */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:12px 0 18px;
+  font-size:13.5px;
+}
+th{
+  text-align:left;
+  padding:9px 14px;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  color:var(--text-dim);
+  background:var(--bg-raised);
+  border-bottom:1px solid var(--border);
+}
+td{
+  padding:8px 14px;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+  vertical-align:top;
+}
+tr:nth-child(even) td{background:var(--table-row-alt)}
+
+/* ── HR ─────────────────────────────────────────────── */
+hr{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:36px 0;
+}
+
+/* ── Links ──────────────────────────────────────────── */
+.content a{
+  color:var(--blue);
+  text-decoration:none;
+  border-bottom:1px solid rgba(74,124,255,.25);
+  transition:border-color .15s;
+}
+.content a:hover{border-bottom-color:var(--blue)}
+
+/* ── Samples box ────────────────────────────────────── */
+.link-card{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 16px;
+  margin:4px 6px 4px 0;
+  font-size:13.5px;
+  color:var(--text);
+  text-decoration:none !important;
+  border-bottom:1px solid var(--border) !important;
+  transition:background .15s,border-color .15s;
+}
+.link-card:hover{background:var(--border);border-color:var(--text-muted)}
+.link-card .icon{font-size:16px;opacity:.7}
+
+/* ── Glyph list (numbered) ──────────────────────────── */
+.glyph-list{
+  columns:3;column-gap:20px;
+  margin:12px 0 18px;
+  list-style-position:inside;
+  font-size:13.5px;
+}
+.glyph-list li{break-inside:avoid;padding:2px 0}
+
+@media(max-width:900px){
+  .glyph-list{columns:2}
+}
+@media(max-width:600px){
+  .glyph-list{columns:1}
+}
+
+/* ── Status bar ─────────────────────────────────────── */
+.status-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:0 16px;
+  height:28px;
+  font-size:12px;
+  color:var(--text-muted);
+  flex-shrink:0;
+}
+.status-bar a{color:var(--text-muted);text-decoration:none}
+.status-bar a:hover{color:var(--text-dim)}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media(max-width:768px){
+  .content{padding:24px 18px 48px}
+  h1{font-size:22px}
+  h2{font-size:18px}
+  .glyph-list{columns:1}
+  .tb-btn.hide-mobile{display:none}
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<!-- ═══ Topbar ═══ -->
+<div id="topbar">
+  <div class="logo">MWL<span>Introduction</span></div>
+  <div class="topbar-right">
+    <a class="tb-btn hide-mobile" href="https://alex987654.github.io/MWL/MWL-Proper-Name-Glyph-Maker.html">◈ Proper Name Maker</a>
+    <a class="tb-btn" href="https://alex987654.github.io/MWL/MWL-Numeral-Generator.html">⑧ Numeral Generator</a>
+    <a class="tb-btn" href="https://alex987654.github.io/MWL/MWL-Story-Constellator.html">✦ Story Constellator</a>
+    <a class="tb-btn primary" href="https://github.com/alex987654/MWL" target="_blank">⬡ GitHub</a>
+  </div>
+</div>
+
+<!-- ═══ Main layout ═══ -->
+<div class="wrapper">
+
+<!-- ── Content ── -->
+<main class="content" id="content">
+
+<!-- ═══ Title ═══ -->
+<section id="intro">
+<h1>Milky Way Language (MWL)</h1>
+<p class="subtitle">For readers under a night sky: humans, other space‑faring species, and camera‑equipped AIs.</p>
+
+<blockquote>
+<p><strong>Core idea:</strong> A pictographic script built from astronomical phenomena. Clauses are compact. Time is <strong>vertical</strong> (future ↓, past ↑) on the page, line by line. Direct causality is laid out with a dedicated linker between lines.</p>
+<p>In the script, <strong>layout</strong> conveys meaning — <strong>not punctuation</strong>.</p>
+<p><strong>Purpose:</strong> Tell <strong>adventure fiction</strong> using <strong>shared celestial referents</strong>.</p>
+</blockquote>
+
+<p style="margin-top:18px"><strong>MWL Samples:</strong></p>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px">
+  <a class="link-card" href="https://alex987654.github.io/MWL/Star-Wars-4-Crawl-in-MWL.html"><span class="icon">✦</span> Star Wars 4 crawl in MWL</a>
+  <a class="link-card" href="https://alex987654.github.io/MWL/The-Twin-Exodus-MWL-Sample.html"><span class="icon">✦</span> "The Twin Exodus" sample story</a>
+</div>
+
+<p><strong>Authoring Tool:</strong></p>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px">
+  <a class="link-card" href="https://alex987654.github.io/MWL/MWL-Story-Constellator.html"><span class="icon">⬡</span> MWL Story Constellator</a>
+</div>
+
+<p><strong>Number Glyphs:</strong></p>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px">
+  <a class="link-card" href="https://alex987654.github.io/MWL/MWL-Numeral-Generator.html"><span class="icon">⑧</span> Number Generator</a>
+</div>
+
+<p><strong>Symbol Definitions:</strong></p>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px">
+  <a class="link-card" href="https://alex987654.github.io/MWL/MWL-symbol-defs/demo.html"><span class="icon">◈</span> Symbol defs demo</a>
+</div>
+</section>
+
+<hr>
+
+<!-- ═══ What this is ═══ -->
+<section id="what-this-is">
+<h2>What This Experimental Language Is</h2>
+<ul>
+  <li><strong>Audience:</strong> Readers who can view the night sky, space-faring beings, including AIs with cameras, who are familiar with the night sky on planetary surfaces or in space. Pages are meant to be legible by eye or camera without requiring spoken language.</li>
+  <li><strong>Purpose:</strong> Tell stories using mostly <strong>astronomical icons</strong> as a shared reference.</li>
+  <li><strong>Design constraints:</strong>
+    <ul>
+      <li>Minimal <strong>grammar</strong>: very few glyphs per clause; up to one descriptive and one numeral <strong>qualifier</strong>.</li>
+      <li><strong>Minimal grammar, maximal iconics</strong></li>
+      <li><strong>No tense</strong> morphology; use the time arrow encoded in the vertical axis, and use Doppler effect-grounded <strong>CAUSE-THEN</strong> to express a causal relationship.</li>
+      <li><strong>Legibility:</strong> Uniform <strong>on‑rail</strong> layout (single baseline), few metas, and <strong>determinatives</strong> for categories unrelated to astronomical phenomena (e.g., emotions).</li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<!-- ═══ How script works ═══ -->
+<section id="how-script-works">
+<h2>How the Script Works</h2>
+
+<ul>
+  <li><strong>Glyph categories:</strong>
+    <ul>
+      <li><strong>Objects/Events</strong> (physical things): stars, planets, eclipses, supernova, black hole, quasar, etc.</li>
+      <li><strong>Properties/Adverbs</strong> (qualities &amp; manner): outside/inside, converging/diverging, shrinking/expanding, above/below, etc.</li>
+      <li><strong>Verbs/Kinematics</strong>: rise, set, accelerate, capture, approach, etc.</li>
+      <li><strong>Meta/Discourse</strong>: direction, scale, cause-then (Doppler), proper name (aka proper-name-cartouche / PNC aka photo glyph), emotion marker.</li>
+      <li><strong>Emotions</strong>: fear, anger, joy, sadness, surprise, disgust, hope, courage, love, betrayal.</li>
+      <li><strong>Convertible glyphs</strong>: a curated subset may act as <strong>head or verb</strong> (e.g., <code>WANDER</code> ⇄ <code>PATH</code>)</li>
+    </ul>
+  </li>
+  <li><strong>Linkers and frames:</strong> <strong>cause-then</strong> for temporal/causal flow; <strong>signal/dialog</strong> for dialog; <strong>scale/level</strong> for spatial scale and spatial reference frame.</li>
+  <li><strong>Everything is on-rail</strong>
+    <ul>
+      <li><strong>Uniform look:</strong> All glyphs share the same baseline, size, and stroke. No stacking, no superscripts, no edge ornaments.</li>
+      <li>Do <strong>not</strong> stack two clauses on one line.</li>
+      <li><strong>Clause grid:</strong> Each <strong>content line</strong> is exactly <strong>one clause</strong>. Except for nominal clauses, it is laid on a <strong>three-slot rail</strong> with two conceptual gutters:
+        <br><strong>Left Head</strong> | <strong>Verb (center, exclusive)</strong> | <strong>Right Head</strong></li>
+      <li><strong>One verb per clause:</strong> The <strong>center slot</strong> may contain exactly <strong>one</strong> token from <strong>{VERB ∪ ConvertibleGlyph}</strong>. Heads sit on the side slots (also <strong>{HEAD ∪ ConvertibleGlyph}</strong>).</li>
+    </ul>
+  </li>
+  <li><strong>Spatial reference</strong> and <strong>Temporal order</strong>
+    <ul>
+      <li><strong>Scale:</strong> frame line starts with <code>• [scale object level object level …]</code> (scale is hierarchical and gets spatially smaller with each level, e.g. local galaxy … spiral arm …) within story. No verbs allowed in line, only objects; sets spatial frame/anchor.</li>
+      <li><strong>Temporal order is vertical</strong>, the next content line is <strong>later</strong> (future = DOWN) unless it is a frame or linker line.</li>
+      <li><strong>Linker line:</strong> <code>[cause-then]</code> alone between two content lines to assert <strong>causal</strong> order.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Clause Types</h3>
+<ul>
+  <li><strong>Verbal Clause (default):</strong> has a <strong>center</strong> nucleus (verb or CG-as-verb), expressing action/change/process. Example:<br>
+    <code>[⟦LUMEN⟧ + star-ship] [approach] [planet]</code>
+    <ul><li><strong>Location or positional presence</strong> is expressed using this clause type, by leveraging the verb <code>[linger]</code>.</li></ul>
+  </li>
+  <li><strong>Typing / Membership Clause:</strong> center is <code>[is-type]</code>. A <strong>non-verbal</strong> clause establishing <strong>class membership</strong> or <strong>type identity</strong>. <code>[is-type]</code> establishes a strong force linking objects or proper names. Examples:<br>
+    <code>[signal] [is-type] [PATH MOD constructed]</code><br>
+    <code>[⟦WANDERER⟧ + star-ship] [is-type] [constructed]</code><br>
+    <code>[star-ship] [is-type] [⟦REBEL‑ALLIANCE⟧]</code>
+  </li>
+  <li><strong>Relational Clause:</strong> center is <code>[is-related-to]</code>. A <strong>non-verbal</strong> clause establishing <strong>association</strong>. <code>[is-related-to]</code> establishes a weak force linking objects or proper names. Examples:<br>
+    <code>⟦PNC Leia⟧ [is-related] [⟦REBEL‑ALLIANCE⟧]</code><br>
+    <code>[signal] [is-related] [pulsar-beacon]</code>
+  </li>
+  <li><strong>Nominal Clause (mono/state assertion):</strong> A <strong>non-verbal</strong> clause, describing state/attribute/quantity of a single head using <strong>MOD</strong>. MOD modifies or qualifies the <strong>internal state</strong> of a head. Example:<br>
+    <code>[gas-giant MOD magnetosphere]</code> or <code>[star-ship MOD dimming MOD three]</code>
+    <ul><li><strong>AG</strong> is not used in nominal clauses (no action/roles).</li></ul>
+  </li>
+</ul>
+
+<h3>Convertible Glyphs (CGs)</h3>
+<ul>
+  <li>A curated subset may act as <strong>head or verb</strong> (e.g., <code>WANDER</code> ⇄ <code>PATH</code>) <strong>or qualifier</strong>.</li>
+  <li><strong>Slot casting by position:</strong> Center = <strong>verb role</strong>, sides = <strong>head role</strong>.</li>
+  <li><strong>Constraints (to avoid ambiguity):</strong>
+    <ul>
+      <li><strong>No single-glyph content lines</strong> with CGs (force context).</li>
+      <li><strong>No CG qualifies its paired form.</strong></li>
+      <li>Use <strong>AG</strong> whenever both heads could plausibly be agents (see below).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Agents and Roles (AG meta glyph)</h3>
+<ul>
+  <li><strong>Default:</strong> Agent = <strong>left head</strong> on a <strong>verbal clause</strong>.</li>
+  <li><strong>AG meta (with MOD) is authoritative:</strong>
+    <ul>
+      <li><strong>Mark a head:</strong> <code>[HEAD MOD AG]</code> → this head is the <strong>agent</strong>, regardless of side.</li>
+      <li><strong>Ellipsis:</strong> <code>[VERB MOD AG] [HEAD]</code> → agent <strong>carries over</strong> from the <strong>previous content line</strong> in the same frame.</li>
+    </ul>
+  </li>
+  <li><strong>Use AG when:</strong>
+    <ol>
+      <li><strong>CG verbs</strong> appear between <strong>capable heads</strong> (two star-ships).</li>
+      <li><strong>Symmetric verbs</strong> (join/converge/diverge/crossing paths) when initiation matters.</li>
+      <li><strong>Agent-right</strong> or <strong>focus inversions</strong>.</li>
+      <li><strong>Ellipsis</strong> (agent omitted).</li>
+    </ol>
+  </li>
+  <li><strong>Validation:</strong> At most <strong>one</strong> head may bear <code>MOD AG</code> per content line.</li>
+</ul>
+
+<h3>Qualifiers on Heads vs Verbs</h3>
+<ul>
+  <li><strong>Binder:</strong> <code>MOD</code> (only). It binds the <strong>next glyph</strong> as a modifier of the <strong>previous target</strong>.</li>
+  <li><strong>Head budget (per head):</strong> <strong>1 descriptive qualifier + 1 numeric qualifier</strong>.
+    <ul>
+      <li>Descriptive: property/state (<code>constructed</code>, <code>dimming</code>), spatial (<code>near/far/above/below</code>, <code>outside</code>), emotion (<code>[hope] EMOTION</code>), convertible glyphs if used as property</li>
+      <li><code>MOD FALSE</code> on a head is considered a descriptive qualifier</li>
+      <li><code>MOD AG</code> on a head is a qualifier but does not consume budget</li>
+      <li>Numeric: binary numeral glyphs (see Numbers).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Verb Budget</h3>
+<p><strong>Per verb nucleus: 1 descriptive + 1 numeric.</strong></p>
+<ul>
+  <li>Descriptive: <strong>first/next/last</strong>, <strong>emotion stance</strong>, <strong>FALSE</strong> (polarity), <strong>MAYBE</strong>.</li>
+  <li><code>MOD FALSE</code> on a verb is considered a descriptive qualifier</li>
+  <li><code>MOD AG</code> on a verb is considered a descriptive qualifier</li>
+  <li>Meaning of numerals on verbs: frequency/iteration.</li>
+</ul>
+
+<h3>Order in a Chain (readability convention)</h3>
+<ul>
+  <li><code>… MOD [descriptive] (MOD [number]) (MOD AG on head if agent)</code></li>
+  <li>For emotions: <code>… MOD [anger] EMOTION</code> (EMOTION determinative immediately after the emotion glyph).</li>
+  <li>For negation of a <strong>qualifier</strong>, place <code>MOD FALSE</code> <strong>after</strong> that qualifier.</li>
+</ul>
+
+<p><code>OUTSIDE</code> is legal only after a <strong>SCALE</strong> line.</p>
+
+<h3>Metas and Linkers</h3>
+<ul>
+  <li><strong>SCALE / LEVEL (>)</strong> — use to determine the spatial theater of action in content lines below SCALE. With each use of LEVEL, the spatial scale gets smaller. Frame line forms:
+    <ul>
+      <li>Canonical: <code>• [scale object > ⟦TARGET⟧]</code></li>
+      <li>Shorthand: <code>• [scale ⟦TARGET⟧]</code> (LEVEL inferred or inherited within story)</li>
+      <li>Example: <code>[scale] [local galaxy] [level] [nebula]</code> where nebula may be a proper name of type nebula.</li>
+    </ul>
+  </li>
+  <li><strong>CAUSE-THEN</strong> — line-level linker (Doppler visual, direction of motion vertical, future down). Place <strong>between</strong> two cause/effect content lines.</li>
+  <li><strong>TRUE / FALSE:</strong> expressed through meta <code>[true]</code> (100% likelihood, visually RGB 255,255,255), used in dialog (affirmative responses to questions). Negation is expressed through meta <code>[FALSE]</code> (0% likelihood, RGB 0,0,0). Uncertain/maybe is visually a gray meta glyph and expressed through <code>[UNCERTAIN]</code>. To negate a head or verb, use <code>MOD FALSE</code>. This occupies the <strong>descriptive</strong> slot for that head or verb.</li>
+  <li><strong>Determinatives (postfix, zero-budget):</strong>
+    <ul>
+      <li><strong>EMOTION</strong> — follows an <strong>emotion glyph</strong>; aids non-human parsing to distinguish emotions from other glyphs: <code>… [anger] EMOTION</code>.</li>
+      <li><strong>DIALOG</strong> — used to indicate dialog (questions and answers) and follows an <strong>utterance head</strong> in dialog: <code>… [UTTERANCE …] DIALOG</code> (question/answer context).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Ordered Lists Without Numerals (FIRST / NEXT / LAST)</h3>
+<ul>
+  <li>Ordinals are <strong>lexical metas</strong>, not numbers. Attach via <code>MOD</code>:
+    <ul>
+      <li><code>[WAYPOINT] MOD [FIRST]</code> — "foremost"</li>
+      <li><code>[WAYPOINT] MOD [NEXT]</code> — "next in sequence"</li>
+      <li><code>[WAYPOINT] MOD [LAST]</code> — "final in sequence"</li>
+    </ul>
+  </li>
+  <li>These consume the <strong>descriptive</strong> slot on their target.</li>
+</ul>
+</section>
+
+<!-- ═══ Reading direction ═══ -->
+<section id="reading-direction">
+<h2>Reading Direction &amp; Page Layout</h2>
+<ul>
+  <li><strong>Reading direction:</strong> A story begins with the <strong>direction</strong> meta glyph (horizontal pointer reminiscent of a compass) to define reading direction on a page.</li>
+  <li><strong>Horizontal reading:</strong> <strong>Left → Right</strong> within a line.</li>
+  <li><strong>Arrow of time:</strong> <strong>Time is vertical, i.e. it is orthogonal</strong> to the pointer shown in the <strong>direction meta glyph:</strong> <strong>Future is DOWN (↓)</strong> and <strong>Past is UP (↑)</strong> on pages, always. <strong>New line = later</strong>, always in the <strong>narrator's proper time</strong> (future is <strong>down</strong>).<br>
+    The <strong>CAUSE‑THEN</strong> linker lives on a <strong>separate line</strong> between cause (content line above) and effect (content line below).</li>
+  <li><strong>Contextual existence:</strong> Existence is assumed (zero-marked) by the narrator whenever and as soon as an entity is introduced with a glyph in a content line.
+    <ul><li>Exception: an object is introduced in a content line solely to express that it does not exist. (<code>object mod FALSE</code>)</li></ul>
+  </li>
+  <li><strong>Planetary surface:</strong> the <strong>planetary surface</strong> glyph must appear before <strong>above/below</strong>; these properties read relative to last used planetary surface glyph.</li>
+  <li><strong>Spatial scales (SCALE and LEVEL glyphs):</strong>
+    <ul>
+      <li><strong>Canonical:</strong> <code>• [scale object level ⟦TARGET⟧]</code></li>
+      <li><strong>Anchored shorthand:</strong> <code>• [scale ⟦TARGET⟧]</code> — LEVEL is <strong>inferred</strong> from target type or <strong>inherited</strong> from the previous frame.</li>
+      <li><strong>Use one or more explicit LEVEL</strong> for ambiguous anchors (e.g., <strong>star-ship</strong>), <strong>to approximate spatial size</strong> (e.g., <code>level [small moon] level ⟦DEATH‑STAR⟧</code>), and <strong>event anchors</strong> (add <strong>linger</strong> as modifier to stabilize).</li>
+    </ul>
+  </li>
+  <li><strong>End of a sentence:</strong> Two sentences must be in separate lines.</li>
+</ul>
+</section>
+
+<!-- ═══ Grammar Essentials ═══ -->
+<section id="grammar-essentials">
+<h2>Grammar Essentials</h2>
+</section>
+
+<section id="clause-shapes">
+<h3>Clause Shapes</h3>
+
+<h4>1. Mono (property on a head; optional count)</h4>
+<pre><code>[HEAD]  MOD [descriptive]  (MOD [number])</code></pre>
+<p><strong>Budget (per target):</strong> <strong>1 descriptive + 1 numeric</strong> max. Descriptive includes property/state/spatial/orientation/emotion-typed property. Determinatives don't count towards budget.</p>
+
+<h4>2. Dyad (two heads and a verb; each side may have its own modifiers)</h4>
+<pre><code>[HEAD₁  (MOD …)]   [VERB  (MOD descriptive) (MOD number)]   [HEAD₂  (MOD …)]</code></pre>
+<ul>
+  <li><strong>Agent default:</strong> <strong>left head</strong>.</li>
+  <li><strong>Disambiguate with AG</strong> when ambiguous, inverted, or ellipsis:
+    <ul>
+      <li><code>[HEAD₁ MOD AG] [VERB] [HEAD₂]</code> (mark left explicitly)</li>
+      <li><code>[HEAD₁] [VERB] [HEAD₂ MOD AG]</code> (agent-right)</li>
+      <li><code>[VERB MOD AG] [HEAD]</code> (agent carries over; no agent head shown)</li>
+    </ul>
+  </li>
+  <li>AG does not count towards the descriptive or number MOD budget.</li>
+</ul>
+
+<h4>3. Typing Clause — identity/class</h4>
+<pre><code>[X]  [is-type]  [Y (MOD property)]</code></pre>
+<p>Class membership and identity. <strong>Negation</strong>: <code>[is-type MOD FALSE]</code>.</p>
+
+<h4>4. Relational Clause — belonging/association</h4>
+<pre><code>[X]  [is-related-to]  [Y (MOD property)]</code></pre>
+<p>Belonging, provenance, or association, somewhat similar to English "of". <strong>Negation</strong>: <code>[is-related-to MOD FALSE]</code>. Weaker than <code>[is-type]</code>.</p>
+
+<h4>5. Causal Linkage (line-level)</h4>
+<pre><code>[CAUSE line]
+[cause‑then]
+[EFFECT line]</code></pre>
+<p>Negate effects by negating the <strong>effect verb</strong> (see FALSE).</p>
+
+<blockquote>
+<p><strong>Important:</strong> <strong>Qualifiers never occupy their own separate rail slot</strong>; they attach to a head or verb using <strong>MOD</strong>. PNC (proper names) never take qualifiers.</p>
+</blockquote>
+</section>
+
+<hr>
+
+<section id="temporal-framing">
+<h3>Temporal Framing</h3>
+<ul>
+  <li><strong>Vertical axis encodes the narrator's proper time.</strong> Each new line advances time.</li>
+  <li>MWL must be written in the <strong>narrator's reference frame</strong>.</li>
+  <li><strong>CAUSE‑THEN</strong> sits alone between two lines to enforce <strong>order and implication</strong> without tense morphology.</li>
+  <li>Use <strong>pulsar + SIGNAL</strong> as a metronome when needed; numeric frequency attaches to verb via MOD.</li>
+</ul>
+</section>
+
+<hr>
+
+<section id="convertible-glyphs">
+<h3>Convertible Glyphs</h3>
+<p>A small subset of glyphs may appear as <strong>head</strong> or <strong>verb</strong> (e.g., <strong>WANDER</strong> (verb) vs <strong>WANDER as PATH</strong> (head)). <strong>Position</strong> casts role as <strong>head vs verb</strong>; <strong>MOD-docking</strong> determines a <strong>qualifier</strong> and is allowed for CG when the CG is used as a property.</p>
+
+<p><strong>Rules to keep pages unambiguous:</strong></p>
+<ul>
+  <li><strong>Position casts role:</strong> center = <strong>verb</strong>, sides = <strong>head</strong>.</li>
+  <li><strong>Convertible glyphs gain qualifier status only when preceded via MOD.</strong> They cannot function as qualifiers by adjacency alone.</li>
+  <li><strong>No single‑glyph clauses</strong> with CGs (force context).</li>
+  <li><strong>No CG qualifies its paired form</strong> (e.g. WANDER cannot qualify PATH).</li>
+  <li>Use <strong>AG</strong> whenever two capable heads could be agents, you invert roles, or you elide the agent.</li>
+</ul>
+
+<p><strong>Examples:</strong></p>
+<ul>
+  <li>Verb: <code>[star-ship] [wander] [spiral arm]</code></li>
+  <li>Head: <code>[path] MOD [constructed]</code></li>
+</ul>
+
+<p><strong>Table of Convertible Glyphs:</strong></p>
+<table>
+<thead>
+  <tr><th>Glyph</th><th>Primary Role</th><th>Secondary Role</th><th>Tertiary Role</th></tr>
+</thead>
+<tbody>
+  <tr><td>increase</td><td>meta</td><td>property: increasing</td><td></td></tr>
+  <tr><td>decrease</td><td>meta</td><td>property: decreasing</td><td></td></tr>
+  <tr><td>spiral</td><td>verb</td><td>object: spiral arm</td><td></td></tr>
+  <tr><td>orbit</td><td>meta</td><td>verb: linger</td><td></td></tr>
+  <tr><td>wander</td><td>verb</td><td>meta: path</td><td></td></tr>
+  <tr><td>dimming</td><td>property</td><td>verb: fade</td><td>meta: low-energy, depletion</td></tr>
+  <tr><td>bright</td><td>property</td><td>verb: glow</td><td>meta: high-energy, saturation</td></tr>
+  <tr><td>expanding</td><td>property</td><td>verb: expand</td><td></td></tr>
+  <tr><td>shrinking</td><td>property</td><td>verb: shrink</td><td></td></tr>
+  <tr><td>constructed</td><td>property</td><td>verb: construct</td><td></td></tr>
+  <tr><td>destroyed</td><td>property</td><td>verb: destroy</td><td></td></tr>
+  <tr><td>signal</td><td>verb</td><td>meta: message</td><td></td></tr>
+  <tr><td>gate</td><td>meta</td><td>verb: cross</td><td></td></tr>
+</tbody>
+</table>
+</section>
+
+<hr>
+
+<section id="parataxis">
+<h3>Paratactic Clause Chaining</h3>
+<p>Beyond a small number of meta glyphs, relations such as "for", "and", "but", "about", or non-spatial use of "at/to" in cognitive, evaluative or emotional clauses are expressed through <strong>paratactic clause chaining</strong>: a sequence of clauses placed in direct adjacency, in which <strong>order and proximity infer meaning in MWL</strong>. The first clause establishes the <strong>setting</strong> (where necessary, e.g. to describe a place to launch from in <code>ascend to</code>), the second clause establishes the <strong>topic or action</strong> (≈ "about" / topic), the third and fourth express <strong>more details or the conceptual state or the target or the consequence</strong>. Interpretation arises from <strong>proximity and clausal alignment</strong>.</p>
+<p>Clause order should — where applicable — match the idea that time is vertical in MWL. Parataxis should only be used where preferable over the use of <code>MOD</code>, <code>is-type</code>, <code>is-related-to</code>, or <code>because-then</code>.</p>
+
+<p><strong>Example:</strong></p>
+<pre><code>[star-ship] [is-type] [⟦EMPIRE⟧]
+⟦PNC Vader⟧ [is-related] [⟦star-ship⟧]
+[star-ship] [mod] [destroyed]
+[cause-then]
+⟦PNC Vader⟧ [mod] [angry] [EMOTION] [signal]
+⟦PNC Leia⟧ [mod] [joy] [EMOTION]</code></pre>
+</section>
+
+<hr>
+
+<section id="yes-no">
+<h3>Yes / No</h3>
+<p>Use the <strong>TRUE/FALSE/UNCERTAIN</strong> metas for certainty or dialog cues. For negation, attach <code>FALSE</code> with <strong>MOD</strong> to the <strong>target</strong> you negate:</p>
+<ul>
+  <li>Verb: <code>[approach MOD FALSE] [station]</code> → "does <strong>not</strong> approach"</li>
+  <li>Qualifier: <code>[approach MOD FROM OUTSIDE MOD FALSE] …</code> → "approaches, but <strong>not</strong> from outside"</li>
+  <li>Property on head: <code>[gas-giant MOD magnetosphere MOD FALSE]</code></li>
+  <li>Existence: <code>[PATH MOD FALSE]</code> → "no path"</li>
+</ul>
+<p><strong>Note:</strong> <code>MOD FALSE</code> on a verb occupies the verb's <strong>descriptive</strong> slot for that clause.</p>
+</section>
+
+<hr>
+
+<!-- ═══ PNC ═══ -->
+<section id="pnc">
+<h2>Using Proper Nouns with PNC (Proper‑Name Cartouche)</h2>
+<p><strong>What the PNC glyph does:</strong> wraps a head with a <strong>name</strong> (color or b/w photo; alien rune; icon). It <strong>names</strong>, it does <strong>not type</strong>. Use a <strong>typing clause</strong> to type/classify. Generally every PNC should be typed with <code>is-type</code> first before it is used in MWL.</p>
+
+<h3>Core Rules</h3>
+<ul>
+  <li><strong>No MOD for initial typing on PNC:</strong><br>
+    <code>[⟦WANDERER⟧] [is-type] [star-ship MOD constructed MOD interstellar]</code> ✅<br>
+    <code>[⟦WANDERER⟧ MOD star-ship]</code> ❌
+  </li>
+  <li><strong>First mention:</strong> use an initial, explicit typing clause for readability. After that, a bare PNC (<code>[⟦WANDERER⟧]</code>) can stand as the <strong>head anchor</strong>.</li>
+  <li><strong>Qualifiers after typing:</strong> you may attach qualifiers to later PNC mentions; they apply to the <strong>typed entity</strong>:<br>
+    <code>[⟦WANDERER⟧] [drift MOD dimming] [⟦GOLDEN-STAR⟧]</code></li>
+  <li><strong>Negation:</strong> don't negate the PNC. Negate the <strong>relation</strong>:<br>
+    <code>[⟦WANDERER⟧] [is-related-to MOD FALSE] [⟦EMPIRE⟧]</code></li>
+</ul>
+
+<p>
+  <a class="link-card" href="https://alex987654.github.io/MWL/MWL-Proper-Name-Glyph-Maker.html"><span class="icon">◈</span> Proper Name Glyph Maker</a>
+</p>
+</section>
+
+<hr>
+
+<!-- ═══ Dialog ═══ -->
+<section id="dialog">
+<h2>Dialog in MWL: Signal–Dialog/Echo</h2>
+<p><strong>Goal:</strong> binary or ternary dialog readable by sensors; express boolean questions/answers without punctuation, with robust Q↔A matching over long distances.</p>
+
+<h3>Syntax</h3>
+<ul>
+  <li>Center verb: signal.</li>
+  <li>Utterance head: the topic or phrase.</li>
+  <li>Determinative: DIALOG postfix (no budget).</li>
+  <li>Responses/Polarity: attach exactly one of [true], [false], [uncertain] before DIALOG.</li>
+</ul>
+
+<h3>Building Blocks</h3>
+<ul>
+  <li><code>[signal]</code> is a verb (center) for sending signals without information content, for transmitting messages, and for simple dialog (yes/no questions and responses).</li>
+  <li><code>DIALOG</code> is strictly a <em>dialog determinative</em>. It is placed <strong>after</strong> the <strong>utterance head</strong> (postfix) in the question transmitted. Very much like an EMOTION determinative, <strong>DIALOG does not consume budget</strong>.</li>
+  <li><strong>Answer polarity:</strong> attach exactly one of <code>[true]</code>, <code>[false]</code>, or <code>[uncertain]</code> to the <strong>utterance head</strong> <strong>before</strong> <code>DIALOG</code>.</li>
+  <li><strong>Agent (optional):</strong> mark the <strong>speaker</strong> with <code>MOD AG</code> if needed.</li>
+  <li><strong>Matching utterance:</strong> the <strong>utterance head tokens</strong> in the response <strong>must match</strong> the question's utterance exactly, so question/answer pairs can be unambiguously linked.</li>
+</ul>
+
+<h3>Patterns</h3>
+
+<h4>Yes/No Question (one clause):</h4>
+<pre><code>[⟦SPEAKER⟧ MOD AG]   [signal]   [UTTERANCE  DIALOG]</code></pre>
+<p>Presence of postfix <code>DIALOG</code> <strong>without</strong> polarity marks this as a <strong>question</strong>.</p>
+
+<h4>Answer (one clause):</h4>
+<pre><code>[⟦RESPONDER⟧ MOD AG]   [signal]   [UTTERANCE  [TRUE]    DIALOG]   // YES
+[⟦RESPONDER⟧ MOD AG]   [signal]   [UTTERANCE  [FALSE]   DIALOG]   // NO
+[⟦RESPONDER⟧ MOD AG]   [signal]   [UTTERANCE  [UNCERTAIN] DIALOG] // MAYBE</code></pre>
+<p>Use exactly <strong>one</strong> of <code>yes</code> / <code>no</code> / <code>uncertain</code>. Do <strong>not</strong> combine them. <code>DIALOG</code> is determinative (no budget cost).</p>
+
+<h4>Emotion on the act of speaking (stance):</h4>
+<pre><code>[⟦LEADER⟧ MOD AG]   [signal MOD courage EMOTION]   [UTTERANCE DIALOG]</code></pre>
+
+<h3>Validator Notes</h3>
+<ul>
+  <li>One clause per line; <code>signal</code> is the center verb.</li>
+  <li><strong>Question:</strong> postfix <code>DIALOG</code> on the utterance <strong>without</strong> yes/no/uncertain.</li>
+  <li><strong>Answer:</strong> the <strong>same utterance head</strong> plus exactly one of <code>yes</code> / <code>no</code> / <code>uncertain</code>, then postfix <code>DIALOG</code>.</li>
+  <li><strong>Budgets:</strong> <code>DIALOG</code> is a <strong>determinative</strong> and does <strong>not</strong> consume budget. <code>yes/no/uncertain</code> attach in front of the determinative and don't consume budget.</li>
+  <li><strong>Do not</strong> put <code>FALSE</code> on <code>signal</code> for "No" — that would negate the act of speaking, not the answer's polarity.</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- ═══ Measurements ═══ -->
+<section id="measurements">
+<h2>Measurements with DISTANCE‑TIME (H‑hyperfine)</h2>
+<p>Use the <strong>H-hyperfine transition</strong> (21 cm wavelength / its period) as a shared <strong>ruler/clock</strong>. Combine with <strong>x10</strong> and <strong>/10</strong> shifter glyphs and binary numerals to express <strong>distances</strong> and <strong>durations</strong> compactly.</p>
+
+<h3>Measurement Pack (MP)</h3>
+<p>A measurement is a <strong>single descriptive qualifier</strong> that attaches via <code>MOD</code> to a <strong>verb</strong> or <strong>head</strong>:</p>
+<pre><code>MP := [DISTANCE‑TIME  MOD &lt;mantissa-number&gt;  (MOD x10 MOD &lt;k&gt;)  (MOD /10 MOD &lt;j&gt;)]
+// Value = (mantissa) × 10^(k) × (H-hyperfine λ for length, H-hyperfine period for time)
+// Value = (mantissa) × 10^(−j) × (H-hyperfine λ for length, H-hyperfine period for time)</code></pre>
+<ul>
+  <li><strong>Mantissa-number:</strong> any MWL numeral (binary positional).</li>
+  <li>Use <strong>either x10 or /10:</strong> takes its <strong>own exponent numeral</strong> (attached via MOD).</li>
+  <li><strong>Budget:</strong> the <strong>MP</strong> as a whole consumes <strong>one descriptive slot</strong> on its <strong>target</strong>; numerals inside the MP do <strong>not</strong> consume the target's numeric slot.</li>
+</ul>
+
+<h3>Choosing Dimension (length vs time)</h3>
+<ul>
+  <li>Attach MP to a <strong>PATH</strong>, corridor, or <strong>motion verb</strong> (e.g. <strong>drift/accelerate</strong>…) → interprets as <strong>distance/length</strong>.</li>
+  <li>Attach MP to <strong>linger/message</strong> (aspect) → interprets as <strong>duration/time</strong>.</li>
+</ul>
+
+<h3>Examples</h3>
+<ul>
+  <li><strong>Distance along a route:</strong><br>
+    <code>[⟦WANDERER⟧ MOD AG] [wander] [PATH MOD [DISTANCE‑TIME MOD five MOD x10 MOD eleven]]</code></li>
+  <li><strong>Duration of thrust:</strong><br>
+    <code>[⟦WANDERER⟧ MOD AG] [accelerate MOD [DISTANCE‑TIME MOD one MOD x10 MOD eight]]</code></li>
+  <li><strong>Fine scale:</strong><br>
+    <code>[PATH MOD [DISTANCE‑TIME MOD seven MOD /10 MOD one]]</code></li>
+</ul>
+
+<h3>Validator</h3>
+<ul>
+  <li>MP is <strong>one</strong> descriptive qualifier on its target.</li>
+  <li>Inside MP: order is <code>mantissa → (x10)</code> or <code>mantissa → (/10)</code>; parser follows MOD chains.</li>
+  <li>Dimension is determined solely by <strong>where the MP attaches</strong>.</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- ═══ Numbers ═══ -->
+<section id="numbers">
+<h2>Numbers / Numerals (Binary Positional)</h2>
+<p>MWL numerals are <strong>pictographic</strong> and <strong>binary‑based</strong> to aid machine readers while remaining iconic.</p>
+
+<ul>
+  <li><strong>Glyph anatomy:</strong>
+    <ul>
+      <li><strong>Binary rail:</strong> a horizontal baseline with <strong>bit cells</strong>; <strong>set bits</strong> are drawn as vertical bars <strong>below</strong> the rail.</li>
+      <li><strong>Weight ticks:</strong> small ticks <strong>above</strong> the rail that <strong>increase in height right→left</strong> (cueing 2, 4, 8, …).</li>
+      <li><strong>Least significant bit (LSB) is on the right</strong> in binary rail in MWL numeral glyphs.</li>
+      <li><strong>2–8 use a ring-with-dots determinative</strong> (count dots inside a circle); <strong>≥9 omit the dot ring</strong> and rely on the rail only.</li>
+    </ul>
+  </li>
+  <li><strong>Singular</strong>: unmarked</li>
+  <li><strong>Zero</strong>: expressed through FALSE.</li>
+  <li><strong>Attachment (with MOD):</strong>
+    <ul>
+      <li><strong>On verbs:</strong> frequency/iteration — <code>[message MOD three]</code>, <code>[approach MOD two]</code></li>
+      <li><strong>On heads:</strong> count or cardinality — <code>[star-ship MOD four]</code></li>
+      <li><strong>Inside a Measurement Pack:</strong> when a numeral <strong>follows <code>x10</code> or <code>/10</code></strong>, it is an <strong>exponent</strong> (10^(+n) or 10^(−n)) on the <strong>DISTANCE‑TIME</strong> base; these exponents belong to the <strong>MP</strong> and <strong>do not</strong> consume the target's numeric slot.</li>
+    </ul>
+  </li>
+  <li><strong>Budget:</strong> numerals consume the single <strong>numeric</strong> slot for that target (you may still have one <strong>descriptive</strong>) — <em>except</em> when they are <strong>internal to an MP</strong> (see above).</li>
+</ul>
+
+<p>
+  <a class="link-card" href="https://alex987654.github.io/MWL/MWL-Numeral-Generator.html"><span class="icon">⑧</span> Number Generator</a>
+</p>
+</section>
+
+<hr>
+
+<!-- ═══ Morphology ═══ -->
+<section id="morphology">
+<h2>Morphology &amp; Diacritics (Meta Practices)</h2>
+
+<ul>
+  <li><strong>MOD (binder):</strong> linear operator; <strong>binds the next glyph</strong> as a modifier of the previous. Max <strong>two</strong> per target: <strong>1 descriptive + 1 numeric</strong>.</li>
+  <li><strong>AG (agent role):</strong> used <strong>with MOD</strong>:
+    <ul>
+      <li>Mark a head: <code>[HEAD MOD AG]</code> (agent-left explicit or agent-right when attached to the right head)</li>
+      <li>Ellipsis: <code>[VERB MOD AG]</code> (carry over previous agent)</li>
+      <li><strong>AG</strong> is a <strong>role marker</strong>, not a qualifier; it does <strong>not</strong> consume the descriptive/numeric budget.</li>
+    </ul>
+  </li>
+  <li><strong>Determinatives (postfix, zero-budget):</strong>
+    <ul>
+      <li><strong>EMOTION:</strong> follows an <strong>emotion glyph</strong> immediately: <code>… [anger] EMOTION</code>.</li>
+      <li><strong>DIALOG:</strong> follows the <strong>utterance head</strong> in dialog: <code>… [UTTERANCE …] DIALOG</code>.</li>
+    </ul>
+  </li>
+  <li><strong>EMOTION determinative</strong> follows an <strong>emotion glyph</strong> immediately: <code>… MOD [anger] EMOTION</code>. It flags the category for parsers; <strong>optional</strong> and <strong>non-semantic</strong>.
+    <ul><li><strong>Scope by attachment point:</strong> on <strong>verb</strong> = clause stance; on <strong>head</strong> = local feeling.</li></ul>
+  </li>
+  <li><strong>DIALOG</strong> is a determinative on an <strong>utterance head</strong>, use for dialog (Yes/No questions and answers)</li>
+</ul>
+
+<h3>Orthographic Morphology — the Gray MWL Frame</h3>
+<ul>
+  <li><strong>What it is:</strong> a neutral gray rectangle around <strong>every glyph</strong> that signals "this is an MWL glyph" and disambiguates it from background pixels or other scripts.</li>
+  <li><strong>Geometry (scales with size):</strong> outer margin = <strong>8–10%</strong>; stroke = <strong>1.5–2.0%</strong>; corner radius = <strong>3–4%</strong> (square corners allowed); color = <strong>#949698 / rgb(148,150,152)</strong>.</li>
+  <li><strong>Two variants:</strong>
+    <ul>
+      <li><strong>Regular frame (default):</strong> used for all standard glyphs (e.g., <strong>SCALE</strong>).</li>
+      <li><strong>Meta-only frame (wider):</strong> rectangle itself <strong>carries the meaning</strong> for <strong>YES / NO / UNCERTAIN</strong>; inner area is a <strong>uniform fill</strong> (no icon strokes).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Probability Metas — YES / NO / UNCERTAIN (grayscale tiles)</h3>
+<ul>
+  <li><strong>Render:</strong>
+    <ul>
+      <li><strong>TRUE</strong> = white fill <strong>rgb(255,255,255)</strong></li>
+      <li><strong>FALSE</strong> = black fill <strong>rgb(0,0,0)</strong></li>
+      <li><strong>UNCERTAIN</strong> = mid gray <strong>#2D2D2D / rgb(45,45,45)</strong></li>
+    </ul>
+  </li>
+  <li><strong>Dialog usage:</strong> attach <strong>behind the UTTERANCE head</strong> <strong>right before</strong> DIALOG. DIALOG is <strong>determinative</strong> (zero-budget).</li>
+</ul>
+
+<h3>Frames, Planes, and Linkers</h3>
+<ul>
+  <li><strong>SCALE</strong> is a <strong>frame-setter on its own line</strong>; <strong>anchored shorthand</strong> is allowed (omit <strong>LEVEL</strong> when inferable/inheritable):
+    <ul>
+      <li>Canonical: <code>• [scale > LEVEL > ⟦TARGET⟧]</code></li>
+      <li>Shorthand: <code>• [scale > ⟦TARGET⟧]</code></li>
+      <li>Use <strong>explicit LEVEL</strong> for ambiguous anchors (e.g., a <strong>star-ship</strong>) or interiors.</li>
+    </ul>
+  </li>
+  <li><strong>OUTSIDE/INSIDE</strong>, <strong>NEAR/FAR</strong>, <strong>CENTERED/OFF-CENTERED</strong> is <strong>legal only after</strong> an anchored <strong>SCALE</strong> (or when a local <strong>PLANE</strong> is set), and it refers to the most recent SCALE line.</li>
+  <li><strong>ABOVE/BELOW</strong> is <strong>legal only after</strong> a <strong>planetary surface</strong> is introduced.</li>
+  <li><strong>CAUSE-THEN</strong>: a <strong>line-level linker</strong> placed <strong>between</strong> cause and effect lines; negate outcomes by <strong>negating the effect verb</strong>.</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- ═══ Ordering ═══ -->
+<section id="ordering">
+<h2>Ordering Without Numerals (FIRST / NEXT / LAST)</h2>
+<p>To describe sequence positions without reusing numerals:</p>
+<ul>
+  <li>Use <strong>FIRST</strong>, <strong>NEXT</strong>, <strong>LAST</strong> as <strong>meta ordinals</strong> (distinct from numbers).</li>
+  <li>Attach via <strong>MOD</strong> to the item they qualify:
+    <ul>
+      <li><code>[WAYPOINT] MOD [FIRST]</code></li>
+      <li><code>[WAYPOINT] MOD [NEXT]</code></li>
+      <li><code>[WAYPOINT] MOD [LAST]</code></li>
+    </ul>
+  </li>
+  <li>These are lexemes of order (like ancient "foremost/next/last"), not counts; they occupy the <strong>descriptive</strong> slot on their target.</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- ═══ Heuristics ═══ -->
+<section id="heuristics">
+<h2>Authoring Heuristics</h2>
+<ul>
+  <li>Keep clauses <strong>short</strong> (preferably 2–8 glyphs).</li>
+  <li>One clause per content line.</li>
+  <li>Keep sufficient and consistent spacing between content lines, and use a new line control character at the end of a content line.</li>
+  <li>Treat <strong>verbs as clause nuclei</strong>: attach stance, emotion, uncertainty/negation there to mean the whole proposition.</li>
+  <li>Use <strong>AG</strong> when roles are ambiguous, inverted, or omitted. Exception: leave out <strong>AG</strong> if you want to intentionally keep ambiguous.</li>
+  <li>Express related clauses through paratactic clause chaining, focus on proximity first, use clause order only where temporally or causally or physically applicable.</li>
+  <li><strong>Convertible glyphs:</strong> rely on <strong>position casting</strong> and MOD for properties/qualifiers; avoid CG self-qualification.</li>
+  <li>Reserve <strong>CAUSE‑THEN</strong> for real causality, not mere sequence (for that, use <strong>FIRST/NEXT/LAST</strong> or a new line).</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- ═══ Lexicon ═══ -->
+<section id="lexicon">
+<h2>Lexicon of Glyphs</h2>
+
+<h3>Objects</h3>
+<p>Astronomical objects — stars, planets, and celestial structures: single star, black hole, binary star, nebula, star field, etc.</p>
+
+<h3>Events</h3>
+<p>Transient phenomena — supernova, eclipse, aurora, asteroid impact, etc.</p>
+
+<h3>Verbs / Kinematics</h3>
+<p>Motion, change, and interaction — rise, set, accelerate, drift, wander, capture, join, diverge, etc.</p>
+
+<h3>Properties / States</h3>
+<p>Spatial or qualitative — bright, near, outside, shrinking, constructed, interstellar, etc.</p>
+
+<h3>Meta / Discourse</h3>
+<p>Functional symbols — scale, plane, cause-then, direction, true, false, uncertain, mod, first, next, last, etc.</p>
+
+<h3>Emotions</h3>
+<p>Fear, anger, joy, hope, love, betrayal, etc.</p>
+
+<h3>Numerals</h3>
+<p>Binary-positional; 2–8 use <strong>ring-with-dots</strong>; ≥9 use <strong>rail only</strong>.</p>
+</section>
+
+<hr>
+
+<!-- ═══ Full list ═══ -->
+<section id="full-list">
+<h2>Full Glyph List</h2>
+
+<ol class="glyph-list">
+  <li>single star</li>
+  <li>constellation</li>
+  <li>black hole</li>
+  <li>small moon</li>
+  <li>partial moon</li>
+  <li>twin moons</li>
+  <li>planetary surface</li>
+  <li>bright comet</li>
+  <li>dark comet</li>
+  <li>pulsar beacon</li>
+  <li>quasar</li>
+  <li>dark rift</li>
+  <li>star-ship</li>
+  <li>local galaxy</li>
+  <li>other galaxy</li>
+  <li>gas-giant</li>
+  <li>binary star</li>
+  <li>rocky planet</li>
+  <li>Earth-like planet</li>
+  <li>asteroid belt</li>
+  <li>nebula</li>
+  <li>star system</li>
+  <li>star field</li>
+  <li>supernova</li>
+  <li>star birth</li>
+  <li>planetary transit</li>
+  <li>total solar eclipse</li>
+  <li>partial solar eclipse</li>
+  <li>asteroid impact</li>
+  <li>comet strike</li>
+  <li>aurora</li>
+  <li>rise</li>
+  <li>set</li>
+  <li>accelerate</li>
+  <li>decelerate</li>
+  <li>drift</li>
+  <li>fall</li>
+  <li>ascend to</li>
+  <li>spiral (spiral arm)</li>
+  <li>hide</li>
+  <li>reveal</li>
+  <li>join together</li>
+  <li>split apart</li>
+  <li>approach</li>
+  <li>wander (path)</li>
+  <li>capture</li>
+  <li>crossing paths</li>
+  <li>diverging paths</li>
+  <li>converging paths</li>
+  <li>dimming</li>
+  <li>bright</li>
+  <li>above</li>
+  <li>below</li>
+  <li>near</li>
+  <li>far</li>
+  <li>centered</li>
+  <li>off-center</li>
+  <li>enclosed (inside)</li>
+  <li>outside of</li>
+  <li>expanding</li>
+  <li>shrinking</li>
+  <li>constructed</li>
+  <li>destroyed</li>
+  <li>ocean world</li>
+  <li>magnetosphere</li>
+  <li>interstellar</li>
+  <li>signal</li>
+  <li>document</li>
+  <li>life</li>
+  <li>gate</li>
+  <li>orbit</li>
+  <li>direction (compass)</li>
+  <li>scale</li>
+  <li>cause-then</li>
+  <li>level</li>
+  <li>dialog marker</li>
+  <li>emotion marker</li>
+  <li>proper name cartouche</li>
+  <li>divide by ten</li>
+  <li>multiply by ten</li>
+  <li>distance-time</li>
+  <li>true (yes)</li>
+  <li>false (no)</li>
+  <li>uncertain (maybe)</li>
+  <li>mod (modifier)</li>
+  <li>is-type</li>
+  <li>is-related-to</li>
+  <li>first</li>
+  <li>next</li>
+  <li>last</li>
+  <li>increase</li>
+  <li>decrease</li>
+  <li>fear</li>
+  <li>anger</li>
+  <li>joy</li>
+  <li>sadness</li>
+  <li>surprise</li>
+  <li>disgust</li>
+  <li>hope</li>
+  <li>courage</li>
+  <li>love</li>
+  <li>betrayal</li>
+  <li>two</li>
+  <li>three</li>
+  <li>four</li>
+  <li>five</li>
+  <li>six</li>
+  <li>seven</li>
+  <li>eight</li>
+</ol>
+
+<h3>Glyph Reference Table</h3>
+
+<table>
+<thead>
+  <tr><th>Glyph</th><th>Primary Role</th><th>Semantic Notes</th></tr>
+</thead>
+<tbody>
+  <tr><td>single star</td><td>object</td><td></td></tr>
+  <tr><td>constellation</td><td>object</td><td></td></tr>
+  <tr><td>black hole</td><td>object</td><td></td></tr>
+  <tr><td>small moon</td><td>object</td><td></td></tr>
+  <tr><td>partial moon</td><td>object</td><td></td></tr>
+  <tr><td>twin moons</td><td>object</td><td></td></tr>
+  <tr><td>planetary surface</td><td>object</td><td></td></tr>
+  <tr><td>bright comet</td><td>object</td><td></td></tr>
+  <tr><td>dark comet</td><td>object</td><td></td></tr>
+  <tr><td>pulsar beacon</td><td>object</td><td></td></tr>
+  <tr><td>quasar</td><td>object</td><td></td></tr>
+  <tr><td>dark rift</td><td>object</td><td></td></tr>
+  <tr><td>star-ship</td><td>object</td><td>star-ship in space</td></tr>
+  <tr><td>local galaxy</td><td>object</td><td>Milky Way band</td></tr>
+  <tr><td>other galaxy</td><td>object</td><td></td></tr>
+  <tr><td>gas-giant</td><td>object</td><td></td></tr>
+  <tr><td>binary star</td><td>object</td><td></td></tr>
+  <tr><td>rocky planet</td><td>object</td><td></td></tr>
+  <tr><td>Earth-like planet</td><td>object</td><td></td></tr>
+  <tr><td>asteroid belt</td><td>object</td><td></td></tr>
+  <tr><td>nebula</td><td>object</td><td></td></tr>
+  <tr><td>star system</td><td>object</td><td></td></tr>
+  <tr><td>star field</td><td>object</td><td></td></tr>
+  <tr><td>supernova</td><td>event</td><td></td></tr>
+  <tr><td>star birth</td><td>event</td><td>protostar</td></tr>
+  <tr><td>planetary transit</td><td>event</td><td></td></tr>
+  <tr><td>total solar eclipse</td><td>event</td><td></td></tr>
+  <tr><td>partial solar eclipse</td><td>event</td><td></td></tr>
+  <tr><td>asteroid impact</td><td>event</td><td></td></tr>
+  <tr><td>comet strike</td><td>event</td><td></td></tr>
+  <tr><td>aurora</td><td>event</td><td></td></tr>
+  <tr><td>rise</td><td>verb</td><td></td></tr>
+  <tr><td>set</td><td>verb</td><td></td></tr>
+  <tr><td>accelerate</td><td>verb</td><td></td></tr>
+  <tr><td>decelerate</td><td>verb</td><td></td></tr>
+  <tr><td>drift</td><td>verb</td><td></td></tr>
+  <tr><td>fall</td><td>verb</td><td></td></tr>
+  <tr><td>ascend to</td><td>verb</td><td>depart</td></tr>
+  <tr><td>spiral</td><td>verb</td><td></td></tr>
+  <tr><td>hide</td><td>verb</td><td></td></tr>
+  <tr><td>reveal</td><td>verb</td><td></td></tr>
+  <tr><td>join together</td><td>verb</td><td></td></tr>
+  <tr><td>split apart</td><td>verb</td><td></td></tr>
+  <tr><td>approach</td><td>verb</td><td>descend, land</td></tr>
+  <tr><td>wander</td><td>verb</td><td></td></tr>
+  <tr><td>capture</td><td>verb</td><td></td></tr>
+  <tr><td>crossing paths</td><td>verb</td><td></td></tr>
+  <tr><td>diverging paths</td><td>verb</td><td></td></tr>
+  <tr><td>converging paths</td><td>verb</td><td></td></tr>
+  <tr><td>dimming</td><td>property</td><td>low on energy</td></tr>
+  <tr><td>bright</td><td>property</td><td>strong on energy</td></tr>
+  <tr><td>above</td><td>property</td><td></td></tr>
+  <tr><td>below</td><td>property</td><td></td></tr>
+  <tr><td>near</td><td>property</td><td></td></tr>
+  <tr><td>far</td><td>property</td><td></td></tr>
+  <tr><td>centered</td><td>property</td><td></td></tr>
+  <tr><td>off-center</td><td>property</td><td></td></tr>
+  <tr><td>enclosed</td><td>property</td><td>inside, hidden</td></tr>
+  <tr><td>outside</td><td>property</td><td>in the open</td></tr>
+  <tr><td>expanding</td><td>property</td><td></td></tr>
+  <tr><td>shrinking</td><td>property</td><td></td></tr>
+  <tr><td>constructed</td><td>property</td><td></td></tr>
+  <tr><td>destroyed</td><td>property</td><td></td></tr>
+  <tr><td>ocean world</td><td>property</td><td></td></tr>
+  <tr><td>magnetosphere</td><td>property</td><td></td></tr>
+  <tr><td>interstellar</td><td>property</td><td></td></tr>
+  <tr><td>signal</td><td>meta</td><td></td></tr>
+  <tr><td>document</td><td>meta</td><td>information</td></tr>
+  <tr><td>life</td><td>meta</td><td></td></tr>
+  <tr><td>gate</td><td>meta</td><td></td></tr>
+  <tr><td>orbit</td><td>meta</td><td></td></tr>
+  <tr><td>direction</td><td>meta</td><td>compass style glyph</td></tr>
+  <tr><td>scale</td><td>meta</td><td></td></tr>
+  <tr><td>cause-then</td><td>meta</td><td>Doppler shift, causal flow</td></tr>
+  <tr><td>level</td><td>meta</td><td>spatial order of magnitude</td></tr>
+  <tr><td>dialog</td><td>meta</td><td>echo style glyph</td></tr>
+  <tr><td>emotion</td><td>meta</td><td></td></tr>
+  <tr><td>proper name</td><td>meta</td><td></td></tr>
+  <tr><td>divide by ten</td><td>meta</td><td></td></tr>
+  <tr><td>multiply by ten</td><td>meta</td><td></td></tr>
+  <tr><td>distance-time</td><td>meta</td><td>H hyperfine transition glyph</td></tr>
+  <tr><td>true</td><td>meta</td><td></td></tr>
+  <tr><td>false</td><td>meta</td><td></td></tr>
+  <tr><td>uncertain</td><td>meta</td><td>maybe</td></tr>
+  <tr><td>mod (modifier)</td><td>meta</td><td>qualifier</td></tr>
+  <tr><td>is type</td><td>meta</td><td></td></tr>
+  <tr><td>is related to</td><td>meta</td><td></td></tr>
+  <tr><td>first</td><td>meta</td><td></td></tr>
+  <tr><td>next</td><td>meta</td><td></td></tr>
+  <tr><td>last</td><td>meta</td><td></td></tr>
+  <tr><td>increase</td><td>meta</td><td></td></tr>
+  <tr><td>decrease</td><td>meta</td><td></td></tr>
+  <tr><td>fear</td><td>emotion</td><td></td></tr>
+  <tr><td>anger</td><td>emotion</td><td></td></tr>
+  <tr><td>joy</td><td>emotion</td><td></td></tr>
+  <tr><td>sadness</td><td>emotion</td><td></td></tr>
+  <tr><td>surprise</td><td>emotion</td><td></td></tr>
+  <tr><td>disgust</td><td>emotion</td><td></td></tr>
+  <tr><td>hope</td><td>emotion</td><td></td></tr>
+  <tr><td>courage</td><td>emotion</td><td></td></tr>
+  <tr><td>love</td><td>emotion</td><td></td></tr>
+  <tr><td>betrayal</td><td>emotion</td><td></td></tr>
+  <tr><td>2</td><td>numeral</td><td></td></tr>
+  <tr><td>3</td><td>numeral</td><td></td></tr>
+  <tr><td>4</td><td>numeral</td><td></td></tr>
+  <tr><td>5</td><td>numeral</td><td></td></tr>
+  <tr><td>6</td><td>numeral</td><td></td></tr>
+  <tr><td>7</td><td>numeral</td><td></td></tr>
+  <tr><td>8</td><td>numeral</td><td></td></tr>
+</tbody>
+</table>
+
+<p style="margin-top:32px;color:var(--text-muted);font-style:italic;font-size:13px">End of introduction.</p>
+</section>
+
+</main>
+</div>
+
+<!-- ═══ Status bar ═══ -->
+<div class="status-bar">
+  <span>MWL Introduction</span>
+  <a href="https://github.com/alex987654/MWL" target="_blank">github.com/alex987654/MWL</a>
+</div>
+
+
+</body>
+</html>
