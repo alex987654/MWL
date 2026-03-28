@@ -66,7 +66,12 @@
     padding: 0 16px;
     gap: 8px;
     z-index: 10;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
+  #topbar::-webkit-scrollbar { display: none; }
   #topbar .logo {
     font-size: 15px;
     font-weight: 600;
@@ -74,6 +79,7 @@
     color: var(--accent-warm);
     margin-right: 12px;
     white-space: nowrap;
+    flex-shrink: 0;
   }
   #topbar .logo span {
     color: var(--text-secondary);
@@ -114,7 +120,8 @@
   .tb-btn.primary:hover { background: #5d8aff; }
   .tb-btn.danger { color: #ff6b6b; }
   .tb-btn svg { width: 14px; height: 14px; fill: currentColor; }
-  .tb-spacer { flex: 1; }
+  .tb-spacer { flex: 1; min-width: 8px; }
+  .tb-btn, .toolbar-sep, #sizeSelect { flex-shrink: 0; }
 
   /* Size selector */
   #sizeSelect {
