@@ -518,6 +518,7 @@
     <div class="toolbar-sep"></div>
     <button class="tb-btn" onclick="actionClear()" title="Clear all">✕ Clear</button>
     <button class="tb-btn primary" onclick="exportStory()" title="Export to HTML file">⬇ Export HTML</button>
+    <button class="tb-btn" onclick="exportStandalone()" title="Self-contained HTML (works offline)">📦⬇ Standalone</button>
   </div>
 
   <!-- COMPOSE AREA -->
@@ -1181,6 +1182,69 @@ ${contentHTML.trim()}
   a.click();
   URL.revokeObjectURL(url);
   showToast('Story exported as MWL-Story.html');
+}
+
+async function exportStandalone() {
+  const elements = Array.from(compose.children).filter(el => el.id !== 'cursor-indicator');
+  if (elements.length === 0) { showToast('Nothing to export yet.'); return; }
+  showToast('Embedding glyphs…');
+
+  const cache = new Map();
+  function imgToDataURI(imgEl) {
+    if (cache.has(imgEl.src)) return cache.get(imgEl.src);
+    try {
+      if (!imgEl.complete || imgEl.naturalWidth === 0) return null;
+      const s = 512;
+      const c = document.createElement('canvas');
+      c.width = s; c.height = s;
+      c.getContext('2d').drawImage(imgEl, 0, 0, s, s);
+      const uri = c.toDataURL('image/png');
+      cache.set(imgEl.src, uri);
+      return uri;
+    } catch(e) { return null; }
+  }
+
+  let contentHTML = '';
+  for (const el of elements) {
+    if (el.classList.contains('glyph-break')) {
+      contentHTML += '\n<div class="glyph-break"></div>\n\n';
+    } else if (el.classList.contains('glyph') && el.dataset.glyphFile) {
+      const uri = imgToDataURI(el) || GLYPH_THUMBS[el.dataset.glyphFile] || el.src;
+      contentHTML += `<img class="glyph" src="${uri}" alt="${el.alt || el.dataset.glyphFile}">\n`;
+    } else if (el.classList.contains('glyph-img') && el.dataset.pncFile) {
+      const uri = imgToDataURI(el) || el.src;
+      contentHTML += `<img class="glyph-img" src="${uri}" alt="${el.alt || el.dataset.pncFile}">\n`;
+    }
+  }
+
+  const exportHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWL Story</title>
+<style>
+:root { --glyph-size: ${glyphSize}px; }
+body { background: #111; padding: 2rem; font-size: 0; }
+.glyph, .glyph-img { display: inline-block; width: var(--glyph-size); height: var(--glyph-size); vertical-align: middle; object-fit: contain; }
+.glyph-break { display: block; height: calc(var(--glyph-size) * 0.15713); }
+</style>
+</head>
+<body>
+
+${contentHTML.trim()}
+
+</body>
+</html>`;
+
+  const blob = new Blob([exportHTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'MWL-Story-Standalone.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Standalone story exported!');
 }
 
 // ══════════════════════════════════════════════════
