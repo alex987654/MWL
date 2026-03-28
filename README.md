@@ -187,7 +187,10 @@ Home page:
 - MWL must be written in the **narrator’s reference frame**. 
 - **CAUSE‑THEN** sits alone between two lines to enforce **order and implication** without tense morphology.  
 - Use **pulsar + SIGNAL** as a metronome when needed; numeric frequency attaches to verb via MOD.
-
+- The tempo glyph can be used to set the **granularity** of the time axis. Tempo is similar to Scale, but for time.
+   ```
+   [tempo]  [cosmic-epoch]
+   ```
 ---
 
 ### Convertible Glyphs
