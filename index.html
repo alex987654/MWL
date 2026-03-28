@@ -215,6 +215,8 @@ hr{
   font-size:13.5px;
 }
 .glyph-list li{break-inside:avoid;padding:2px 0}
+.glyph-list li strong{color:var(--blue);font-weight:500}
+td strong{color:var(--blue);font-weight:500}
 
 @media(max-width:900px){
   .glyph-list{columns:2}
@@ -877,12 +879,52 @@ hr{
 
 <hr>
 
+<!-- ═══ Cosmological Extension ═══ -->
+<section id="cosmological-extension">
+<h2>Cosmological Extension (Experimental)</h2>
+
+<blockquote>
+<p><strong>Goal:</strong> Extend MWL's spatial hierarchy and temporal framing to <strong>cosmological scales</strong> — the cosmic web, galaxy clusters, and deep‑time epochs — while preserving the existing grammar unchanged.</p>
+<p>These additions open a path toward using MWL (or a derivative notation) to describe <strong>large‑scale structure</strong> and to communicate over <strong>extremely long timespans</strong>, grounded in phenomena that are <strong>universal across the observable universe</strong>.</p>
+</blockquote>
+
+<h3>New Object Glyphs</h3>
+<p>Two new <strong>objects</strong> extend the SCALE / LEVEL hierarchy above <code>local galaxy</code> and <code>other galaxy</code>:</p>
+<ul>
+  <li><strong>filament</strong> — a cosmic web filament: a strand of matter connecting two galaxy‑cluster nodes. Visually, a stream of blue‑white particles flowing between two bright nodes. This is the largest coherent structure in the universe. Use with SCALE to set a megaparsec‑scale spatial frame.</li>
+  <li><strong>galaxy cluster</strong> — a gravitationally bound group of galaxies with a diffuse intracluster medium. Visually, a central dominant elliptical galaxy surrounded by smaller members (elliptical and spiral) in a diffuse halo. Sits between <code>filament</code> and <code>local galaxy</code>/<code>other galaxy</code> in the SCALE hierarchy.</li>
+</ul>
+<p>The full spatial hierarchy now reads:</p>
+<pre><code>[scale] [filament] [level] [galaxy cluster] [level] [other galaxy] [level] [star system] [level] …</code></pre>
+
+<h3>Temporal Framing (TEMPO)</h3>
+<p>At cosmological scales, each content line may advance the narrator's proper time by millions or billions of years rather than the hours or days implied in stellar‑scale stories. To make this explicit, a new <strong>temporal frame line</strong> is introduced, analogous to SCALE for space:</p>
+<ul>
+  <li><strong>tempo</strong> — a <strong>meta glyph</strong> that sets the temporal granularity for subsequent content lines, the same way SCALE sets spatial context. Visually modeled after <code>scale</code>: a vertical time‑arrow (future ↓) with pulse dots and wave‑front arcs instead of spatial ruler ticks and circles. Placed on its own frame line.</li>
+</ul>
+<p>Two <strong>temporal‑epoch markers</strong> serve as arguments to TEMPO (analogous to how objects like <code>star system</code> or <code>nebula</code> serve as arguments to SCALE):</p>
+<ul>
+  <li><strong>stellar epoch</strong> — the temporal scale of stellar lifecycles (millions to billions of years). Visually, a golden star with a descending trail of progressively dimming dots representing a stellar lifecycle along the time axis. Use when each content line advances by roughly stellar‑evolution timescales.</li>
+  <li><strong>cosmic epoch</strong> — the temporal scale of cosmological evolution (hundreds of millions to billions of years). Visually, concentric expanding rings of particles shifting from warm gold (early/hot universe) to cool blue‑white (late/cool universe), representing cosmic expansion. Use when each content line advances by cosmological timescales.</li>
+</ul>
+<p>A temporal frame line has this form:</p>
+<pre><code>[tempo] [cosmic epoch]       — each subsequent line spans cosmological time
+[tempo] [stellar epoch]      — each subsequent line spans stellar‑evolution time</code></pre>
+<p>When no TEMPO frame line appears, the temporal granularity is inferred from context (as in existing MWL stories).</p>
+
+<h3>How These Fit the Existing Grammar</h3>
+<p>No grammar rules change. The new objects (<code>filament</code>, <code>galaxy cluster</code>) are ordinary object glyphs that slot into the existing SCALE / LEVEL hierarchy. The new meta glyphs (<code>tempo</code>, <code>stellar epoch</code>, <code>cosmic epoch</code>) follow the same frame‑line pattern as SCALE: they occupy their own line, set context for subsequent content lines, and take no verbs.</p>
+<p>All existing verbs, properties, and meta‑glyphs apply at cosmological scale. A galaxy cluster can <code>[capture]</code> a galaxy (gravitational infall), galaxies can <code>[converging-paths]</code> along a filament, a filament can be <code>[expanding]</code> or <code>[destroyed]</code>. The proper‑time axis remains authoritative; the TEMPO line simply makes explicit what temporal resolution the narrator is operating at.</p>
+</section>
+
+<hr>
+
 <!-- ═══ Lexicon ═══ -->
 <section id="lexicon">
 <h2>Lexicon of Glyphs</h2>
 
 <h3>Objects</h3>
-<p>Astronomical objects — stars, planets, and celestial structures: single star, black hole, binary star, nebula, star field, etc.</p>
+<p>Astronomical objects — stars, planets, and celestial structures: single star, black hole, binary star, nebula, star field, megastructure, etc. Cosmological‑scale structures: <strong>filament</strong>, <strong>galaxy cluster</strong>.</p>
 
 <h3>Events</h3>
 <p>Transient phenomena — supernova, eclipse, aurora, asteroid impact, etc.</p>
@@ -894,7 +936,7 @@ hr{
 <p>Spatial or qualitative — bright, near, outside, shrinking, constructed, interstellar, etc.</p>
 
 <h3>Meta / Discourse</h3>
-<p>Functional symbols — scale, plane, cause-then, direction, true, false, uncertain, mod, first, next, last, etc.</p>
+<p>Functional symbols — scale, plane, cause-then, direction, true, false, uncertain, mod, agent, first, next, last, etc. Temporal framing: <strong>tempo</strong>, <strong>stellar epoch</strong>, <strong>cosmic epoch</strong>.</p>
 
 <h3>Emotions</h3>
 <p>Fear, anger, joy, hope, love, betrayal, etc.</p>
@@ -908,6 +950,8 @@ hr{
 <!-- ═══ Full list ═══ -->
 <section id="full-list">
 <h2>Full Glyph List</h2>
+
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:12px"><strong style="color:var(--blue)">✦</strong> = new glyph (cosmological extension). Items without a marker that were previously unlisted have been added for completeness.</p>
 
 <ol class="glyph-list">
   <li>single star</li>
@@ -933,6 +977,9 @@ hr{
   <li>nebula</li>
   <li>star system</li>
   <li>star field</li>
+  <li><strong>filament ✦</strong></li>
+  <li><strong>galaxy cluster ✦</strong></li>
+  <li>megastructure</li>
   <li>supernova</li>
   <li>star birth</li>
   <li>planetary transit</li>
@@ -985,6 +1032,9 @@ hr{
   <li>scale</li>
   <li>cause-then</li>
   <li>level</li>
+  <li><strong>tempo ✦</strong></li>
+  <li><strong>stellar epoch ✦</strong></li>
+  <li><strong>cosmic epoch ✦</strong></li>
   <li>dialog marker</li>
   <li>emotion marker</li>
   <li>proper name cartouche</li>
@@ -995,6 +1045,7 @@ hr{
   <li>false (no)</li>
   <li>uncertain (maybe)</li>
   <li>mod (modifier)</li>
+  <li>agent</li>
   <li>is-type</li>
   <li>is-related-to</li>
   <li>first</li>
@@ -1051,6 +1102,9 @@ hr{
   <tr><td>nebula</td><td>object</td><td></td></tr>
   <tr><td>star system</td><td>object</td><td></td></tr>
   <tr><td>star field</td><td>object</td><td></td></tr>
+  <tr><td><strong>filament ✦</strong></td><td>object</td><td>cosmic web strand connecting cluster nodes</td></tr>
+  <tr><td><strong>galaxy cluster ✦</strong></td><td>object</td><td>gravitationally bound group of galaxies</td></tr>
+  <tr><td>megastructure</td><td>object</td><td></td></tr>
   <tr><td>supernova</td><td>event</td><td></td></tr>
   <tr><td>star birth</td><td>event</td><td>protostar</td></tr>
   <tr><td>planetary transit</td><td>event</td><td></td></tr>
@@ -1103,6 +1157,9 @@ hr{
   <tr><td>scale</td><td>meta</td><td></td></tr>
   <tr><td>cause-then</td><td>meta</td><td>Doppler shift, causal flow</td></tr>
   <tr><td>level</td><td>meta</td><td>spatial order of magnitude</td></tr>
+  <tr><td><strong>tempo ✦</strong></td><td>meta</td><td>temporal frame‑setter (analogous to scale)</td></tr>
+  <tr><td><strong>stellar epoch ✦</strong></td><td>meta</td><td>stellar‑lifecycle temporal scale</td></tr>
+  <tr><td><strong>cosmic epoch ✦</strong></td><td>meta</td><td>cosmological‑evolution temporal scale</td></tr>
   <tr><td>dialog</td><td>meta</td><td>echo style glyph</td></tr>
   <tr><td>emotion</td><td>meta</td><td></td></tr>
   <tr><td>proper name</td><td>meta</td><td></td></tr>
@@ -1113,6 +1170,7 @@ hr{
   <tr><td>false</td><td>meta</td><td></td></tr>
   <tr><td>uncertain</td><td>meta</td><td>maybe</td></tr>
   <tr><td>mod (modifier)</td><td>meta</td><td>qualifier</td></tr>
+  <tr><td>agent</td><td>meta</td><td>role marker (AG)</td></tr>
   <tr><td>is type</td><td>meta</td><td></td></tr>
   <tr><td>is related to</td><td>meta</td><td></td></tr>
   <tr><td>first</td><td>meta</td><td></td></tr>
