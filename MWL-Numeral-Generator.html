@@ -40,13 +40,13 @@
 
   /* ─── Topbar (matches Story Constellator) ─── */
   #topbar {
-    height: 52px;
     min-height: 52px;
     background: var(--bg-surface);
     border-bottom: 1px solid var(--border-subtle);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 0 16px;
+    padding: 8px 16px;
     gap: 8px;
     z-index: 10;
   }
@@ -55,7 +55,7 @@
     font-weight: 600;
     letter-spacing: 0.5px;
     color: var(--accent-warm);
-    margin-right: 12px;
+    margin-right: 4px;
     white-space: nowrap;
   }
   #topbar .logo span {
@@ -96,6 +96,13 @@
     color: #fff;
   }
   .tb-btn.primary:hover { filter: brightness(1.12); }
+  .tb-spacer { flex: 1; min-width: 0; }
+  .tb-info {
+    font: 400 12px 'DM Mono', monospace;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .tb-info span { color: var(--text-secondary); }
 
   /* ─── Main content area ─── */
   .main {
@@ -123,9 +130,9 @@
   }
   #numInput {
     width: 140px;
-    height: 36px;
-    padding: 0 12px;
-    font: 500 16px 'DM Mono', monospace;
+    height: 32px;
+    padding: 0 10px;
+    font: 500 15px 'DM Mono', monospace;
     color: var(--text-primary);
     background: var(--bg-raised);
     border: 1px solid var(--border-subtle);
@@ -139,12 +146,6 @@
   #numInput:focus { border-color: var(--accent-blue); }
   #numInput::placeholder { color: var(--text-dim); font-weight: 400; }
 
-  .info-line {
-    font: 400 12px 'DM Mono', monospace;
-    color: var(--text-dim);
-    min-height: 1.2em;
-  }
-  .info-line span { color: var(--text-secondary); }
 
   /* ─── Preview card ─── */
   .preview-card {
@@ -211,12 +212,16 @@
   }
   .status-bar a:hover { color: var(--text-secondary); }
 
-  @media (max-width: 520px) {
-    .input-row { flex-direction: column; gap: 8px; }
-    #numInput { width: 100%; }
+  @media (max-width: 600px) {
+    #topbar { padding: 8px 12px; gap: 6px; }
+    .tb-sep { display: none; }
+    .tb-spacer { flex-basis: 100%; height: 0; }
+    .tb-info { max-width: 100%; white-space: normal; overflow: hidden; text-overflow: ellipsis; }
+    #numInput { width: 100px; }
     #svgPreview { width: 240px; height: 240px; }
     .preview-card { padding: 16px; }
     .main { padding: 1.5rem 1rem 2rem; }
+    .subtitle { font-size: 12px; }
   }
 </style>
 </head>
@@ -230,8 +235,8 @@
     <button class="tb-btn primary" onclick="generate()">⑧ Generate</button>
   </div>
   <div class="tb-sep"></div>
-  <div class="info-line" id="infoLine"></div>
-  <div style="flex:1;"></div>
+  <div class="tb-info" id="infoLine"></div>
+  <div class="tb-spacer"></div>
   <button class="tb-btn" id="dlBtn" onclick="downloadSVG()" style="display:none;">↓ Download SVG</button>
   <span class="download-filename" id="dlFilename"></span>
 </div>
