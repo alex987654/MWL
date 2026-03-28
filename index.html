@@ -756,6 +756,8 @@ td strong{color:var(--blue);font-weight:500}
       <li><strong>Weight ticks:</strong> small ticks <strong>above</strong> the rail that <strong>increase in height right→left</strong> (cueing 2, 4, 8, …).</li>
       <li><strong>Least significant bit (LSB) is on the right</strong> in binary rail in MWL numeral glyphs.</li>
       <li><strong>2–8 use a ring-with-dots determinative</strong> (count dots inside a circle); <strong>≥9 omit the dot ring</strong> and rely on the rail only.</li>
+      <li>Bits 1–6 (numbers up to 127): Pure doubling of weight ticks. The length doubling itself communicates the binary weight.
+Bits 7+ (128 and above): Linear growth of weight ticks from the bit-6 cap on. Each linear-region tick gets a Pioneer-style binary position label — tiny | and — mini-strokes running top-to-bottom alongside the tick, encoding the bit index in binary. </li>
     </ul>
   </li>
   <li><strong>Singular</strong>: unmarked</li>
