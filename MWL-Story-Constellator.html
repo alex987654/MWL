@@ -1114,13 +1114,16 @@ function exportStory() {
   }
 
   let contentHTML = '';
+  const ghBase = 'https://alex987654.github.io/MWL';
   elements.forEach(el => {
     if (el.classList.contains('glyph-break')) {
       contentHTML += '\n<div class="glyph-break"></div>\n\n';
     } else if (el.classList.contains('glyph') && el.dataset.glyphFile) {
-      contentHTML += `<img class="glyph" src="./MWL-glyphs/${el.dataset.glyphFile}.svg" alt="${el.alt || el.dataset.glyphFile}">\n`;
+      const f = el.dataset.glyphFile, a = el.alt || f;
+      contentHTML += `<img class="glyph" src="./MWL-glyphs/${f}.svg" alt="${a}" onerror="this.onerror=null;this.src='${ghBase}/MWL-glyphs/${f}.svg';">\n`;
     } else if (el.classList.contains('glyph-img') && el.dataset.pncFile) {
-      contentHTML += `<img class="glyph-img" src="./proper-names/${el.dataset.pncFile}.png" alt="${el.alt || el.dataset.pncFile}">\n`;
+      const f = el.dataset.pncFile, a = el.alt || f;
+      contentHTML += `<img class="glyph-img" src="./proper-names/${f}.png" alt="${a}" onerror="this.onerror=null;this.src='${ghBase}/proper-names/${f}.png';">\n`;
     }
   });
 
