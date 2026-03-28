@@ -367,6 +367,8 @@ MWL numerals are **pictographic** and **binary‑based** to aid machine readers 
   - **Weight ticks:** small ticks **above** the rail that **increase in height right→left** (cueing 2,4,8, …).
   - **Least significant bit (LSB) is on the right in binary rail in MWL numeral glyphs**.
   - **2–8 use a ring-with-dots determinative** (count dots inside a circle); **≥9 omit the dot ring** and rely on the rail only.
+  - Bits 1–6 (numbers up to 127): Pure doubling of weight ticks. The length doubling itself communicates the binary weight.
+  - Bits 7+ (128 and above): Linear growth of weight ticks from the bit-6 cap on. Each linear-region tick gets a Pioneer-style binary position label — tiny | and — mini-strokes running top-to-bottom alongside the tick, encoding the bit index in binary.
 - **Singular**: unmarked
 - **Zero**: expressed through FALSE.
 - **Attachment (with MOD):**
@@ -486,92 +488,98 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 21. nebula
 22. star system
 23. star field (many stars)
-24. supernova
-25. star birth
-26. planetary transit
-27. total solar eclipse
-28. partial solar eclipse
-29. asteroid impact
-30. comet strike
-31. aurora
-32. rise
-33. set
-34. accelerate
-35. decelerate
-36. drift
-37. fall
-38. ascend (depart) to
-39. spiral (spiral arm)
-40. hide
-41. reveal
-42. join together
-43. split apart
-44. approach (descend, land)
-45. wander (path)
-46. capture
-47. crossing paths
-48. diverging paths
-49. converging paths
-50. dimming (low on energy)
-51. bright (white glowing, strong on energy)
-52. above
-53. below
-54. near
-55. far
-56. centered
-57. off-center
-58. enclosed (inside)
-59. outside of
-60. expanding
-61. shrinking
-62. constructed (construct)
-63. destroyed (destroy)
-64. ocean world
-65. magnetosphere
-66. interstellar
-67. signal
-68. document
-69. life
-70. gate
-71. orbit (rotation, linger)
-72. direction (compass)
-73. scale
-74. cause-then (Doppler shift, causal flow)
-75. level (spatial order of magnitude)
-76. dialog marker
-77. emotion marker
-78. proper name cartouche
-79. divide by ten
-80. multiply by ten
-81. distance-time (H hyperfine transition)
-82. true (yes)
-83. false (no)
-84. uncertain (maybe)
-85. mod (modifier, qualifier)
-86. is-type
-87. is-related-to
-88. first
-89. next
-90. last
-91. increase
-92. decrease
-93. fear
-94. anger
-95. joy
-96. sadness
-97. surprise
-98. disgust
-99. hope
-100. courage
-101. love
-102. betrayal
-103. two
-104. three
-105. four
-106. five
-107. six
-108. seven
-109. eight
+24. filament
+25. galaxy-cluster
+26. megastructure
+27. supernova
+28. star birth
+29. planetary transit
+30. total solar eclipse
+31. partial solar eclipse
+32. asteroid impact
+33. comet strike
+34. aurora
+35. rise
+36. set
+37. accelerate
+38. decelerate
+39. drift
+40. fall
+41. ascend (depart) to
+42. spiral (spiral arm)
+43. hide
+44. reveal
+45. join together
+46. split apart
+47. approach (descend, land)
+48. wander (path)
+49. capture
+50. crossing paths
+51. diverging paths
+52. converging paths
+53. dimming (low on energy)
+54. bright (white glowing, strong on energy)
+55. above
+56. below
+57. near
+58. far
+59. centered
+60. off-center
+61. enclosed (inside)
+62. outside of
+63. expanding
+64. shrinking
+65. constructed (construct)
+66. destroyed (destroy)
+67. ocean world
+68. magnetosphere
+69. interstellar
+70. signal
+71. document
+72. life
+73. gate
+74. orbit (rotation, linger)
+75. direction (compass)
+76. scale
+77. cause-then (Doppler shift, causal flow)
+78. level (spatial order of magnitude)
+79. tempo
+80. stellar-epoch
+81. cosmic-epoch
+82. dialog marker
+83. emotion marker
+84. proper name cartouche
+85. divide by ten
+86. multiply by ten
+87. distance-time (H hyperfine transition)
+88. true (yes)
+89. false (no)
+90. uncertain (maybe)
+91. mod (modifier, qualifier)
+92. is-type
+93. is-related-to
+94. first
+95. next
+96. last
+97. increase
+98. decrease
+99. fear
+100. anger
+101. joy
+102. sadness
+103. surprise
+104. disgust
+105. hope
+106. courage
+107. love
+108. betrayal
+109. two
+110. three
+111. four
+112. five
+113. six
+114. seven
+115. eight
 
 | Name of Glyph         | Primary Role | Semantic Notes                   |
 |-----------------------|--------------|----------------------------------|
@@ -598,6 +606,8 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | nebula                | object       |                                  |
 | star system           | object       |                                  |
 | star field            | object       |                                  |
+| filament              | object       |                                  |
+| galaxy-cluster        | object       |                                  |
 | supernova             | event        |                                  |
 | star birth            | event        | protostar                        |
 | planetary transit     | event        |                                  |
@@ -650,6 +660,9 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | scale                 | meta         |                                  |
 | cause-then            | meta         | Doppler shift, <br>causal flow   |
 | level                 | meta         | spatial order of<br>magnitude    |
+| tempo                 | meta         | temporal frame‑setter            |
+| stellar-epoch         | meta         | stellar temporal progression     |
+| cosmic-epoch          | meta         | cosmological temporal frame      |
 | dialog                | meta         | echo style glyph                 |
 | emotion               | meta         |                                  |
 | proper name           | meta         |                                  |
