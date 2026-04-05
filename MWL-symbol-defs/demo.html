@@ -339,8 +339,8 @@
             <title>binary-star</title>
             <g stroke-width="5.28" stroke="var(--color8, #fff7bf)" stroke-opacity="0.95" stroke-linejoin="miter" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" stroke-miterlimit="4">
                 <rect stroke-width="3" stroke="var(--color22, #949698)" stroke-opacity="1" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" stroke-miterlimit="2" />
-                <circle fill="var(--color7, #ffc63d)" cx="194.368" cy="317.632" r="61.632" />
-                <circle fill="var(--color21, #ffa358)" cx="317.632" cy="194.368" r="61.632" />
+                <circle fill="var(--color7, #ffc63d)" cx="203" cy="309" r="61.632" />
+                <circle fill="var(--color21, #ffa358)" cx="309" cy="203" r="44" />
             </g>
         </symbol>
         <symbol id="MWL-icon-black-hole" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
@@ -382,11 +382,13 @@
         </symbol>
         <symbol id="MWL-icon-bright-comet" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
             <title>bright-comet</title>
-            <g stroke-opacity="0.9" stroke-linecap="round" stroke-linejoin="miter" fill="none" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" fill-rule="nonzero" stroke-miterlimit="4">
-                <rect stroke-width="3" stroke="var(--color6, #939598)" stroke-opacity="1" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-                <path stroke-width="18" stroke="var(--color29, #b8b8b8)" d="M160 352c93.333-21.333 193.333-45.333 300-72" />
-                <path stroke-width="28" stroke="var(--color28, #757575)" d="M160 352c93.333-8 193.333-25.333 300-52" />
-                <circle stroke-width="4" stroke="var(--color27, #ffffe5)" fill="var(--color12, #fff)" cx="160" cy="352" fill-rule="evenodd" r="35" />
+            <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
+                <rect stroke-width="3" stroke="var(--color6, #939598)" fill="var(--color2, #000)" width="512" height="512" />
+                <g stroke-opacity="0.9" stroke-linecap="round" stroke-linejoin="miter" fill="none" transform="translate(-42.5 -74)" fill-rule="nonzero" stroke-miterlimit="4">
+                    <path stroke-width="18" stroke="var(--color29, #b8b8b8)" d="M160 352c93.333-21.333 193.333-45.333 300-72" />
+                    <path stroke-width="28" stroke="var(--color28, #757575)" d="M160 352c93.333-8 193.333-25.333 300-52" />
+                    <circle stroke-width="4" stroke="var(--color27, #ffffe5)" fill="var(--color12, #fff)" cx="160" cy="352" fill-rule="evenodd" r="35" />
+                </g>
             </g>
         </symbol>
         <symbol id="MWL-icon-bright" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
@@ -519,15 +521,17 @@
                     <stop offset="1" stop-color="var(--color47, #959595)" />
                 </radialGradient>
             </defs>
-            <g stroke-width="4" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" fill-rule="nonzero">
-                <rect stroke-width="3" stroke="var(--color6, #939598)" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-                <path stroke-width="12" stroke="var(--color46, #a2a2a2)" stroke-opacity="0.75" stroke-linecap="round" d="M80 112c80 45.333 138.667 93.333 176 144" stroke-dasharray="22 18" />
-                <path stroke-width="12" stroke="var(--color45, #a3a3a3)" stroke-opacity="0.75" stroke-linecap="round" d="M80 400c80-46.667 138.667-94.667 176-144" stroke-dasharray="22 18" />
-                <circle stroke="var(--color46, #a2a2a2)" stroke-opacity="0.9" fill="url(#converging_paths__Radial1)" cx="80" cy="112" fill-rule="evenodd" r="32" />
-                <circle stroke="var(--color45, #a3a3a3)" stroke-opacity="0.9" fill="url(#converging_paths__Radial2)" cx="80" cy="400" fill-rule="evenodd" r="32" />
-                <circle stroke="var(--color31, #d9d9d9)" stroke-opacity="0.95" fill="var(--color12, #fff)" cx="256" cy="256" fill-rule="evenodd" r="24" />
-                <path fill="var(--color46, #a2a2a2)" fill-opacity="0.9" d="M232.3 228.9l-26.2-11.6 18-15.8z" />
-                <path fill="var(--color45, #a3a3a3)" fill-opacity="0.9" d="M232 282.8l-8.4 27.4-17.9-16z" />
+            <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
+                <rect stroke-width="3" stroke="var(--color6, #939598)" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" stroke-miterlimit="2" />
+                <g stroke-width="4" transform="translate(92)" fill-rule="nonzero">
+                    <path stroke-width="12" stroke="var(--color46, #a2a2a2)" stroke-opacity="0.75" stroke-linecap="round" d="M80 112c80 45.333 138.667 93.333 176 144" stroke-dasharray="22 18" />
+                    <path stroke-width="12" stroke="var(--color45, #a3a3a3)" stroke-opacity="0.75" stroke-linecap="round" d="M80 400c80-46.667 138.667-94.667 176-144" stroke-dasharray="22 18" />
+                    <circle stroke="var(--color46, #a2a2a2)" stroke-opacity="0.9" fill="url(#converging_paths__Radial1)" cx="80" cy="112" fill-rule="evenodd" r="32" />
+                    <circle stroke="var(--color45, #a3a3a3)" stroke-opacity="0.9" fill="url(#converging_paths__Radial2)" cx="80" cy="400" fill-rule="evenodd" r="32" />
+                    <circle stroke="var(--color31, #d9d9d9)" stroke-opacity="0.95" fill="var(--color12, #fff)" cx="256" cy="256" fill-rule="evenodd" r="24" />
+                    <path fill="var(--color46, #a2a2a2)" fill-opacity="0.9" d="M232.3 228.9l-26.2-11.6 18-15.8z" />
+                    <path fill="var(--color45, #a3a3a3)" fill-opacity="0.9" d="M232 282.8l-8.4 27.4-17.9-16z" />
+                </g>
             </g>
         </symbol>
         <symbol id="MWL-icon-courage" viewBox="0 0 512 512" clip-rule="evenodd" version="1.1">
@@ -563,11 +567,13 @@
         </symbol>
         <symbol id="MWL-icon-dark-comet" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
             <title>dark-comet</title>
-            <g stroke-opacity="0.9" stroke-linecap="round" stroke-linejoin="miter" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" fill-rule="nonzero" stroke-miterlimit="4">
-                <rect stroke-width="3" stroke="var(--color6, #939598)" stroke-opacity="1" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-                <path stroke-width="18" stroke="var(--color56, #393939)" fill="var(--color55, #0a0a0a)" d="M160 352c93.333-21.333 193.333-45.333 300-72" />
-                <path stroke-width="28" stroke="var(--color54, #2f2f2f)" fill="var(--color53, #252525)" fill-opacity="0.35" d="M160 352c93.333-8 193.333-25.333 300-52" />
-                <circle stroke-width="4" stroke="var(--color27, #ffffe5)" stroke-opacity="0.42" fill="var(--color52, #676767)" fill-opacity="0.5" cx="160" cy="352" fill-rule="evenodd" r="35" />
+            <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
+                <rect stroke-width="3" stroke="var(--color6, #939598)" fill="var(--color2, #000)" width="512" height="512" />
+                <g stroke-opacity="0.9" stroke-linecap="round" stroke-linejoin="miter" transform="translate(-42.5 -74)" fill-rule="nonzero" stroke-miterlimit="4">
+                    <path stroke-width="18" stroke="var(--color56, #393939)" fill="var(--color55, #0a0a0a)" d="M160 352c93.333-21.333 193.333-45.333 300-72" />
+                    <path stroke-width="28" stroke="var(--color54, #2f2f2f)" fill="var(--color53, #252525)" fill-opacity="0.35" d="M160 352c93.333-8 193.333-25.333 300-52" />
+                    <circle stroke-width="4" stroke="var(--color27, #ffffe5)" stroke-opacity="0.42" fill="var(--color52, #676767)" fill-opacity="0.5" cx="160" cy="352" fill-rule="evenodd" r="35" />
+                </g>
             </g>
         </symbol>
         <symbol id="MWL-icon-dark-rift" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
@@ -681,15 +687,17 @@
                     <stop offset="1" stop-color="var(--color57, #cbcbcb)" />
                 </radialGradient>
             </defs>
-            <g stroke-linejoin="miter" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" stroke-miterlimit="4">
-                <rect stroke-width="3" stroke="var(--color58, #929497)" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-                <circle stroke-width="3" stroke="var(--color57, #cbcbcb)" stroke-opacity="0.9" fill="url(#decelerate__Radial1)" cx="120" cy="256" fill-rule="evenodd" r="28" />
-                <path stroke-width="8" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.75" stroke-linecap="round" fill="none" d="M158 216h160" />
-                <path fill-opacity="0.8" d="M338 216l-16-10v20z" />
-                <path stroke-width="6" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.6" stroke-linecap="round" fill="none" d="M158 256h120" />
-                <path fill-opacity="0.6" d="M298 256l-16-10v20z" />
-                <path stroke-width="4" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.45" stroke-linecap="round" fill="none" d="M158 296h80" />
-                <path fill-opacity="0.4" d="M258 296l-16-10v20z" />
+            <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
+                <rect stroke-width="3" stroke="var(--color58, #929497)" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" />
+                <g stroke-linejoin="miter" transform="translate(41.8 1)" stroke-miterlimit="4">
+                    <circle stroke-width="3" stroke="var(--color57, #cbcbcb)" stroke-opacity="0.9" fill="url(#decelerate__Radial1)" cx="120" cy="256" fill-rule="evenodd" r="28" />
+                    <path stroke-width="8" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.75" stroke-linecap="round" fill="none" d="M158 216h160" />
+                    <path fill-opacity="0.8" d="M338 216l-16-10v20z" />
+                    <path stroke-width="6" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.6" stroke-linecap="round" fill="none" d="M158 256h120" />
+                    <path fill-opacity="0.6" d="M298 256l-16-10v20z" />
+                    <path stroke-width="4" stroke="var(--color31, #d9d9d9)" stroke-opacity="0.45" stroke-linecap="round" fill="none" d="M158 296h80" />
+                    <path fill-opacity="0.4" d="M258 296l-16-10v20z" />
+                </g>
             </g>
         </symbol>
         <symbol id="MWL-icon-decrease" viewBox="0 0 512 512" stroke="var(--color12, #fff)" stroke-linecap="round" fill="none" clip-rule="evenodd" version="1.1">
@@ -853,14 +861,16 @@
         </symbol>
         <symbol id="MWL-icon-earthlike-planet" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
             <title>earthlike-planet</title>
-            <g stroke-width="0.88" stroke="var(--color71, #2e6f3a)" stroke-opacity="0.6" stroke-linejoin="miter" fill="var(--color70, #4fa65b)" transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)" fill-rule="nonzero" stroke-miterlimit="4">
-                <rect stroke-width="3" stroke="var(--color6, #939598)" stroke-opacity="1" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-                <circle stroke-width="6" stroke="var(--color73, #a7e4ff)" stroke-opacity="0.95" fill="var(--color72, #4c56ff)" cx="256" cy="256" fill-rule="evenodd" r="70" />
-                <path d="M231.716 238.595c-8.831-13.246 8.83-30.907 26.492-26.492 13.246 4.416 17.661 17.661 8.83 30.907-8.83 8.831-22.077 8.831-35.322-4.415z" />
-                <path d="M280.284 278.333c13.246-4.415 17.661 8.83 8.831 17.661-8.831 8.831-22.077 4.415-17.661-8.831z" />
-                <path d="M227.3 273.918c-13.245 4.415-17.661 17.661-4.415 22.076s22.076-4.415 17.661-13.246z" />
-                <path stroke-width="5.3" stroke="var(--color69, #dce4ff)" stroke-linecap="round" fill="none" d="M209.639 247.425c17.661-4.415 30.907-2.207 48.569-4.415 17.661-2.207 30.907 0 44.153 4.415" stroke-dasharray="5.3 5.3" />
-                <path stroke-width="5.3" stroke="var(--color68, #d6e4ff)" stroke-opacity="0.66" stroke-linecap="round" fill="none" d="M222.885 265.087c17.661-2.208 35.323 0 52.984-2.208 13.246-1.324 22.076 1.325 26.492 3.974" stroke-dasharray="5.3 5.3" />
+            <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
+                <rect stroke-width="3" stroke="var(--color6, #939598)" fill="var(--color2, #000)" width="512" height="512" />
+                <g stroke-width="0.88" stroke="var(--color71, #2e6f3a)" stroke-opacity="0.6" stroke-linejoin="miter" fill="var(--color70, #4fa65b)" transform="matrix(1.45, 0, 0, 1.45, -115.2, -115.2)" fill-rule="nonzero" stroke-miterlimit="4">
+                    <circle stroke-width="6" stroke="var(--color73, #a7e4ff)" stroke-opacity="0.95" fill="var(--color72, #4c56ff)" cx="256" cy="256" fill-rule="evenodd" r="70" />
+                    <path d="M231.716 238.595c-8.831-13.246 8.83-30.907 26.492-26.492 13.246 4.416 17.661 17.661 8.83 30.907-8.83 8.831-22.077 8.831-35.322-4.415z" />
+                    <path d="M280.284 278.333c13.246-4.415 17.661 8.83 8.831 17.661-8.831 8.831-22.077 4.415-17.661-8.831z" />
+                    <path d="M227.3 273.918c-13.245 4.415-17.661 17.661-4.415 22.076s22.076-4.415 17.661-13.246z" />
+                    <path stroke-width="5.3" stroke="var(--color69, #dce4ff)" stroke-linecap="round" fill="none" d="M209.639 247.425c17.661-4.415 30.907-2.207 48.569-4.415 17.661-2.207 30.907 0 44.153 4.415" stroke-dasharray="5.3 5.3" />
+                    <path stroke-width="5.3" stroke="var(--color68, #d6e4ff)" stroke-opacity="0.66" stroke-linecap="round" fill="none" d="M222.885 265.087c17.661-2.208 35.323 0 52.984-2.208 13.246-1.324 22.076 1.325 26.492 3.974" stroke-dasharray="5.3 5.3" />
+                </g>
             </g>
         </symbol>
         <symbol id="MWL-icon-emotion" viewBox="0 0 512 512" stroke-linejoin="round" clip-rule="evenodd" fill-rule="evenodd" stroke-miterlimit="2" version="1.1">
@@ -1005,15 +1015,15 @@
             <title>H-hyperfine-transition</title>
             <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
                 <rect stroke-width="3" stroke="var(--color22, #949698)" fill="var(--color2, #000)" width="512" height="512" />
-                <g stroke-width="5.61" stroke="var(--color12, #fff)" stroke-linecap="round" fill="none" stroke-miterlimit="4">
+                <g stroke-width="7.5" stroke="var(--color12, #fff)" stroke-linecap="round" fill="none" stroke-miterlimit="4">
                     <path d="M117.934 203.065c-2.121-7e-3-3.53-1.426-3.523-3.548 4e-3-1.414 1.426-3.53 3.547-3.523 2.122 7e-3 3.529 2.133 3.524 3.547-7e-3 2.122-1.426 3.531-3.548 3.524z" />
                     <path d="M392.61 163.682c-2.122-7e-3-3.531-1.426-3.524-3.548 4e-3-1.414 1.424-2.824 3.545-2.816 1.414 4e-3 2.824 1.423 2.819 2.838-7e-3 2.121-1.426 3.531-2.84 3.526z" />
                     <path d="M118.687 235.137v38.188" />
                     <path d="M119.029 237.966c-2.121-7e-3-3.531-1.426-3.524-3.548 5e-3-1.414 1.427-3.531 3.548-3.523 1.414 4e-3 2.821 2.131 2.816 3.545-7e-3 2.121-1.426 3.531-2.84 3.526z" />
                     <path d="M117.946 161.342v38.187" />
                     <path d="M119.134 328.918c-39.028-0.131-70.974-33.693-70.837-74.116 0.138-41.119 32.308-73.768 71.336-73.636 39.725 0.134 71.673 32.998 71.534 74.118-0.136 40.423-32.308 73.768-72.033 73.634z" />
-                    <path stroke-width="3.64" d="M200.362 254.001h110.316" />
-                    <path stroke-width="3.64" d="M254.832 271.913v-11.314" />
+                    <path stroke-width="5.5" d="M200.362 254.001h110.316" />
+                    <path stroke-width="5.5" d="M254.832 271.913v-11.314" />
                     <path d="M392.268 161.342v38.187" />
                     <path d="M392.319 235.137v38.188" />
                     <path d="M392.66 237.966c-2.121-7e-3-3.531-1.426-3.523-3.548 4e-3-1.414 1.426-3.531 3.547-3.523 1.414 4e-3 2.821 2.131 2.817 3.545-7e-3 2.121-1.427 3.531-2.841 3.526z" />
@@ -1665,7 +1675,7 @@
                 <rect stroke-width="3" stroke="var(--color22, #949698)" stroke-linejoin="round" fill="var(--color2, #000)" width="512" height="512" stroke-miterlimit="2" />
                 <circle stroke-width="3.02" stroke="var(--color8, #fff7bf)" stroke-opacity="0.95" fill="var(--color7, #ffc63d)" cx="256" cy="246" r="35.215" />
                 <path stroke-width="4" stroke="var(--color6, #939598)" fill="none" d="M47.608 246h392" fill-rule="nonzero" stroke-dasharray="8 6.67" />
-                <circle fill="var(--color86, #101010)" cx="243.608" cy="246" r="12.392" />
+                <circle fill="var(--color86, #101010)" cx="243.608" cy="246" r="5" />
             </g>
         </symbol>
         <symbol id="MWL-icon-proper-name" viewBox="0 0 512 512" fill="none" clip-rule="evenodd" fill-rule="evenodd" version="1.1">
@@ -2362,7 +2372,9 @@
             <title>wander</title>
             <g transform="matrix(0.914641, 0, 0, 0.914641, 21.851961, 21.851961)">
                 <rect stroke-width="3" stroke="var(--color6, #939598)" fill="var(--color2, #000)" width="512" height="512" />
-                <path stroke-width="10" stroke="var(--color19, #dde7ff)" stroke-linejoin="miter" fill="none" d="M120 220c40-13.333 73.333-6.667 100 20s53.333 13.333 80-40 53.333-33.333 80 60 53.333 86.667 80-20" fill-rule="nonzero" stroke-dasharray="12 16" stroke-miterlimit="4" />
+                <g transform="translate(-34 16)">
+                    <path stroke-width="10" stroke="var(--color19, #dde7ff)" stroke-linejoin="miter" fill="none" d="M120 220c40-13.333 73.333-6.667 100 20s53.333 13.333 80-40 53.333-33.333 80 60 53.333 86.667 80-20" fill-rule="nonzero" stroke-dasharray="12 16" stroke-miterlimit="4" />
+                </g>
             </g>
         </symbol>
     </defs>
