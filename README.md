@@ -187,9 +187,10 @@ Home page:
 - MWL must be written in the **narrator’s reference frame**. 
 - **CAUSE‑THEN** sits alone between two lines to enforce **order and implication** without tense morphology.  
 - Use **pulsar + SIGNAL** as a metronome when needed; numeric frequency attaches to verb via MOD.
-- The tempo glyph can be used to set the **granularity** of the time axis. Tempo is similar to Scale, but for time.
+- The **TEMPO** meta glyph sets temporal granularity for the progression of a story, the same way SCALE sets spatial context. Use with **stellar-epoch** or **cosmic-epoch**.
    ```
    [tempo]  [cosmic-epoch]
+   [tempo]  [stellar-epoch]
    ```
 ---
 
@@ -449,10 +450,55 @@ To describe sequence positions without reusing numerals:
 - **Convertible glyphs:** rely on **position casting** and MOD for properties/qualifiers; avoid CG self‑qualification.
 - Reserve **CAUSE‑THEN** for real causality, not mere sequence (for that, use **FIRST/NEXT/LAST** or a new line).
 
+## Cosmological Extension (Experimental)
+
+> **Goal:** Extend MWL's spatial hierarchy and temporal framing to **cosmological scales** — the cosmic web, galaxy clusters, and deep‑time epochs — while preserving the existing grammar unchanged.
+>
+> These additions open a path toward using MWL (or a derivative notation) to describe **large‑scale structure** and to communicate over **extremely long timespans**, grounded in phenomena that are **universal across the observable universe**.
+
+### New Object Glyphs
+
+Two new **objects** extend the SCALE / LEVEL hierarchy above `local galaxy` and `other galaxy`:
+
+- **filament** — a cosmic web filament: a strand of matter connecting two galaxy‑cluster nodes. Visually, a stream of blue‑white particles flowing between two bright nodes. This is the largest coherent structure in the universe. Use with SCALE to set a megaparsec‑scale spatial frame.
+- **galaxy cluster** — a gravitationally bound group of galaxies with a diffuse intracluster medium. Visually, a central dominant elliptical galaxy surrounded by smaller members (elliptical and spiral) in a diffuse halo. Sits between `filament` and `local galaxy`/`other galaxy` in the SCALE hierarchy.
+
+The full spatial hierarchy now reads:
+
+```
+[scale] [filament] [level] [galaxy cluster] [level] [other galaxy] [level] [star system] [level] …
+```
+
+### Temporal Framing (TEMPO)
+
+At cosmological scales, each content line may advance the narrator's proper time by millions or billions of years rather than the hours or days implied in stellar‑scale stories. To make this explicit, a new **temporal frame line** is introduced, analogous to SCALE for space:
+
+- **tempo** — a **meta glyph** that sets the temporal granularity for subsequent content lines, the same way SCALE sets spatial context. Visually modeled after `scale`: a vertical time‑arrow (future ↓) with pulse dots and wave‑front arcs instead of spatial ruler ticks and circles. Placed on its own frame line.
+
+Two **temporal‑epoch markers** serve as arguments to TEMPO (analogous to how objects like `star system` or `nebula` serve as arguments to SCALE):
+
+- **stellar epoch** — the temporal scale of stellar lifecycles (millions to billions of years). Visually, a golden star with a descending trail of progressively dimming dots representing a stellar lifecycle along the time axis. Use when each content line advances by roughly stellar‑evolution timescales.
+- **cosmic epoch** — the temporal scale of cosmological evolution (hundreds of millions to billions of years). Visually, concentric expanding rings of particles shifting from warm gold (early/hot universe) to cool blue‑white (late/cool universe), representing cosmic expansion. Use when each content line advances by cosmological timescales.
+
+A temporal frame line has this form:
+
+```
+[tempo] [cosmic epoch]       — each subsequent line spans cosmological time
+[tempo] [stellar epoch]      — each subsequent line spans stellar‑evolution time
+```
+
+When no TEMPO frame line appears, the temporal granularity is inferred from context (as in existing MWL stories).
+
+### How These Fit the Existing Grammar
+
+No grammar rules change. The new objects (`filament`, `galaxy cluster`) are ordinary object glyphs that slot into the existing SCALE / LEVEL hierarchy. The new meta glyphs (`tempo`, `stellar epoch`, `cosmic epoch`) follow the same frame‑line pattern as SCALE: they occupy their own line, set context for subsequent content lines, and take no verbs.
+
+All existing verbs, properties, and meta‑glyphs apply at cosmological scale. A galaxy cluster can `[capture]` a galaxy (gravitational infall), galaxies can `[converging-paths]` along a filament, a filament can be `[expanding]` or `[destroyed]`. The proper‑time axis remains authoritative; the TEMPO line simply makes explicit what temporal resolution the narrator is operating at.
+
 ## Lexicon Of Glyphs
 
 ### Objects
-Astronomical objects, examples: Stars, planets, and celestial structures: single star, black hole, binary star, nebula, star field
+Astronomical objects, examples: Stars, planets, and celestial structures: single star, black hole, binary star, nebula, star field. Cosmological‑scale structures: **filament**, **galaxy cluster**.
 ### Events
 Transient phenomena, examples: supernova, eclipse, aurora, asteroid impact
 ### Verbs / Kinematics
@@ -460,7 +506,7 @@ Motion, change, and interaction, examples: rise, set, accelerate, drift, wander,
 ### Properties / States
 Spatial or qualitative, examples: bright, near, outside, shrinking, constructed, interstellar
 ### Meta / Discourse
-Functional symbols, examples: scale, plane, cause‑then, direction, true, false, uncertain, mod, first, next, last
+Functional symbols, examples: scale, plane, cause‑then, direction, true, false, uncertain, mod, first, next, last. Temporal framing: **tempo**, **stellar epoch**, **cosmic epoch**.
 ### Emotions
 Examples: fear, anger, joy, hope, love, betrayal, etc.
 ### Numerals
@@ -609,8 +655,8 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | nebula                | object       |                                  |
 | star system           | object       |                                  |
 | star field            | object       |                                  |
-| filament              | object       |                                  |
-| galaxy-cluster        | object       |                                  |
+| filament              | object       | cosmic web strand connecting cluster nodes |
+| galaxy-cluster        | object       | gravitationally bound group of galaxies    |
 | supernova             | event        |                                  |
 | star birth            | event        | protostar                        |
 | planetary transit     | event        |                                  |
@@ -663,9 +709,9 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | scale                 | meta         |                                  |
 | cause-then            | meta         | Doppler shift, <br>causal flow   |
 | level                 | meta         | spatial order of<br>magnitude    |
-| tempo                 | meta         | temporal frame‑setter            |
-| stellar-epoch         | meta         | stellar temporal progression     |
-| cosmic-epoch          | meta         | cosmological temporal frame      |
+| tempo                 | meta         | temporal frame‑setter (analogous to scale) |
+| stellar-epoch         | meta         | stellar‑lifecycle temporal scale           |
+| cosmic-epoch          | meta         | cosmological‑evolution temporal scale      |
 | dialog                | meta         | echo style glyph                 |
 | emotion               | meta         |                                  |
 | proper name           | meta         |                                  |
