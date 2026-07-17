@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#ffd27f" width="512" height="512" clip-rule="evenodd" version="1.1">
-    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#939598" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
-    <circle stroke-width="4" stroke="#4b4b4b" stroke-opacity="0.9" fill="#4b4b4b" cx="120" cy="256" fill-rule="evenodd" r="38" />
-    <circle stroke-width="4" stroke="#fff" stroke-opacity="0.9" fill="#fff" cx="392" cy="276" fill-rule="evenodd" r="38" />
-    <path stroke-width="12" stroke="#ffd27f" stroke-opacity="0.8" stroke-linecap="round" fill="none" d="M170 136h172" />
-    <path fill-opacity="0.85" d="M170 136l20-16v32z" />
-    <path fill-opacity="0.85" d="M342 136l-20-16v32z" />
+    <g transform="matrix(0.91464078 0 0 0.91464078 21.85196117 21.85196117)"><rect stroke-width="3" stroke="#949698" stroke-linejoin="round" fill="#000" width="512" height="512" fill-rule="evenodd" stroke-miterlimit="2" />
+    <circle stroke-width="6" stroke="#9a9a9a" stroke-opacity="0.95" fill="#6e6e6e" cx="116" cy="284" fill-rule="evenodd" r="40" />
+    <circle stroke-width="6" stroke="#d9d9d9" stroke-opacity="0.95" fill="#fff" cx="396" cy="284" fill-rule="evenodd" r="40" />
+    <path stroke-width="10" stroke="#ffd27f" stroke-opacity="0.85" stroke-linecap="round" fill="none" d="M182 198h148" />
+    <path fill-opacity="0.85" d="M164 198L182 188L182 208Z" />
+    <path fill-opacity="0.85" d="M348 198L330 188L330 208Z" />
 </g></svg>
