@@ -1,5 +1,6 @@
 # Milky Way Language (MWL) - Introduction
-For readers under a night sky: humans, other space‑faring species, and camera‑equipped AIs. 
+
+For space-faring readers who can view a night sky, including humans and camera‑equipped AIs. 
 
 > **Core idea:** A pictographic script built from astronomical phenomena. Clauses are compact. Time is **vertical** (future ↓ , past ↑) on the page, line by line. Direct causality is laid out with a dedicated linker between lines.
 > 
