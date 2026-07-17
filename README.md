@@ -24,6 +24,10 @@ Symbol Definitions demo page:
 Home page: 
 * [MWL Intro](https://alex987654.github.io/MWL)
 
+Glyph design ystem: 
+* [MWL Intro](https://alex987654.github.io/MWL/MWL-glyphs/DESIGN.md)
+
+
 ## What This Experimental Language Is
 
 - **Audience:** Readers who can view the night sky, space-faring beings, including AIs with cameras, who are familiar with the night sky on planetary surfaces or in space. Pages are meant to be legible by eye or camera without requiring spoken language. 
