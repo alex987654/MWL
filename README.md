@@ -25,12 +25,12 @@ Home page:
 * [MWL Intro](https://alex987654.github.io/MWL)
 
 Glyph design ystem: 
-* [MWL Intro](https://alex987654.github.io/MWL/MWL-glyphs/DESIGN.md)
+* [MWL Intro](https://github.com/alex987654/MWL/blob/main/MWL-glyphs/DESIGN.md)
 
 
 ## What This Experimental Language Is
 
-- **Audience:** Readers who can view the night sky, space-faring beings, including AIs with cameras, who are familiar with the night sky on planetary surfaces or in space. Pages are meant to be legible by eye or camera without requiring spoken language. 
+- **Audience:** Space-faring readers who can view the night sky, including AIs with cameras. Pages are meant to be legible by eye or camera without requiring spoken language. 
 - **Purpose:** Tell stories using mostly **astronomical icons** as a shared reference.  
 - **Design constraints:**  
   - Minimal **grammar**: very few glyphs per clause; up to one descriptive and one numeral **qualifier**.  
