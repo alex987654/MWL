@@ -15,7 +15,7 @@ body{
 }
 /* soft gold glow behind the wordmark */
 .glow{
-  position:absolute;left:-140px;top:110px;
+  position:absolute;left:-60px;top:55px;
   width:760px;height:520px;
   background:radial-gradient(closest-side,rgba(255,200,76,.10),rgba(255,200,76,0));
 }
@@ -29,33 +29,16 @@ body{
   padding:0 72px 0 76px;
   gap:56px;
 }
-.left{flex:1;min-width:0}
-.label{
-  font-size:19px;font-weight:600;
-  letter-spacing:5px;
-  color:rgb(139,144,160);
-  margin-bottom:34px;
+.left{
+  flex:1;min-width:0;
+  display:flex;align-items:center;justify-content:center;
 }
-.label span{color:rgb(255,200,76)}
 .wordmark{
-  font-size:186px;font-weight:700;
-  line-height:.95;
+  font-size:150px;font-weight:700;
+  line-height:1;
   letter-spacing:2px;
   color:rgb(255,200,76);
   text-shadow:0 0 60px rgba(255,200,76,.35);
-  margin-left:-8px;
-  margin-bottom:26px;
-}
-.name{
-  font-size:37px;font-weight:600;
-  letter-spacing:.3px;
-  margin-bottom:12px;
-}
-.tag{
-  font-size:25px;font-weight:400;
-  color:rgb(139,144,160);
-  line-height:1.45;
-  max-width:520px;
 }
 .grid{
   flex-shrink:0;
@@ -88,10 +71,7 @@ body{
 </div>
 <div class="card">
   <div class="left">
-    <div class="label">NOHOLOA.COM <span>/</span> MWL</div>
     <div class="wordmark">MWL</div>
-    <div class="name">Milky Way Language</div>
-    <div class="tag">A glyph language for space&#8209;faring readers of the night sky</div>
   </div>
   <div class="grid">
     <img src="../MWL-glyphs/binary-star.svg" alt="">
