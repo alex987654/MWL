@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MWL social card source (render at 1200x630)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{
+  position:relative;
+  background:rgb(10,11,15);
+  font-family:"DM Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+  color:rgb(232,234,240);
+}
+/* soft gold glow behind the wordmark */
+.glow{
+  position:absolute;left:-140px;top:110px;
+  width:760px;height:520px;
+  background:radial-gradient(closest-side,rgba(255,200,76,.10),rgba(255,200,76,0));
+}
+/* sparse starfield */
+.stars{position:absolute;inset:0}
+.stars i{position:absolute;border-radius:50%;background:rgb(232,234,240)}
+.card{
+  position:relative;
+  width:100%;height:100%;
+  display:flex;align-items:center;
+  padding:0 72px 0 76px;
+  gap:56px;
+}
+.left{flex:1;min-width:0}
+.label{
+  font-size:19px;font-weight:600;
+  letter-spacing:5px;
+  color:rgb(139,144,160);
+  margin-bottom:34px;
+}
+.label span{color:rgb(255,200,76)}
+.wordmark{
+  font-size:186px;font-weight:700;
+  line-height:.95;
+  letter-spacing:2px;
+  color:rgb(255,200,76);
+  text-shadow:0 0 60px rgba(255,200,76,.35);
+  margin-left:-8px;
+  margin-bottom:26px;
+}
+.name{
+  font-size:37px;font-weight:600;
+  letter-spacing:.3px;
+  margin-bottom:12px;
+}
+.tag{
+  font-size:25px;font-weight:400;
+  color:rgb(139,144,160);
+  line-height:1.45;
+  max-width:520px;
+}
+.grid{
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:repeat(2,152px);
+  grid-template-rows:repeat(3,152px);
+  gap:16px;
+}
+.grid img{
+  width:152px;height:152px;
+  border-radius:14px;
+  border:1px solid rgb(42,46,58);
+  box-shadow:0 0 24px rgba(74,124,255,.10);
+}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="stars">
+  <i style="left:92px;top:64px;width:2px;height:2px;opacity:.5"></i>
+  <i style="left:318px;top:132px;width:3px;height:3px;opacity:.35"></i>
+  <i style="left:504px;top:78px;width:2px;height:2px;opacity:.6"></i>
+  <i style="left:668px;top:44px;width:2px;height:2px;opacity:.4"></i>
+  <i style="left:206px;top:562px;width:3px;height:3px;opacity:.3"></i>
+  <i style="left:438px;top:520px;width:2px;height:2px;opacity:.5"></i>
+  <i style="left:610px;top:588px;width:2px;height:2px;opacity:.35"></i>
+  <i style="left:56px;top:420px;width:2px;height:2px;opacity:.4"></i>
+  <i style="left:700px;top:300px;width:2px;height:2px;opacity:.3"></i>
+  <i style="left:150px;top:250px;width:2px;height:2px;opacity:.25"></i>
+</div>
+<div class="card">
+  <div class="left">
+    <div class="label">NOHOLOA.COM <span>/</span> MWL</div>
+    <div class="wordmark">MWL</div>
+    <div class="name">Milky Way Language</div>
+    <div class="tag">A glyph language for space&#8209;faring readers of the night sky</div>
+  </div>
+  <div class="grid">
+    <img src="../MWL-glyphs/binary-star.svg" alt="">
+    <img src="../MWL-glyphs/supernova.svg" alt="">
+    <img src="../MWL-glyphs/aurora.svg" alt="">
+    <img src="../MWL-glyphs/constellation.svg" alt="">
+    <img src="../MWL-glyphs/star-system.svg" alt="">
+    <img src="../MWL-glyphs/nebula.svg" alt="">
+  </div>
+</div>
+</body>
+</html>
