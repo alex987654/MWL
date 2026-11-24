@@ -753,5 +753,6 @@ Binary‑positional; 2–8 use **ring‑with‑dots**; ≥9 use **rail only**.
 | 8                     | numeral      |                                  |
 ---
 
+[Archive Permalink](https://archive.softwareheritage.org/swh:1:dir:26b1b3fea55cd48f18d3aaa83b18d482f62edbb6;origin=https://github.com/alex987654/MWL;visit=swh:1:snp:eef82a3366185cc23c09f62ecc72d2c1811fb585;anchor=swh:1:rev:c412904b0b46a76b1f3ae7eaed22437643258f1f)  
 
 *End of introduction.*
