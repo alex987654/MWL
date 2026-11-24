@@ -8,7 +8,7 @@ splices the full symbol block into every file that embeds it:
 
     MWL-symbol-defs/symbol-defs.svg
     MWL-symbol-defs/demo.html        (also gets a demo tile per glyph)
-    Star-Wars-4-Crawl-in-MWL.html
+    Heroic-Rebellion-in-MWL.html
     The-Twin-Exodus-MWL-Sample.html
 
 Missing --colorN palette entries are appended to each host's
@@ -26,7 +26,7 @@ GLYPH_DIR = os.path.join(ROOT, 'MWL-glyphs')
 HOSTS = [
     'MWL-symbol-defs/symbol-defs.svg',
     'MWL-symbol-defs/demo.html',
-    'Star-Wars-4-Crawl-in-MWL.html',
+    'Heroic-Rebellion-in-MWL.html',
     'The-Twin-Exodus-MWL-Sample.html',
 ]
 DROP_ATTRS = {'xmlns', 'xmlns:xlink', 'width', 'height', 'xml:space'}

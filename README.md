@@ -10,7 +10,7 @@ For space-faring readers who can view a night sky, including humans and camera�
 
 
 MWL Samples: 
-* [Star Wars 4 crawl in MWL](https://alex987654.github.io/MWL/Star-Wars-4-Crawl-in-MWL.html)
+* [Heroic rebellion against an evil empire in space](https://alex987654.github.io/MWL/Heroic-Rebellion-in-MWL.html)
 * [“The Twin Exodus” sample story](https://alex987654.github.io/MWL/The-Twin-Exodus-MWL-Sample.html)
 
 Authoring Tool for MWL: 
@@ -66,9 +66,9 @@ Glyph design ystem:
   - **Typing / Membership Clause:** center is **`[is-type]`**. A **non-verbal** clause establishing **class membership** or **type identity**. **`[is-type]`** establishes a strong force linking objects or proper names. Examples:  
     `[signal] [is-type] [PATH MOD constructed]`  
     `[⟦WANDERER⟧ + star-ship] [is-type] [constructed]`
-    `[star-ship] [is-type] [⟦REBEL‑ALLIANCE⟧]`
+    `[star-ship] [is-type] [⟦COALITION‑OF‑REBELS⟧]`
   - **Relational Clause:** center is **`[is-related-to]`**. A **non-verbal** clause establishing **association**. **`[is-related-to]`** establishes a weak force linking objects or proper names. Examples:  
-    `⟦PNC Leia⟧ [is-related] [⟦REBEL‑ALLIANCE⟧]` 
+    `⟦PNC Eleonora⟧ [is-related] [⟦COALITION‑OF‑REBELS⟧]` 
     `[signal] [is-related] [pulsar-beacon]`
   - **Nominal Clause (mono/state assertion):** A **non-verbal** clause, describing state/attribute/quantity of a single head using **MOD**. MOD modifies or qualifies the **internal state** of a head. Example:  
     `[gas-giant MOD magnetosphere]`  or  `[star-ship MOD dimming MOD three]`
@@ -138,7 +138,7 @@ Glyph design ystem:
   - **Canonical:** `• [scale object level ⟦TARGET⟧]`
     - E.g. `[scale] [local galaxy] [level] [nebula]`
   - **Anchored shorthand:** `• [scale ⟦TARGET⟧]` - LEVEL is **inferred** from target type or **inherited** from the previous frame.  
-  - **Use one or more explicit LEVEL** (e.g. nebula or star system or a proper noun of type nebula or star system) for ambiguous anchors (e.g., **star-ship**), **to approximate spatial size** (e.g., `level [small moon] level ⟦DEATH‑STAR⟧`), and **event anchors** (add **linger** as modifier to stabilize).  
+  - **Use one or more explicit LEVEL** (e.g. nebula or star system or a proper noun of type nebula or star system) for ambiguous anchors (e.g., **star-ship**), **to approximate spatial size** (e.g., `level [small moon] level ⟦PLANET‑DESTROYER⟧`), and **event anchors** (add **linger** as modifier to stabilize).  
 - **End of a sentence:** Two sentences must be in separate lines. 
 
 ## Grammar Essentials
@@ -242,11 +242,11 @@ Parataxis should only be used where preferable over the use of `MOD`, `is-type`,
 
 **Example:**  
 - [star-ship] [is-type] [⟦EMPIRE⟧]
-- ⟦PNC Vader⟧ [is-related] [⟦star-ship⟧]
+- ⟦PNC Malory⟧ [is-related] [⟦star-ship⟧]
 - [star-ship] [mod] [destroyed]
 - [cause-then]
-- ⟦PNC Vader⟧ [mod] [angry] [EMOTION] [signal]
-- ⟦PNC Leia⟧ [mod] [joy] [EMOTION]
+- ⟦PNC Malory⟧ [mod] [angry] [EMOTION] [signal]
+- ⟦PNC Eleonora⟧ [mod] [joy] [EMOTION]
 
 ---
 
